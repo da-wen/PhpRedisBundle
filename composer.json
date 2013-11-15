@@ -27,6 +27,7 @@
         "psr-0": { "Dawen\\Bundle\\PhpRedisBundle": "" }
     },
     "target-dir": "Dawen/Bundle/PhpRedisBundle",
+    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "0.x-dev"
