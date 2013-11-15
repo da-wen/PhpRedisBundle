@@ -1,0 +1,35 @@
+{
+    "name": "dawen/phpredis-bundle",
+    "type": "symfony-bundle",
+    "description": "A PhpRedis bundle for Symfony2",
+    "keywords": ["redis", "phpredis", "nosql", "symfony"],
+    "homepage": "https://github.com/da-wen/PhpRedisBundle",
+    "license": "MIT",
+    "authors": [{
+        "name": "Daniel Wendlandt",
+        "email": "dan.wendlandt@gmail.com"
+    },{
+        "name": "Community contributors",
+        "homepage": "https://github.com/da-wen/PhpRedisBundle/contributors"
+    }],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": ">=2.1,<3.0",
+        "symfony/yaml": ">=2.1,<3.0"
+    },
+    "require-dev": {
+        "symfony/console": ">=2.1,<3.0"
+    },
+    "suggest": {
+        "symfony/console": "If you want to use commands to interact with the redis database. (planned)"
+    },
+    "autoload": {
+        "psr-0": { "Dawen\\Bundle\\PhpRedisBundle": "" }
+    },
+    "target-dir": "Dawen/Bundle/PhpRedisBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-dev"
+        }
+    }
+}
