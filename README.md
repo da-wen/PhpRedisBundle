@@ -11,4 +11,5 @@ This bundle is under construction. It is highly recommended not using this bundl
 WORKING METHODS
 ===============
 * strings: get, set
+* keys: keys
 

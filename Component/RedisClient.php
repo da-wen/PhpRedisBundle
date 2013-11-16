@@ -25,6 +25,23 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * KEYS
+     * *************************************************************************************************
+     */
+
+    /**
+     * Returns the keys that match a certain pattern.
+     *
+     * @param   string  $pattern pattern, using '*' as a wildcard.
+     * @return  array
+     */
+    public function keys($pattern)
+    {
+        return $this->redis->keys($pattern);
+    }
+
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */

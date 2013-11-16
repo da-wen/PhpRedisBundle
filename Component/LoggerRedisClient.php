@@ -47,6 +47,25 @@ class LoggerRedisClient implements RedisClientInterface
      * ***************************************************************************************************************
      */
 
+    /**
+     * KEYS
+     * *************************************************************************************************
+     */
+
+    /**
+     * @inheritdoc
+     */
+    public function keys($pattern)
+    {
+        $startTime = $this->startMeasure();
+        $strings = $this->redis->keys($pattern);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('pattern' => $pattern);
+        $this->info('keys', $duration, $params);
+
+        return $strings;
+    }
 
     /**
      * STRINGS
