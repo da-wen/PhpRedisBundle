@@ -201,16 +201,10 @@ class LoggerRedisClient implements RedisClientInterface
         $success = $this->redis->setnx($key, $value);
         $duration = $this->endMeasure($startTime);
 
-
         $params = array('key' => $key);
-        if($success)
-        {
-            $this->info('setnx', $duration, $params);
-        }
-        else
-        {
-            $this->error('setnx', $duration, $params);
-        }
+        $params['notExistingKey'] = $success;
+
+        $this->info('setnx', $duration, $params);
 
         return $success;
     }
