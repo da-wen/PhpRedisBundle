@@ -44,6 +44,20 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Dawen\Bundle\PhpRedisBundle\Component\RedisClientInterface', $this->client);
     }
 
+    public function testExists()
+    {
+        $key = 'testkey';
+
+        $this->redis->expects($this->once())
+            ->method('exists')
+            ->with( $this->equalTo($key))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->exists($key);
+
+        $this->assertTrue($result);
+    }
+
     public function testKeys()
     {
         $pattern = 'users.admin.*';

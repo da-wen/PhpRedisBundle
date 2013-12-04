@@ -72,6 +72,20 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $this->assertEmpty($keys);
     }
 
+    public function testExists()
+    {
+
+        $key = 'testKey';
+
+        $extists = $this->client->exists($key);
+        $this->assertFalse($extists);
+
+        $this->client->set($key, array('test1', 'test2'));
+
+        $extists = $this->client->exists($key);
+        $this->assertTrue($extists);
+    }
+
     public function testKeysAll()
     {
         $this->client->set('key1', array('test1', 'test2'));

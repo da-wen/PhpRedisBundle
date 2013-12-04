@@ -28,11 +28,40 @@ interface RedisClientInterface
      * *************************************************************************************************
      */
 
+    /**
+     * Verify if the specified key exists.
+     *
+     * @param   string $key
+     * @return  bool: If the key exists, return TRUE, otherwise return FALSE.
+     * @link    http://redis.io/commands/exists
+     * @example
+     * <pre>
+     * $redis->set('key', 'value');
+     * $redis->exists('key');               //  TRUE
+     * $redis->exists('NonExistingKey');    // FALSE
+     * </pre>
+     */
+    public function exists($key);
+
+    /**
+     * Returns the keys that match a certain pattern.
+     *
+     * @param   string  $pattern pattern, using '*' as a wildcard.
+     * @return  array
+     */
     public function keys($pattern);
 
     /**
      * SERVER
      * *************************************************************************************************
+     */
+
+    /**
+     * Removes all entries from the current database.
+     *
+     * @return  bool: Always TRUE.
+     * @link    http://redis.io/commands/flushdb
+     * @example $redis->flushDB();
      */
     public function flushDB();
 

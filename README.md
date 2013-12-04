@@ -10,8 +10,8 @@ This bundle is under construction. It is highly recommended not using this bundl
 
 WORKING METHODS
 ===============
-* strings: get, set
-* keys: keys
+* strings: get, set, setex, setnx
+* keys: exists ,keys
 * server: flushDB
 * connection: close
 
