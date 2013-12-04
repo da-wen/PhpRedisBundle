@@ -98,6 +98,42 @@ class RedisClientStringsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    public function testSetEx()
+    {
+        $testKey = 'myTestKey';
+        $testValue = 'myTestValue';
+        $testTimeout = 22;
+
+        $this->redis->expects($this->once())
+            ->method('setex')
+            ->with( $this->equalTo($testKey),
+                $this->equalTo($testTimeout),
+                $this->equalTo($testValue))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->setex($testKey, $testTimeout, $testValue);
+
+        $this->assertTrue($result);
+    }
+
+    public function testSetNx()
+    {
+        $testKey = 'myTestKey';
+        $testValue = 'myTestValue';
+
+        $this->redis->expects($this->once())
+            ->method('setnx')
+            ->with( $this->equalTo($testKey),
+                $this->equalTo($testValue))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->setnx($testKey, $testValue);
+
+        $this->assertTrue($result);
+    }
+
+
+
     public function testGet()
     {
         $testKey = 'myTestKey';

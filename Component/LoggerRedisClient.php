@@ -48,6 +48,26 @@ class LoggerRedisClient implements RedisClientInterface
      */
 
     /**
+     * CONNECTION
+     * *************************************************************************************************
+     */
+
+    /**
+     * Disconnects from the Redis instance, except when pconnect is used.
+     *
+     * @return void
+     */
+    public function close()
+    {
+        $startTime = $this->startMeasure();
+        $this->redis->close();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        $this->info('close', $duration, $params);
+    }
+
+    /**
      * KEYS
      * *************************************************************************************************
      */
@@ -65,6 +85,37 @@ class LoggerRedisClient implements RedisClientInterface
         $this->info('keys', $duration, $params);
 
         return $strings;
+    }
+
+    /**
+     * SERVER
+     * *************************************************************************************************
+     */
+
+    /**
+     * Removes all entries from the current database.
+     *
+     * @return  bool: Always TRUE.
+     * @link    http://redis.io/commands/flushdb
+     * @example $redis->flushDB();
+     */
+    public function flushDB()
+    {
+        $startTime = $this->startMeasure();
+        $success = $this->redis->flushDB();;
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if($success)
+        {
+            $this->info('flushDB', $duration, $params);
+        }
+        else
+        {
+            $this->error('flushDB', $duration, $params);
+        }
+
+        return $success;
     }
 
     /**
@@ -104,7 +155,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
 
-        $params = array('key' => $key, 'timeout' => $timeout);
+        $params = array('key' => $key, 'timeout' => (int)$timeout);
         if($success)
         {
             $this->info('set', $duration, $params);
@@ -117,6 +168,54 @@ class LoggerRedisClient implements RedisClientInterface
 
         return $success;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function setex($key, $ttl, $value)
+    {
+        $startTime = $this->startMeasure();
+        $success = $this->redis->setex($key, (int)$ttl, $value);
+        $duration = $this->endMeasure($startTime);
+
+
+        $params = array('key' => $key, 'ttl' => (int)$ttl);
+        if($success)
+        {
+            $this->info('setex', $duration, $params);
+        }
+        else
+        {
+            $this->error('setex', $duration, $params);
+        }
+
+        return $success;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setnx($key, $value)
+    {
+        $startTime = $this->startMeasure();
+        $success = $this->redis->setnx($key, $value);
+        $duration = $this->endMeasure($startTime);
+
+
+        $params = array('key' => $key);
+        if($success)
+        {
+            $this->info('setnx', $duration, $params);
+        }
+        else
+        {
+            $this->error('setnx', $duration, $params);
+        }
+
+        return $success;
+    }
+
+
 
 
     /**
