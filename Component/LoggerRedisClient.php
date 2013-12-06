@@ -75,6 +75,25 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function del($key1, $key2 = null,$key3 = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->del($key1, $key2, $key3);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key1' => $key1
+                        , 'key2' => $key2
+                        , 'key3' => $key3
+                        , 'result' => $result);
+
+        $this->info('del', $duration, $params);
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function exists($key)
     {
         $startTime = $this->startMeasure();

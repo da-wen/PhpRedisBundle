@@ -44,6 +44,38 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Dawen\Bundle\PhpRedisBundle\Component\RedisClientInterface', $this->client);
     }
 
+    public function testDelAllParams()
+    {
+        $key1 = 'testkey1';
+        $key2 = 'testkey2';
+        $key3 = 'testkey3';
+
+        $this->redis->expects($this->once())
+            ->method('del')
+            ->with( $this->equalTo($key1)
+                    , $this->equalTo($key2)
+                    , $this->equalTo($key3))
+            ->will($this->returnValue(3));
+
+        $result = $this->client->del($key1, $key2, $key3);
+
+        $this->assertEquals(3, $result);
+    }
+
+    public function testDelArrayParam()
+    {
+        $keys = array('key1', 'key2', 'key3', 'key4');
+
+        $this->redis->expects($this->once())
+            ->method('del')
+            ->with( $this->equalTo($keys))
+            ->will($this->returnValue(4));
+
+        $result = $this->client->del($keys);
+
+        $this->assertEquals(4, $result);
+    }
+
     public function testExists()
     {
         $key = 'testkey';

@@ -16,8 +16,8 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
 
     /** @var RedisClient */
     private $client;
-
     private $skipped = false;
+
 
     public function setUp()
     {
@@ -70,6 +70,73 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
     {
         $keys = $this->client->keys('*');
         $this->assertEmpty($keys);
+    }
+
+    public function testDelOneValue()
+    {
+        $key1 = 'key1';
+        $val = 'val';
+        $set = $this->client->set($key1, $val);
+        $this->assertTrue($set);
+        $keys = $this->client->keys('key*');
+        $this->assertCount(1, $keys);
+
+        //delete test
+        $deleted = $this->client->del($key1);
+        $this->assertEquals(1, $deleted);
+        $keys = $this->client->keys('key*');
+        $this->assertCount(0, $keys);
+    }
+
+    public function testDelThreeValue()
+    {
+        $key1 = 'key1';
+        $key2 = 'key2';
+        $key3 = 'key3';
+        $key4 = 'key4';
+        $val = 'val';
+        $set1 = $this->client->set($key1, $val);
+        $set2 = $this->client->set($key2, $val);
+        $set3 = $this->client->set($key3, $val);
+        $set4 = $this->client->set($key4, $val);
+        $this->assertTrue($set1);
+        $this->assertTrue($set2);
+        $this->assertTrue($set3);
+        $this->assertTrue($set4);
+        $keys = $this->client->keys('key*');
+        $this->assertCount(4, $keys);
+
+        //delete test
+        $deleted = $this->client->del($key1, $key2, $key3);
+        $this->assertEquals(3, $deleted);
+        $keys = $this->client->keys('key*');
+        $this->assertCount(1, $keys);
+        $this->assertTrue(in_array($key4, $keys));
+    }
+
+    public function testDelArray()
+    {
+        $key1 = 'key1';
+        $key2 = 'key2';
+        $key3 = 'key3';
+        $key4 = 'key4';
+        $val = 'val';
+        $set1 = $this->client->set($key1, $val);
+        $set2 = $this->client->set($key2, $val);
+        $set3 = $this->client->set($key3, $val);
+        $set4 = $this->client->set($key4, $val);
+        $this->assertTrue($set1);
+        $this->assertTrue($set2);
+        $this->assertTrue($set3);
+        $this->assertTrue($set4);
+        $keys = $this->client->keys('key*');
+        $this->assertCount(4, $keys);
+
+        //delete test
+        $deleted = $this->client->del(array($key1, $key2, $key3, $key4));
+        $this->assertEquals(4, $deleted);
+        $keys = $this->client->keys('key*');
+        $this->assertCount(0, $keys);
     }
 
     public function testExists()

@@ -29,6 +29,26 @@ interface RedisClientInterface
      */
 
     /**
+     * Remove specified keys.
+     *
+     * @param   string|array   $key1 An array of keys, or an undefined number of parameters, each a key: key1 key2 key3 ... keyN
+     * @param   string      $key2 ...
+     * @param   string      $key3 ...
+     * @return int Number of keys deleted.
+     * @link    http://redis.io/commands/del
+     * @example
+     * <pre>
+     * $redis->set('key1', 'val1');
+     * $redis->set('key2', 'val2');
+     * $redis->set('key3', 'val3');
+     * $redis->set('key4', 'val4');
+     * $redis->delete('key1', 'key2');          // return 2
+     * $redis->delete(array('key3', 'key4'));   // return 2
+     * </pre>
+     */
+    public function del($key1, $key2 = null, $key3 = null);
+
+    /**
      * Verify if the specified key exists.
      *
      * @param   string $key
