@@ -11,7 +11,7 @@ This bundle is under construction. It is highly recommended not using this bundl
 WORKING METHODS
 ===============
 * strings: get, set, setex, setnx
-* keys: exists ,keys
+* keys: del, exists ,keys
 * server: flushDB
 * connection: close
 
