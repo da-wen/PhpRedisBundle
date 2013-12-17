@@ -179,6 +179,25 @@ class RedisClient implements RedisClientInterface
 //        return $this->redis->bitOp($operation, $retKey, $key1, $key2, $key3);
 //    }
 
+
+    /**
+     * Decrement the number stored at key by one.
+     *
+     * @param   string $key
+     * @return  int    the new value
+     * @link    http://redis.io/commands/decr
+     * @example
+     * <pre>
+     * $redis->decr('key1'); // key1 didn't exists, set to 0 before the increment and now has the value -1
+     * $redis->decr('key1'); // -2
+     * $redis->decr('key1'); // -3
+     * </pre>
+     */
+    public function decr($key)
+    {
+        return $this->redis->decr($key);
+    }
+
     /**
      * Get the value related to the specified key
      *
@@ -188,6 +207,45 @@ class RedisClient implements RedisClientInterface
     public function get($key)
     {
         return $this->redis->get($key);
+    }
+
+    /**
+     * Return a single bit out of a larger string
+     *
+     * @param   string  $key
+     * @param   int     $offset
+     * @return  int:    the bit value (0 or 1)
+     * @link    http://redis.io/commands/getbit
+     * @example
+     * <pre>
+     * $redis->set('key', "\x7f");  // this is 0111 1111
+     * $redis->getBit('key', 0);    // 0
+     * $redis->getBit('key', 1);    // 1
+     * </pre>
+     */
+    public function getBit($key, $offset)
+    {
+        return $this->redis->getBit($key, $offset);
+    }
+
+    /**
+     * Return a substring of a larger string
+     *
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @return  string: the substring
+     * @link    http://redis.io/commands/getrange
+     * @example
+     * <pre>
+     * $redis->set('key', 'string value');
+     * $redis->getRange('key', 0, 5);   // 'string'
+     * $redis->getRange('key', -5, -1); // 'value'
+     * </pre>
+     */
+    public function getRange($key, $start, $end)
+    {
+        return $this->redis->getRange($key, $start, $end);
     }
 
     /**

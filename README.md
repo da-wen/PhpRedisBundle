@@ -10,7 +10,7 @@ This bundle is under construction. It is highly recommended not using this bundl
 
 WORKING METHODS
 ===============
-* strings: append, get, set, setex, setnx
+* strings: append, bitCount, decr, get, getBit, getRange, set, setex, setnx
 * keys: del, exists ,keys
 * server: flushDB
 * connection: close

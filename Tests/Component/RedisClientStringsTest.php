@@ -185,4 +185,48 @@ class RedisClientStringsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(12, $result);
     }
 
+    public function testDecr()
+    {
+        $testKey = 'myTestKey';
+
+        $this->redis->expects($this->once())
+            ->method('decr')
+            ->with($this->equalTo($testKey))
+            ->will($this->returnValue(12));
+
+        $result = $this->client->decr($testKey);
+
+        $this->assertEquals(12, $result);
+    }
+
+    public function testGetBit()
+    {
+        $testKey = 'myTestKey';
+
+        $this->redis->expects($this->once())
+            ->method('getBit')
+            ->with($this->equalTo($testKey), 1)
+            ->will($this->returnValue(1));
+
+        $result = $this->client->getBit($testKey, 1);
+
+        $this->assertEquals(1, $result);
+    }
+
+    public function testGetRange()
+    {
+        $testKey = 'myTestKey';
+
+        $this->redis->expects($this->once())
+            ->method('getRange')
+            ->with($this->equalTo($testKey), 1, 11)
+            ->will($this->returnValue('hello'));
+
+        $result = $this->client->getRange($testKey, 1, 11);
+
+        $this->assertEquals('hello', $result);
+    }
+
+
+
 }

@@ -113,30 +113,45 @@ interface RedisClientInterface
      * @return  int     The number of bits set to 1 in the value behind the input key.
      * @link    http://redis.io/commands/bitcount
      */
-    public function bitCount($key);
+//    public function bitCount($key);
+//
+//    /**
+//     * Bitwise operation on multiple keys.
+//     *
+//     * @param   string $operation either "AND", "OR", "NOT", "XOR"
+//     * @param   string $retKey return key
+//     * @param   string $key1
+//     * @param   string $key2
+//     * @param   null|string $key3
+//     * @return  int     The size of the string stored in the destination key.
+//     * @link    http://redis.io/commands/bitop
+//     * @example
+//     * <pre>
+//     * $redis->set('bit1', '1'); // 11 0001
+//     * $redis->set('bit2', '2'); // 11 0010
+//     *
+//     * $redis->bitOp('AND', 'bit', 'bit1', 'bit2'); // bit = 110000
+//     * $redis->bitOp('OR',  'bit', 'bit1', 'bit2'); // bit = 110011
+//     * $redis->bitOp('NOT', 'bit', 'bit1', 'bit2'); // bit = 110011
+//     * $redis->bitOp('XOR', 'bit', 'bit1', 'bit2'); // bit = 11
+//     * </pre>
+//     */
+//    public function bitOp($operation, $retKey, $key1, $key2, $key3 = null);
 
     /**
-     * Bitwise operation on multiple keys.
+     * Decrement the number stored at key by one.
      *
-     * @param   string $operation either "AND", "OR", "NOT", "XOR"
-     * @param   string $retKey return key
-     * @param   string $key1
-     * @param   string $key2
-     * @param   null|string $key3
-     * @return  int     The size of the string stored in the destination key.
-     * @link    http://redis.io/commands/bitop
+     * @param   string $key
+     * @return  int    the new value
+     * @link    http://redis.io/commands/decr
      * @example
      * <pre>
-     * $redis->set('bit1', '1'); // 11 0001
-     * $redis->set('bit2', '2'); // 11 0010
-     *
-     * $redis->bitOp('AND', 'bit', 'bit1', 'bit2'); // bit = 110000
-     * $redis->bitOp('OR',  'bit', 'bit1', 'bit2'); // bit = 110011
-     * $redis->bitOp('NOT', 'bit', 'bit1', 'bit2'); // bit = 110011
-     * $redis->bitOp('XOR', 'bit', 'bit1', 'bit2'); // bit = 11
+     * $redis->decr('key1'); // key1 didn't exists, set to 0 before the increment and now has the value -1
+     * $redis->decr('key1'); // -2
+     * $redis->decr('key1'); // -3
      * </pre>
      */
-    public function bitOp($operation, $retKey, $key1, $key2, $key3 = null);
+    public function decr($key);
 
     /**
      * Get the value related to the specified key
@@ -145,6 +160,39 @@ interface RedisClientInterface
      * @return bool|string
      */
     public function get($key);
+
+    /**
+     * Return a single bit out of a larger string
+     *
+     * @param   string  $key
+     * @param   int     $offset
+     * @return  int:    the bit value (0 or 1)
+     * @link    http://redis.io/commands/getbit
+     * @example
+     * <pre>
+     * $redis->set('key', "\x7f");  // this is 0111 1111
+     * $redis->getBit('key', 0);    // 0
+     * $redis->getBit('key', 1);    // 1
+     * </pre>
+     */
+    public function getBit($key, $offset);
+
+    /**
+     * Return a substring of a larger string
+     *
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @return  string: the substring
+     * @link    http://redis.io/commands/getrange
+     * @example
+     * <pre>
+     * $redis->set('key', 'string value');
+     * $redis->getRange('key', 0, 5);   // 'string'
+     * $redis->getRange('key', -5, -1); // 'value'
+     * </pre>
+     */
+    public function getRange($key, $start, $end);
 
     /**
      * Set the string value in argument as value of the key.

@@ -168,7 +168,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
         $params = array('key' => $key, 'stringSize' => $stringSize);
-        $this->info('get', $duration, $params);
+        $this->info('append', $duration, $params);
 
         return $stringSize;
     }
@@ -183,7 +183,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
         $params = array('key' => $key);
-        $this->info('get', $duration, $params);
+        $this->info('bitCount', $duration, $params);
 
         return $result;
     }
@@ -206,10 +206,32 @@ class LoggerRedisClient implements RedisClientInterface
 //            $params['key3'] = $key3;
 //        }
 //
-//        $this->info('get', $duration, $params);
+//        $this->info('bitOp', $duration, $params);
 //
 //        return $result;
 //    }
+
+    /**
+     * @inheritdoc
+     */
+    public function decr($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->decr($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if(false === $result)
+        {
+            $this->warning('decr', $duration, $params);
+        }
+        else
+        {
+            $this->info('decr', $duration, $params);
+        }
+
+        return $result;
+    }
 
     /**
      * @inheritdoc
@@ -236,12 +258,58 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function getBit($key, $offset)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->getBit($key, $offset);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'offset' => $offset);
+        if(false === $result)
+        {
+            $this->warning('getBit', $duration, $params);
+        }
+        else
+        {
+            $this->info('getBit', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRange($key, $start, $end)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->getRange($key, $start, $end);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'start' => $start
+                        , 'end' => $end);
+        if(false === $result)
+        {
+            $this->warning('getRange', $duration, $params);
+        }
+        else
+        {
+            $this->info('getRange', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function set($key, $value, $timeout = 0)
     {
         $startTime = $this->startMeasure();
         $success = $this->redis->set($key, $value, (int)$timeout);
         $duration = $this->endMeasure($startTime);
-
 
         $params = array('key' => $key, 'timeout' => (int)$timeout);
         if($success)

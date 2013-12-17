@@ -162,5 +162,70 @@ class RedisClientStringsIntegrationTest extends AbstractKernelAwareTest
 //        $this->assertTrue($result > 0);
 //    }
 
+    public function testDecrNoKey()
+    {
+        $key = 'testKey';
+
+        $resultNoKey = $this->client->decr($key);
+        $this->assertEquals(-1, $resultNoKey);
+    }
+
+    public function testDecrKeySet()
+    {
+        $key = 'testKey';
+        $value = 12;
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $result = $this->client->decr($key);
+        $this->assertEquals(11, $result);
+    }
+
+    public function testDecrString()
+    {
+        $key = 'testKey';
+        $value = 'hello';
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $result = $this->client->decr($key);
+        $this->assertFalse($result);
+    }
+
+    public function testGetBit()
+    {
+        $key = 'testKey';
+        $value = '\x7f';
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $result0 = $this->client->getBit($key, 0);
+        $this->assertEquals(0, $result0);
+
+        $result1 = $this->client->getBit($key, 1);
+        $this->assertEquals(1, $result1);
+    }
+
+    public function testGetRange()
+    {
+        $key = 'testKey';
+        $value = 'my test string';
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $resultMy = $this->client->getRange($key, 0, 1);
+        $this->assertEquals('my', $resultMy);
+
+        $resultTest = $this->client->getRange($key, 3, 6);
+        $this->assertEquals('test', $resultTest);
+
+        $resultString = $this->client->getRange($key, 8, 13);
+        $this->assertEquals('string', $resultString);
+    }
+
 
 }
