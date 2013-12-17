@@ -132,8 +132,6 @@ class RedisClientStringsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
-
-
     public function testGet()
     {
         $testKey = 'myTestKey';
@@ -146,6 +144,45 @@ class RedisClientStringsTest extends \PHPUnit_Framework_TestCase
         $result = $this->client->get($testKey);
 
         $this->assertTrue($result);
+    }
+
+    public function testAppend()
+    {
+        $testKey = 'myTestKey';
+        $testValue1 = 'myTestValue1';
+        $testValue2 = 'myTestValue2';
+
+        $this->redis->expects($this->once())
+            ->method('set')
+            ->with( $this->equalTo($testKey),
+                $this->equalTo($testValue1))
+            ->will($this->returnValue(true));
+
+        $this->redis->expects($this->once())
+            ->method('append')
+            ->with( $this->equalTo($testKey),
+                $this->equalTo($testValue2))
+            ->will($this->returnValue(12));
+
+        $resultSet = $this->client->set($testKey, $testValue1);
+        $this->assertTrue($resultSet);
+
+        $resultAppend = $this->client->append($testKey, $testValue2);
+        $this->assertEquals(12, $resultAppend);
+    }
+
+    public function testBitCount()
+    {
+        $testKey = 'myTestKey';
+
+        $this->redis->expects($this->once())
+            ->method('bitCount')
+            ->with($this->equalTo($testKey))
+            ->will($this->returnValue(12));
+
+        $result = $this->client->bitCount($testKey);
+
+        $this->assertEquals(12, $result);
     }
 
 }

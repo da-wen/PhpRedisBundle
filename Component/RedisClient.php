@@ -123,6 +123,63 @@ class RedisClient implements RedisClientInterface
      */
 
     /**
+     * Append specified string to the string stored in specified key.
+     *
+     * @param   string  $key
+     * @param   string  $value
+     * @return  int:    Size of the value after the append
+     * @link    http://redis.io/commands/append
+     * @example
+     * <pre>
+     * $redis->set('key', 'value1');
+     * $redis->append('key', 'value2'); // 12
+     * $redis->get('key');              // 'value1value2'
+     * </pre>
+     */
+    public function append($key, $value)
+    {
+        return $this->redis->append($key, $value);
+    }
+
+    /**
+     * Count bits in a string.
+     *
+     * @param   string  $key
+     * @return  int     The number of bits set to 1 in the value behind the input key.
+     * @link    http://redis.io/commands/bitcount
+     */
+    public function bitCount($key)
+    {
+        return $this->redis->bitCount($key);
+    }
+
+//    /**
+//     * Bitwise operation on multiple keys.
+//     *
+//     * @param   string $operation either "AND", "OR", "NOT", "XOR"
+//     * @param   string $retKey return key
+//     * @param   string $key1
+//     * @param   string $key2
+//     * @param   null|string $key3
+//     * @return  int     The size of the string stored in the destination key.
+//     * @link    http://redis.io/commands/bitop
+//     * @example
+//     * <pre>
+//     * $redis->set('bit1', '1'); // 11 0001
+//     * $redis->set('bit2', '2'); // 11 0010
+//     *
+//     * $redis->bitOp('AND', 'bit', 'bit1', 'bit2'); // bit = 110000
+//     * $redis->bitOp('OR',  'bit', 'bit1', 'bit2'); // bit = 110011
+//     * $redis->bitOp('NOT', 'bit', 'bit1', 'bit2'); // bit = 110011
+//     * $redis->bitOp('XOR', 'bit', 'bit1', 'bit2'); // bit = 11
+//     * </pre>
+//     */
+//    public function bitOp($operation, $retKey, $key1, $key2, $key3 = null)
+//    {
+//        return $this->redis->bitOp($operation, $retKey, $key1, $key2, $key3);
+//    }
+
+    /**
      * Get the value related to the specified key
      *
      * @param string $key

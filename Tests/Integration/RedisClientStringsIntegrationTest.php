@@ -116,5 +116,51 @@ class RedisClientStringsIntegrationTest extends AbstractKernelAwareTest
         $this->assertFalse($successExtisting);
     }
 
+    public function testAppend()
+    {
+        $key = 'testKey';
+        $value1 = 'testValue1';
+        $value2 = 'testValue2';
+
+        $successSet = $this->client->set($key, $value1);
+        $this->assertTrue($successSet);
+
+        $successAppend = $this->client->append($key, $value2);
+        $this->assertEquals(strlen($value1.$value2), $successAppend);
+
+        $result = $this->client->get($key);
+        $this->assertEquals($value1.$value2, $result);
+    }
+
+    public function testBitCount()
+    {
+        $key = 'testKey';
+        $value = 'testValue';
+
+        $successSet = $this->client->set($key, $value);
+        $this->assertTrue($successSet);
+
+        $result = $this->client->bitCount($key);
+        $this->assertEquals(37, $result);
+    }
+
+//    public function testBitOp()
+//    {
+//        $key1 = 'testKey1';
+//        $value1 = '123';
+//        $key2 = 'testKey2';
+//        $value2 = '234';
+//
+//        $successSet1 = $this->client->set($key1, $value1);
+//        $successSet2 = $this->client->set($key2, $value2);
+//        $this->assertTrue($successSet1);
+//        $this->assertTrue($successSet2);
+//
+//        $retKey = 'testKey';
+//
+//        $result = $this->client->bitCount('XOR', $retKey, $key1, $key2);
+//        $this->assertTrue($result > 0);
+//    }
+
 
 }

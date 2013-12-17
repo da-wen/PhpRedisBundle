@@ -161,6 +161,59 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function append($key, $value)
+    {
+        $startTime = $this->startMeasure();
+        $stringSize = $this->redis->append($key, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'stringSize' => $stringSize);
+        $this->info('get', $duration, $params);
+
+        return $stringSize;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function bitCount($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->bitCount($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        $this->info('get', $duration, $params);
+
+        return $result;
+    }
+
+//    /**
+//     * @inheritdoc
+//     */
+//    public function bitOp($operation, $retKey, $key1, $key2, $key3 = null)
+//    {
+//        $startTime = $this->startMeasure();
+//        $result = $this->redis->bitOp($operation, $retKey, $key1, $key2, $key3);
+//        $duration = $this->endMeasure($startTime);
+//
+//        $params = array('operation' => $operation
+//                        , 'retKey' => $retKey
+//                        , 'key1' => $key1
+//                        , 'key2' => $key2);
+//
+//        if(null !== $key3) {
+//            $params['key3'] = $key3;
+//        }
+//
+//        $this->info('get', $duration, $params);
+//
+//        return $result;
+//    }
+
+    /**
+     * @inheritdoc
+     */
     public function get($key)
     {
         $startTime = $this->startMeasure();
