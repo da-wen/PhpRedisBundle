@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 
 class LoggerRedisClient implements RedisClientInterface
 {
-    /** @var \Redis  */
+    /** @var RedisClientInterface  */
     private $redis;
 
     /** @var LoggerInterface */
@@ -297,6 +297,118 @@ class LoggerRedisClient implements RedisClientInterface
         else
         {
             $this->info('getRange', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSet($key, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->getSet($key, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if(false === $result)
+        {
+            $this->warning('getSet', $duration, $params);
+        }
+        else
+        {
+            $this->info('getSet', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function incr($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->incr($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if(false === $result)
+        {
+            $this->warning('incr', $duration, $params);
+        }
+        else
+        {
+            $this->info('incr', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function incrByFloat($key, $increment)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->incrByFloat($key, $increment);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'increment' => $increment);
+
+        if(false === $result)
+        {
+            $this->warning('incrByFloat', $duration, $params);
+        }
+        else
+        {
+            $this->info('incrByFLoat', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function mget(array $keys)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->mget($keys);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('keys' => $keys);
+        if(false === $result)
+        {
+            $this->warning('mget', $duration, $params);
+        }
+        else
+        {
+            $this->info('mget', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function mset(array $array)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->mset($array);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('keys' => array_keys($array));
+        if(false === $result)
+        {
+            $this->warning('mset', $duration, $params);
+        }
+        else
+        {
+            $this->info('mset', $duration, $params);
         }
 
         return $result;

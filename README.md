@@ -10,7 +10,7 @@ This bundle is under construction. It is highly recommended not using this bundl
 
 WORKING METHODS
 ===============
-* strings: append, bitCount, decr, get, getBit, getRange, set, setex, setnx
+* strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setex, setnx
 * keys: del, exists ,keys
 * server: flushDB
 * connection: close
@@ -19,10 +19,15 @@ Methods Ignore
 ==============
 * strings: delete
 
-Methods problems:
+Methods not working:
 =================
 * strings: bitOp
 
+
+Method Informations
+===================
+* set: parameter timeout is defined as float in docbloc and function. It is an int or long. Float will rase an error
+* bitOf: always returns 0
 
 Configuration
 =============

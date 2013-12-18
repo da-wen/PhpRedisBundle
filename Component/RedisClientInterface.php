@@ -195,6 +195,105 @@ interface RedisClientInterface
     public function getRange($key, $start, $end);
 
     /**
+     * Sets a value and returns the previous entry at that key.
+     *
+     * @param   string  $key
+     * @param   string  $value
+     * @return  string  A string, the previous value located at this key.
+     * @link    http://redis.io/commands/getset
+     * @example
+     * <pre>
+     * $redis->set('x', '42');
+     * $exValue = $redis->getSet('x', 'lol');   // return '42', replaces x by 'lol'
+     * $newValue = $redis->get('x')'            // return 'lol'
+     * </pre>
+     */
+    public function getSet($key, $value);
+
+    /**
+     * Increment the number stored at key by one.
+     *
+     * @param   string $key
+     * @return  int    the new value
+     * @link    http://redis.io/commands/incr
+     * @example
+     * <pre>
+     * $redis->incr('key1'); // key1 didn't exists, set to 0 before the increment and now has the value 1
+     * $redis->incr('key1'); // 2
+     * $redis->incr('key1'); // 3
+     * $redis->incr('key1'); // 4
+     * </pre>
+     */
+    public function incr($key);
+
+    /**
+     * Increment the float value of a key by the given amount
+     *
+     * @param   string  $key
+     * @param   float   $increment
+     * @return  float
+     * @link    http://redis.io/commands/incrbyfloat
+     * @example
+     * <pre>
+     * $redis->set('x', 3);
+     * var_dump( $redis->incrByFloat('x', 1.5) );   // float(4.5)
+     *
+     * // ! SIC
+     * var_dump( $redis->get('x') );                // string(3) "4.5"
+     * </pre>
+     */
+    public function incrByFloat($key, $increment);
+
+    /**
+     * Returns the values of all specified keys.
+     *
+     * For every key that does not hold a string value or does not exist,
+     * the special value false is returned. Because of this, the operation never fails.
+     *
+     * @param array $keys
+     * @return array
+     * @link http://redis.io/commands/mget
+     * @example
+     * <pre>
+     * $redis->delete('x', 'y', 'z', 'h');	// remove x y z
+     * $redis->mset(array('x' => 'a', 'y' => 'b', 'z' => 'c'));
+     * $redis->hset('h', 'field', 'value');
+     * var_dump($redis->mget(array('x', 'y', 'z', 'h')));
+     * // Output:
+     * // array(3) {
+     * // [0]=>
+     * // string(1) "a"
+     * // [1]=>
+     * // string(1) "b"
+     * // [2]=>
+     * // string(1) "c"
+     * // [3]=>
+     * // bool(false)
+     * // }
+     * </pre>
+     */
+    public function mget(array $keys);
+
+    /**
+     * Sets multiple key-value pairs in one atomic command.
+     * MSETNX only returns TRUE if all the keys were set (see SETNX).
+     *
+     * @param   array(key => value) $array Pairs: array(key => value, ...)
+     * @return  bool    TRUE in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/mset
+     * @example
+     * <pre>
+     * $redis->mset(array('key0' => 'value0', 'key1' => 'value1'));
+     * var_dump($redis->get('key0'));
+     * var_dump($redis->get('key1'));
+     * // Output:
+     * // string(6) "value0"
+     * // string(6) "value1"
+     * </pre>
+     */
+    public function mset(array $array);
+
+    /**
      * Set the string value in argument as value of the key.
      *
      * @param string $key

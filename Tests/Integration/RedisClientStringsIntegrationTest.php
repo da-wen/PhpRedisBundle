@@ -227,5 +227,131 @@ class RedisClientStringsIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals('string', $resultString);
     }
 
+    public function testGetSet()
+    {
+        $key = 'testKey';
+        $value = 'my test string';
+        $newValue = 'new val';
 
+        $resultSet = $this->client->set($key, $value);
+        $this->assertTrue($resultSet);
+
+        $resultGetSet = $this->client->getSet($key, $newValue);
+        $this->assertEquals($value, $resultGetSet);
+
+        $resultGet = $this->client->get($key);
+        $this->assertEquals($newValue, $resultGet);
+    }
+
+    public function testIncNoKey()
+    {
+        $key = 'testKey';
+
+        $resultNoKey = $this->client->incr($key);
+        $this->assertEquals(1, $resultNoKey);
+    }
+
+    public function testIncrKeySet()
+    {
+        $key = 'testKey';
+        $value = 12;
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $result = $this->client->incr($key);
+        $this->assertEquals(13, $result);
+    }
+
+    public function testIncrString()
+    {
+        $key = 'testKey';
+        $value = 'hello';
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $result = $this->client->incr($key);
+        $this->assertFalse($result);
+    }
+
+    public function testIncrByFloatNoKey()
+    {
+        $key = 'testKey';
+        $incr = 1.2;
+
+        $result = $this->client->incrByFloat($key, $incr);
+        $this->assertEquals($incr, $result);
+
+        $resultGet = $this->client->get($key);
+        $this->assertEquals($incr, $resultGet);
+    }
+
+    public function testIncrByFloat()
+    {
+        $key = 'testKey';
+        $value = 6;
+        $incr = 1.2;
+
+        $resultSet = $this->client->set($key, $value);
+        $this->assertTrue($resultSet);
+
+        $result = $this->client->incrByFloat($key, $incr);
+        $this->assertEquals($value + $incr, $result);
+
+        $resultGet = $this->client->get($key);
+        $this->assertEquals($value + $incr, $resultGet);
+    }
+
+    public function testMget()
+    {
+        $keyValue = array('key1' => 'val1'
+                          , 'key2' => 'val2'
+                          , 'key3' => 'val3');
+
+        foreach($keyValue as $key => $value)
+        {
+            $resultSet = $this->client->set($key, $value);
+            $this->assertTrue($resultSet);
+        }
+
+        $result = $this->client->mget(array_keys($keyValue));
+
+        $this->assertEquals(array_values($keyValue), $result);
+    }
+
+    public function testMgetMissing()
+    {
+        $keyValue = array('key1' => 'val1'
+                          , 'key2' => 'val2'
+                          , 'key3' => 'val3');
+
+        foreach($keyValue as $key => $value)
+        {
+            $resultSet = $this->client->set($key, $value);
+            $this->assertTrue($resultSet);
+        }
+
+        $keys = array_keys($keyValue);
+        $keys[] = 'missing';
+        $result = $this->client->mget($keys);
+
+        $values = array_values($keyValue);
+        $values[] = false;
+
+        $this->assertEquals($values, $result);
+    }
+
+    public function testMset()
+    {
+        $keyValue = array('key1' => 'val1'
+                          , 'key2' => 'val2'
+                          , 'key3' => 'val3');
+
+        $resultMset = $this->client->mset($keyValue);
+        $this->assertTrue($resultMset);
+
+        $values = $this->client->mget(array_keys($keyValue));
+        $this->assertEquals(array_values($keyValue), $values);
+    }
 }

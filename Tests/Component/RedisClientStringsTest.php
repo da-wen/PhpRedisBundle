@@ -205,7 +205,8 @@ class RedisClientStringsTest extends \PHPUnit_Framework_TestCase
 
         $this->redis->expects($this->once())
             ->method('getBit')
-            ->with($this->equalTo($testKey), 1)
+            ->with($this->equalTo($testKey)
+                  , $this->equalTo(1))
             ->will($this->returnValue(1));
 
         $result = $this->client->getBit($testKey, 1);
@@ -219,12 +220,91 @@ class RedisClientStringsTest extends \PHPUnit_Framework_TestCase
 
         $this->redis->expects($this->once())
             ->method('getRange')
-            ->with($this->equalTo($testKey), 1, 11)
+            ->with($this->equalTo($testKey)
+                   , $this->equalTo(1)
+                   , $this->equalTo(11))
             ->will($this->returnValue('hello'));
 
         $result = $this->client->getRange($testKey, 1, 11);
 
         $this->assertEquals('hello', $result);
+    }
+
+    public function testGetSet()
+    {
+        $testKey = 'myTestKey';
+        $value = 'my value';
+
+        $this->redis->expects($this->once())
+            ->method('getSet')
+            ->with($this->equalTo($testKey)
+                   , $this->equalTo($value))
+            ->will($this->returnValue('hello'));
+
+        $result = $this->client->getSet($testKey, $value);
+
+        $this->assertEquals('hello', $result);
+    }
+
+    public function testIncr()
+    {
+        $testKey = 'myTestKey';
+
+        $this->redis->expects($this->once())
+            ->method('incr')
+            ->with($this->equalTo($testKey))
+            ->will($this->returnValue(3));
+
+        $result = $this->client->incr($testKey);
+
+        $this->assertEquals(3, $result);
+    }
+
+    public function testIncByFloat()
+    {
+        $testKey = 'myTestKey';
+        $incr = 1.2;
+
+        $this->redis->expects($this->once())
+            ->method('incrByFloat')
+            ->with($this->equalTo($testKey)
+                   , $this->equalTo($incr))
+            ->will($this->returnValue(3.2));
+
+        $result = $this->client->incrByFloat($testKey, $incr);
+
+        $this->assertEquals(3.2, $result);
+    }
+
+    public function testMget()
+    {
+        $keys = array('key1', 'key2', 'key3');
+        $values = array('val1', 'val2', 'val3');
+
+        $this->redis->expects($this->once())
+            ->method('mget')
+            ->with($this->equalTo($keys))
+            ->will($this->returnValue($values));
+
+        $result = $this->client->mget($keys);
+
+        $this->assertEquals($values, $result);
+    }
+
+    public function testMset()
+    {
+        $keysValues = array('key1' => 'val1'
+                            , 'key2' => 'val2'
+                            , 'key3' => 'val3');
+
+        $this->redis->expects($this->once())
+            ->method('mset')
+            ->with($this->equalTo($keysValues))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->mset($keysValues);
+
+        $this->assertTrue($result);
     }
 
 
