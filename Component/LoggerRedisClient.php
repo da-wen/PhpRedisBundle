@@ -440,6 +440,30 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function setBit($key, $offset, $value)
+    {
+        $startTime = $this->startMeasure();
+        $success = $this->redis->setBit($key, $value, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'offset' => $offset);
+        if($success)
+        {
+            $this->info('setBit', $duration, $params);
+        }
+        else
+        {
+            $this->error('setBit', $duration, $params);
+        }
+
+
+        return $success;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setex($key, $ttl, $value)
     {
         $startTime = $this->startMeasure();
@@ -477,7 +501,51 @@ class LoggerRedisClient implements RedisClientInterface
         return $success;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function setRange($key, $offset, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->setRange($key, $offset, $value);
+        $duration = $this->endMeasure($startTime);
 
+
+        $params = array('key' => $key, 'offset' => $offset);
+        if($result)
+        {
+            $this->info('setRange', $duration, $params);
+        }
+        else
+        {
+            $this->error('setRange', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function strlen($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->strlen($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if($result)
+        {
+            $this->info('strlen', $duration, $params);
+        }
+        else
+        {
+            $this->error('strlen', $duration, $params);
+        }
+
+        return $result;
+
+    }
 
 
     /**

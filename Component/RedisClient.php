@@ -376,6 +376,27 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Changes a single bit of a string.
+     *
+     * @param   string  $key
+     * @param   int     $offset
+     * @param   bool|int $value bool or int (1 or 0)
+     * @return  int:    0 or 1, the value of the bit before it was set.
+     * @link    http://redis.io/commands/setbit
+     * @example
+     * <pre>
+     * $redis->set('key', "*");     // ord("*") = 42 = 0x2f = "0010 1010"
+     * $redis->setBit('key', 5, 1); // returns 0
+     * $redis->setBit('key', 7, 1); // returns 0
+     * $redis->get('key');          // chr(0x2f) = "/" = b("0010 1111")
+     * </pre>
+     */
+    public function setBit($key, $offset, $value)
+    {
+        return $this->redis->setBit($key, $offset, $value);
+    }
+
+    /**
      * Set the string value in argument as value of the key, with a time to live.
      *
      * @param   string  $key
@@ -406,6 +427,43 @@ class RedisClient implements RedisClientInterface
     public function setnx($key, $value)
     {
         return $this->redis->setnx($key, $value);
+    }
+
+    /**
+     * Changes a substring of a larger string.
+     *
+     * @param   string  $key
+     * @param   int     $offset
+     * @param   string  $value
+     * @return  string: the length of the string after it was modified.
+     * @link    http://redis.io/commands/setrange
+     * @example
+     * <pre>
+     * $redis->set('key', 'Hello world');
+     * $redis->setRange('key', 6, "redis"); // returns 11
+     * $redis->get('key');                  // "Hello redis"
+     * </pre>
+     */
+    public function setRange($key, $offset, $value)
+    {
+        return $this->redis->setRange($key, $offset, $value);
+    }
+
+    /**
+     * Get the length of a string value.
+     *
+     * @param   string  $key
+     * @return  int
+     * @link    http://redis.io/commands/strlen
+     * @example
+     * <pre>
+     * $redis->set('key', 'value');
+     * $redis->strlen('key'); // 5
+     * </pre>
+     */
+    public function strlen($key)
+    {
+        return $this->redis->strlen($key);
     }
 
 

@@ -354,4 +354,52 @@ class RedisClientStringsIntegrationTest extends AbstractKernelAwareTest
         $values = $this->client->mget(array_keys($keyValue));
         $this->assertEquals(array_values($keyValue), $values);
     }
+
+    public function testSetBit()
+    {
+        $key = 'testKey';
+        $value = '*';
+
+        $successSet = $this->client->set($key, $value);
+        $this->assertTrue($successSet);
+
+        $result5 = $this->client->setBit($key, 5, 1);
+        $this->assertEquals(0, $result5);
+
+        $result7 = $this->client->setBit($key, 7, 1);
+        $this->assertEquals(0, $result7);
+
+        $result = $this->client->get($key);
+        $this->assertEquals('/', $result);
+    }
+
+    public function testSetRange()
+    {
+        $key = 'testKey';
+        $value1 = 'Hello ';
+        $value2 = 'World';
+        $value3 = 'Redis From String';
+
+        $sucess = $this->client->set($key, $value1 . $value2);
+        $this->assertTrue($sucess);
+
+        $length = $this->client->setRange($key, 6, $value3);
+        $this->assertEquals(strlen($value1 . $value3), $length);
+
+        $result = $this->client->get($key);
+        $this->assertEquals($value1 . $value3, $result);
+
+    }
+
+    public function testStrlen()
+    {
+        $key = 'testKey';
+        $value = 'my extra long value ?';
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $result = $this->client->strlen($key);
+        $this->assertEquals(strlen($value), $result);
+    }
 }
