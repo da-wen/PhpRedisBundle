@@ -17,6 +17,7 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
     /** @var RedisClient */
     private $client;
     private $skipped = false;
+    private $params;
 
 
     public function setUp()
@@ -26,6 +27,7 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         if($this->container->hasParameter('redis'))
         {
             $redisParams = $this->container->getParameter('redis');
+            $this->params = $redisParams;
             if(!empty($redisParams['host']) && !empty($redisParams['port']))
             {
                 $redis = new \Redis();
@@ -58,6 +60,7 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         }
 
         $this->client = null;
+        $this->params = null;
         $this->skipped = false;
     }
 
@@ -181,5 +184,88 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $this->assertCount(1, $keys);
         $this->assertTrue(in_array('mytest.10.test', $keys));
     }
+
+    public function testDump()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $result = $this->client->dump($key);
+        $this->assertContains($value, $result);
+    }
+
+    public function testExpire()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+        $ttl = 1;
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $successExpire = $this->client->expire($key, $ttl);
+        $this->assertTrue($successExpire);
+
+        $result = $this->client->get($key);
+        $this->assertEquals($value, $result);
+
+        sleep(2);
+        $result = $this->client->get($key);
+        $this->assertFalse($result);
+    }
+
+    public function testExpireAt()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+        $ttl = 1;
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $successExpire = $this->client->expireAt($key, time() + $ttl);
+        $this->assertTrue($successExpire);
+
+        $result = $this->client->get($key);
+        $this->assertEquals($value, $result);
+
+        sleep(2);
+        $result = $this->client->get($key);
+        $this->assertFalse($result);
+    }
+
+    public function testMigrate()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+        $ttl = 3600;
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $successMigrate = $this->client->migrate($this->params['host']
+                                                 , $this->params['port']
+                                                 , $key
+                                                 , $this->params['db2']
+                                                 , $ttl);
+
+        //$this->assertTrue($successMigrate);
+
+        $successDb = $this->client->select($this->params['db2']);
+        $this->assertTrue($successDb);
+
+        $result = $this->client->get($key);
+        $this->assertEquals($value, $result);
+
+        $successFlushDb = $this->client->flushDB();
+        $this->assertTrue($successFlushDb);
+
+        $successDb = $this->client->select($this->params['db']);
+        $this->assertTrue($successDb);
+    }
+
 
 }

@@ -24,6 +24,23 @@ interface RedisClientInterface
     public function close();
 
     /**
+     * Switches to a given database.
+     *
+     * @param   int     $dbindex
+     * @return  bool    TRUE in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/select
+     * @example
+     * <pre>
+     * $redis->select(0);       // switch to DB 0
+     * $redis->set('x', '42');  // write 42 to x
+     * $redis->move('x', 1);    // move to DB 1
+     * $redis->select(1);       // switch to DB 1
+     * $redis->get('x');        // will return 42
+     * </pre>
+     */
+    public function select($dbindex);
+
+    /**
      * KEYS
      * *************************************************************************************************
      */
@@ -49,6 +66,20 @@ interface RedisClientInterface
     public function del($key1, $key2 = null, $key3 = null);
 
     /**
+     * Dump a key out of a redis database, the value of which can later be passed into redis using the RESTORE command.
+     * The data that comes out of DUMP is a binary representation of the key as Redis stores it.
+     * @param   string  $key
+     * @return  string  The Redis encoded value of the key, or FALSE if the key doesn't exist
+     * @link    http://redis.io/commands/dump
+     * @example
+     * <pre>
+     * $redis->set('foo', 'bar');
+     * $val = $redis->dump('foo'); // $val will be the Redis encoded key value
+     * </pre>
+     */
+    public function dump($key);
+
+    /**
      * Verify if the specified key exists.
      *
      * @param   string $key
@@ -64,12 +95,64 @@ interface RedisClientInterface
     public function exists($key);
 
     /**
+     * Sets an expiration date (a timeout) on an item.
+     *
+     * @param   string  $key    The key that will disappear.
+     * @param   int     $ttl    The key's remaining Time To Live, in seconds.
+     * @return  bool:   TRUE in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/expire
+     * @example
+     * <pre>
+     * $redis->set('x', '42');
+     * $redis->expire('x', 3);  // x will disappear in 3 seconds.
+     * sleep(5);                    // wait 5 seconds
+     * $redis->get('x');            // will return `FALSE`, as 'x' has expired.
+     * </pre>
+     */
+    public function expire($key, $ttl);
+
+    /**
+     * Sets an expiration date (a timestamp) on an item.
+     *
+     * @param   string  $key        The key that will disappear.
+     * @param   int     $timestamp  Unix timestamp. The key's date of death, in seconds from Epoch time.
+     * @return  bool:   TRUE in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/expireat
+     * @example
+     * <pre>
+     * $redis->set('x', '42');
+     * $now = time(NULL);               // current timestamp
+     * $redis->expireAt('x', $now + 3); // x will disappear in 3 seconds.
+     * sleep(5);                        // wait 5 seconds
+     * $redis->get('x');                // will return `FALSE`, as 'x' has expired.
+     * </pre>
+     */
+    public function expireAt($key, $timestamp);
+
+    /**
      * Returns the keys that match a certain pattern.
      *
      * @param   string  $pattern pattern, using '*' as a wildcard.
      * @return  array
      */
     public function keys($pattern);
+
+    /**
+     * Migrates a key to a different Redis instance.
+     *
+     * @param   string  $host       The destination host
+     * @param   int     $port       The TCP port to connect to.
+     * @param   string  $key        The key to migrate.
+     * @param   int     $db         The target DB.
+     * @param   int     $timeout    The maximum amount of time given to this transfer.
+     * @return  bool
+     * @link    http://redis.io/commands/migrate
+     * @example
+     * <pre>
+     * $redis->migrate('backup', 6379, 'foo', 0, 3600);
+     * </pre>
+     */
+    public function migrate($host, $port, $key, $db, $timeout);
 
     /**
      * SERVER

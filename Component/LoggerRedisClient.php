@@ -68,6 +68,28 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function select($dbindex)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->select($dbindex);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('dbindex' => $dbindex);
+        if(false === $result)
+        {
+            $this->warning('select', $duration, $params);
+        }
+        else
+        {
+            $this->info('select', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * KEYS
      * *************************************************************************************************
      */
@@ -94,6 +116,28 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function dump($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->dump($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if(false === $result)
+        {
+            $this->warning('dump', $duration, $params);
+        }
+        else
+        {
+            $this->info('dump', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function exists($key)
     {
         $startTime = $this->startMeasure();
@@ -110,6 +154,54 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function expire($key, $ttl)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->expire($key, $ttl);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'ttl' => $ttl);
+
+        if(false === $result)
+        {
+            $this->warning('expire', $duration, $params);
+        }
+        else
+        {
+            $this->info('expire', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function expireAt($key, $timestamp)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->expireAt($key, $timestamp);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'timestamp' => $timestamp);
+
+        if(false === $result)
+        {
+            $this->warning('expire', $duration, $params);
+        }
+        else
+        {
+            $this->info('expire', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function keys($pattern)
     {
         $startTime = $this->startMeasure();
@@ -120,6 +212,33 @@ class LoggerRedisClient implements RedisClientInterface
         $this->info('keys', $duration, $params);
 
         return $strings;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function migrate($host, $port, $key, $db, $timeout)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->migrate($host, $port, $key, $db, $timeout);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('host' => $host
+                        , 'port' => $port
+                        , 'key' => $key
+                        , 'db' => $db
+                        , 'timeout' => $timeout);
+
+        if(false === $result)
+        {
+            $this->warning('migrate', $duration, $params);
+        }
+        else
+        {
+            $this->info('migrate', $duration, $params);
+        }
+
+        return $result;
     }
 
     /**

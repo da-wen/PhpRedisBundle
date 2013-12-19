@@ -11,9 +11,9 @@ This bundle is under construction. It is highly recommended not using this bundl
 WORKING METHODS
 ===============
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* keys: del, exists ,keys
+* keys: del, dump, exists, expire, expireAt, keys, migrate
 * server: flushDB
-* connection: close
+* connection: close, select
 
 Methods Ignore
 ==============
@@ -28,6 +28,7 @@ Method Informations
 ===================
 * set: parameter timeout is defined as float in docbloc and function. It is an int or long. Float will rase an error
 * bitOf: always returns 0
+* migrate: returns false when successful
 
 Configuration
 =============
@@ -64,6 +65,7 @@ parameters:
     host: localhost
     port: 6379
     db: 10
+    db2: 9
 ```
 
 Please keep in mind, that you have to run your own redis server.

@@ -104,4 +104,74 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($testValue, $result);
     }
+
+    public function testDump()
+    {
+        $key = 'testkey';
+        $return = 'value';
+
+        $this->redis->expects($this->once())
+            ->method('dump')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->dump($key);
+
+        $this->assertEquals($result, $result);
+    }
+
+    public function testExpire()
+    {
+        $key = 'testkey';
+        $ttl = 1;
+
+        $this->redis->expects($this->once())
+            ->method('expire')
+            ->with($this->equalTo($key)
+                   , $this->equalTo($ttl))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->expire($key, $ttl);
+
+        $this->assertTrue($result);
+    }
+
+    public function testExpireAt()
+    {
+        $key = 'testkey';
+        $ttl = time();
+
+        $this->redis->expects($this->once())
+            ->method('expireAt')
+            ->with($this->equalTo($key)
+                , $this->equalTo($ttl))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->expireAt($key, $ttl);
+
+        $this->assertTrue($result);
+    }
+
+    public function testMigrate()
+    {
+        $key = 'testkey';
+        $ttl = time();
+        $host = 'localhost';
+        $port = 6789;
+        $db = 9;
+
+        $this->redis->expects($this->once())
+            ->method('migrate')
+            ->with($this->equalTo($host)
+                   , $this->equalTo($port)
+                   , $this->equalTo($key)
+                   , $this->equalTo($db)
+                   , $this->equalTo($ttl))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->migrate($host, $port, $key, $db, $ttl);
+
+        $this->assertTrue($result);
+    }
+
 }

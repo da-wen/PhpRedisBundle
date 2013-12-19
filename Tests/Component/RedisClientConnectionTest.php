@@ -52,4 +52,17 @@ class RedisClientConnectionTest extends \PHPUnit_Framework_TestCase
 
         $this->client->close();
     }
+
+    public function testSelect()
+    {
+        $db = 5;
+
+        $this->redis->expects($this->once())
+            ->method('select')
+            ->with($this->equalTo($db))
+            ->will($this->returnValue(true));
+
+        $success = $this->client->select($db);
+        $this->assertTrue($success);
+    }
 }
