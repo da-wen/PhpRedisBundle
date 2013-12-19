@@ -5,7 +5,7 @@ namespace Dawen\Bundle\PhpRedisBundle\Tests\Fixtures;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\HttpKernel;
 
-require_once dirname(__DIR__).'../../../../../../app/AppKernel.php';
+require_once dirname(__DIR__).'/../../../../../app/AppKernel.php';
 
 abstract class AbstractKernelAwareTest extends \PHPUnit_Framework_TestCase
 {
