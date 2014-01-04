@@ -267,5 +267,32 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue($successDb);
     }
 
+    public function testMove()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $successMove = $this->client->move($key, $this->params['db2']);
+        $this->assertTrue($successMove);
+
+        $oldHasKey = $this->client->exists($key);
+        $this->assertFalse($oldHasKey);
+
+        $successDb = $this->client->select($this->params['db2']);
+        $this->assertTrue($successDb);
+
+        $result = $this->client->get($key);
+        $this->assertEquals($value, $result);
+
+        $successFlushDb = $this->client->flushDB();
+        $this->assertTrue($successFlushDb);
+
+        $successDb = $this->client->select($this->params['db']);
+        $this->assertTrue($successDb);
+    }
+
 
 }

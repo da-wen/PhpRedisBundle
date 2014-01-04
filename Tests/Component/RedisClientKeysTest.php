@@ -174,4 +174,19 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    public function testMove()
+    {
+        $key = 'testkey';
+        $db = 11;
+
+        $this->redis->expects($this->once())
+            ->method('move')
+            ->with($this->equalTo($key)
+                , $this->equalTo($db))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->move($key, $db);
+
+        $this->assertTrue($result);
+    }
 }
