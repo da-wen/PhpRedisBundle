@@ -189,4 +189,49 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testObject()
+    {
+        $type = 'refcount';
+        $key = 'testkey';
+
+        $this->redis->expects($this->once())
+            ->method('object')
+            ->with($this->equalTo($type)
+                , $this->equalTo($key))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->object($type, $key);
+
+        $this->assertTrue($result);
+    }
+
+    public function testObjectException()
+    {
+        try
+        {
+            $this->client->object('asd', 'key');
+        }
+        catch(\InvalidArgumentException $exception)
+        {
+            $this->assertContains('string is not valid', $exception->getMessage());
+            return true;
+        }
+
+        $this->assertTrue(false);
+    }
+
+    public function testPersist()
+    {
+        $key = 'testkey';
+
+        $this->redis->expects($this->once())
+            ->method('persist')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->persist($key);
+
+        $this->assertTrue($result);
+    }
 }

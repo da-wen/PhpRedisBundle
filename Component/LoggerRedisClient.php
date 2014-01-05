@@ -272,7 +272,7 @@ class LoggerRedisClient implements RedisClientInterface
     {
 
         $startTime = $this->startMeasure();
-        $result = $this->redis->object($string, $key);;
+        $result = $this->redis->object($string, $key);
         $duration = $this->endMeasure($startTime);
 
         $params = array('key' => $key
@@ -290,7 +290,33 @@ class LoggerRedisClient implements RedisClientInterface
         return $result;
     }
 
+    /**
+     * Remove the expiration timer from a key.
+     *
+     * @param   string  $key
+     * @return  bool:   TRUE if a timeout was removed, FALSE if the key didn’t exist or didn’t have an expiration timer.
+     * @link    http://redis.io/commands/persist
+     * @example $redis->persist('key');
+     */
+    public function persist($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->persist($key);
+        $duration = $this->endMeasure($startTime);
 
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('persist', $duration, $params);
+        }
+        else
+        {
+            $this->info('persist', $duration, $params);
+        }
+
+        return $result;
+    }
 
     /**
      * SERVER

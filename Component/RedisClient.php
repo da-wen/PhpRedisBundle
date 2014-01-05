@@ -253,6 +253,19 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Remove the expiration timer from a key.
+     *
+     * @param   string  $key
+     * @return  bool:   TRUE if a timeout was removed, FALSE if the key didn’t exist or didn’t have an expiration timer.
+     * @link    http://redis.io/commands/persist
+     * @example $redis->persist('key');
+     */
+    public function persist($key)
+    {
+        return $this->redis->persist($key);
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */
