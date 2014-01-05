@@ -294,5 +294,36 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue($successDb);
     }
 
+    public function testObject()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
 
+        $success = $this->client->set($key, $value);
+        $this->assertTrue($success);
+
+        $resultEncoding = $this->client->object('encoding', $key);
+        $this->assertEquals('raw', $resultEncoding);
+
+        $resultRefcount = $this->client->object('refcount', $key);
+        $this->assertEquals(1, $resultRefcount);
+
+        $resultIdletime = $this->client->object('idletime', $key);
+        $this->assertTrue($resultIdletime <= 2);
+    }
+
+    public function testObjectException()
+    {
+        try
+        {
+            $resultEncoding = $this->client->object('blah', 'test');
+        }
+        catch(\InvalidArgumentException $exception)
+        {
+             $this->assertContains('string is not valid', $exception->getMessage());
+            return true;
+        }
+
+        $this->assertTrue(false);
+    }
 }

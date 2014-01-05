@@ -242,20 +242,7 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
-     * Moves a key to a different database.
-     *
-     * @param   string  $key
-     * @param   int     $dbindex
-     * @return  bool:   TRUE in case of success, FALSE in case of failure.
-     * @link    http://redis.io/commands/move
-     * @example
-     * <pre>
-     * $redis->select(0);       // switch to DB 0
-     * $redis->set('x', '42');  // write 42 to x
-     * $redis->move('x', 1);    // move to DB 1
-     * $redis->select(1);       // switch to DB 1
-     * $redis->get('x');        // will return 42
-     * </pre>
+     * @inheritdoc
      */
     public function move($key, $dbindex)
     {
@@ -277,6 +264,33 @@ class LoggerRedisClient implements RedisClientInterface
 
         return $result;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function object($string, $key)
+    {
+
+        $startTime = $this->startMeasure();
+        $result = $this->redis->object($string, $key);;
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'string' => $string);
+
+        if(false === $result)
+        {
+            $this->warning('object', $duration, $params);
+        }
+        else
+        {
+            $this->info('object', $duration, $params);
+        }
+
+        return $result;
+    }
+
+
 
     /**
      * SERVER
