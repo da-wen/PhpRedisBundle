@@ -234,4 +234,17 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testRandomKey()
+    {
+        $key = 'testkey';
+
+        $this->redis->expects($this->once())
+            ->method('randomKey')
+            ->will($this->returnValue($key));
+
+        $result = $this->client->randomKey();
+
+        $this->assertEquals($key, $result);
+    }
 }

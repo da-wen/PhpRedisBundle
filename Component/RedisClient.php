@@ -266,6 +266,22 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns a random key.
+     *
+     * @return string: an existing key in redis.
+     * @link    http://redis.io/commands/randomkey
+     * @example
+     * <pre>
+     * $key = $redis->randomKey();
+     * $surprise = $redis->get($key);  // who knows what's in there.
+     * </pre>
+     */
+    public function randomKey()
+    {
+        return $this->redis->randomKey();
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

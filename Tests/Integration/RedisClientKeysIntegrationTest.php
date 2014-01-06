@@ -344,4 +344,29 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $persist = $this->client->persist($key);
         $this->assertTrue($persist);
     }
+
+    public function testRandomKeyNoKey()
+    {
+        $result = $this->client->randomKey();
+        $this->assertFalse($result);
+    }
+
+    public function testRandomKey()
+    {
+        $key1 = 'myTestKey1';
+        $value1 = 'a test value 1';
+        $key2 = 'myTestKey2';
+        $value2 = 'a test value 2';
+
+        $data = array($key1 => $value1, $key2 => $value2);
+
+        $successSet = $this->client->mset($data);
+        $this->assertTrue($successSet);
+
+        $randomKey = $this->client->randomKey();
+        $this->assertTrue(in_array($randomKey, array_keys($data)));
+
+        $randomVal = $this->client->get($randomKey);
+        $this->assertTrue(in_array($randomVal, $data));
+    }
 }

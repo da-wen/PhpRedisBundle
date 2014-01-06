@@ -319,6 +319,38 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns a random key.
+     *
+     * @return string: an existing key in redis.
+     * @link    http://redis.io/commands/randomkey
+     * @example
+     * <pre>
+     * $key = $redis->randomKey();
+     * $surprise = $redis->get($key);  // who knows what's in there.
+     * </pre>
+     */
+    public function randomKey()
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->randomKey();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+
+        if(false === $result)
+        {
+            $this->warning('randomKey', $duration, $params);
+        }
+        else
+        {
+            $this->info('randomKey', $duration, $params);
+        }
+
+        return $result;
+    }
+
+
+    /**
      * SERVER
      * *************************************************************************************************
      */
