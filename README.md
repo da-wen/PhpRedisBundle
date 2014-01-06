@@ -11,14 +11,14 @@ This bundle is under construction. It is highly recommended not using this bundl
 WORKING METHODS
 ===============
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist
+* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename
 * server: flushDB
 * connection: close, select
 
 Methods Ignore
 ==============
 * strings: delete, incrBy, decrBy, getMultiple, mSetNx, psetex
-* keys: getKeys, setTimeout, pexpire, pexpireAt
+* keys: getKeys, setTimeout, pexpire, pexpireAt, renameKey
 
 Methods not working:
 =================

@@ -369,4 +369,20 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $randomVal = $this->client->get($randomKey);
         $this->assertTrue(in_array($randomVal, $data));
     }
+
+    public function testRename()
+    {
+        $key = 'myTestKey';
+        $dstKey = 'myTestRename';
+        $value = 'a test value';
+
+        $successSet = $this->client->set($key, $value);
+        $this->assertTrue($successSet);
+
+        $successRename = $this->client->rename($key, $dstKey);
+        $this->assertTrue($successRename);
+
+        $exists = $this->client->exists($dstKey);
+        $this->assertTrue($exists);
+    }
 }

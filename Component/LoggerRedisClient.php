@@ -291,12 +291,7 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
-     * Remove the expiration timer from a key.
-     *
-     * @param   string  $key
-     * @return  bool:   TRUE if a timeout was removed, FALSE if the key didn’t exist or didn’t have an expiration timer.
-     * @link    http://redis.io/commands/persist
-     * @example $redis->persist('key');
+     * @inheritdoc
      */
     public function persist($key)
     {
@@ -319,15 +314,7 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
-     * Returns a random key.
-     *
-     * @return string: an existing key in redis.
-     * @link    http://redis.io/commands/randomkey
-     * @example
-     * <pre>
-     * $key = $redis->randomKey();
-     * $surprise = $redis->get($key);  // who knows what's in there.
-     * </pre>
+     * @inheritdoc
      */
     public function randomKey()
     {
@@ -344,6 +331,30 @@ class LoggerRedisClient implements RedisClientInterface
         else
         {
             $this->info('randomKey', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rename($srcKey, $dstKey)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->rename($srcKey, $dstKey);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('srcKey' => $srcKey
+                        , 'dstKey' => $dstKey);
+
+        if(false === $result)
+        {
+            $this->warning('rename', $duration, $params);
+        }
+        else
+        {
+            $this->info('rename', $duration, $params);
         }
 
         return $result;

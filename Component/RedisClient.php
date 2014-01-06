@@ -282,6 +282,26 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Renames a key.
+     *
+     * @param param string $srcKey
+     * @param   string $dstKey
+     * @return  bool:   TRUE in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/rename
+     * @example
+     * <pre>
+     * $redis->set('x', '42');
+     * $redis->rename('x', 'y');
+     * $redis->get('y');   // → 42
+     * $redis->get('x');   // → `FALSE`
+     * </pre>
+     */
+    public function rename($srcKey, $dstKey)
+    {
+        return $this->redis->rename($srcKey, $dstKey);
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */
