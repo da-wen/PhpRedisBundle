@@ -235,6 +235,26 @@ interface RedisClientInterface
     public function rename($srcKey, $dstKey);
 
     /**
+     * Renames a key.
+     *
+     * Same as rename, but will not replace a key if the destination already exists.
+     * This is the same behaviour as setNx.
+     *
+     * @param   string  $srcKey
+     * @param   string  $dstKey
+     * @return  bool:   TRUE in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/renamenx
+     * @example
+     * <pre>
+     * $redis->set('x', '42');
+     * $redis->rename('x', 'y');
+     * $redis->get('y');   // → 42
+     * $redis->get('x');   // → `FALSE`
+     * </pre>
+     */
+    public function renameNx($srcKey, $dstKey);
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

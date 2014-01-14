@@ -360,6 +360,30 @@ class LoggerRedisClient implements RedisClientInterface
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function renameNx($srcKey, $dstKey)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->renameNx($srcKey, $dstKey);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('srcKey' => $srcKey
+                        , 'dstKey' => $dstKey);
+
+        if(false === $result)
+        {
+            $this->warning('renameNx', $duration, $params);
+        }
+        else
+        {
+            $this->info('renameNx', $duration, $params);
+        }
+
+        return $result;
+    }
+
 
     /**
      * SERVER

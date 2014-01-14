@@ -385,4 +385,49 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $exists = $this->client->exists($dstKey);
         $this->assertTrue($exists);
     }
+
+    public function testRenameNxSuccess()
+    {
+        $key = 'myTestKey';
+        $dstKey = 'myTestRename';
+        $value = 'a test value';
+
+        $successSet = $this->client->set($key, $value);
+        $this->assertTrue($successSet);
+
+        $successRename = $this->client->renameNx($key, $dstKey);
+        $this->assertTrue($successRename);
+
+        $exists = $this->client->exists($dstKey);
+        $this->assertTrue($exists);
+
+        $exists = $this->client->exists($key);
+        $this->assertFalse($exists);
+    }
+
+    public function testRenameNxError()
+    {
+        $key = 'myTestKey';
+        $dstKey = 'myTestRename';
+        $value = 'a test value';
+        $value2 = 'a test value 2';
+
+        $successSet1 = $this->client->set($key, $value);
+        $this->assertTrue($successSet1);
+
+        $successSet2 = $this->client->set($dstKey, $value2);
+        $this->assertTrue($successSet2);
+
+        $successRename = $this->client->renameNx($key, $dstKey);
+        $this->assertFalse($successRename);
+
+        $exists = $this->client->exists($key);
+        $this->assertTrue($exists);
+
+        $exists = $this->client->exists($dstKey);
+        $this->assertTrue($exists);
+
+        $res2 = $this->client->get($dstKey);
+        $this->assertEquals($value2, $res2);
+    }
 }

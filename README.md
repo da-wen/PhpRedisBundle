@@ -11,7 +11,7 @@ This bundle is under construction. It is highly recommended not using this bundl
 WORKING METHODS
 ===============
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename
+* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename, renameNx
 * server: flushDB
 * connection: close, select
 

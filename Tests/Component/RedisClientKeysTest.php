@@ -263,4 +263,20 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testRenameNx()
+    {
+        $key = 'testkey';
+        $dstKey = 'dstTestkey';
+
+        $this->redis->expects($this->once())
+            ->method('renameNx')
+            ->with($this->equalTo($key)
+                , $this->equalTo($dstKey))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->renameNx($key, $dstKey);
+
+        $this->assertTrue($result);
+    }
 }
