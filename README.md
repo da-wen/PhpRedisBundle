@@ -11,9 +11,13 @@ This bundle is under construction. It is highly recommended not using this bundl
 WORKING METHODS
 ===============
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename, renameNx
+* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename, renameNx, type, sort
 * server: flushDB
 * connection: close, select
+
+Missing Integration Tests
+=========================
+* keys: sort (waiting for sadd function)
 
 Methods Ignore
 ==============

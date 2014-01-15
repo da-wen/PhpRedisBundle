@@ -279,4 +279,34 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testType()
+    {
+        $key = 'testkey';
+
+        $this->redis->expects($this->once())
+            ->method('type')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue(2));
+
+        $result = $this->client->type($key);
+
+        $this->assertEquals(2,$result);
+    }
+
+    public function testSort()
+    {
+        $key = 'testkey';
+        $option = array('sort' => 'asc');
+
+        $this->redis->expects($this->once())
+            ->method('sort')
+            ->with($this->equalTo($key)
+                   , $this->equalTo($option))
+            ->will($this->returnValue(2));
+
+        $result = $this->client->sort($key, $option);
+
+        $this->assertEquals(2,$result);
+    }
 }

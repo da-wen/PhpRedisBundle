@@ -384,6 +384,52 @@ class LoggerRedisClient implements RedisClientInterface
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function type($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->type($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('type', $duration, $params);
+        }
+        else
+        {
+            $this->info('type', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function sort($key, $option = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sort($key, $option);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'option' => $option);
+
+        if(false === $result)
+        {
+            $this->warning('sort', $duration, $params);
+        }
+        else
+        {
+            $this->info('sort', $duration, $params);
+        }
+
+        return $result;
+    }
+
 
     /**
      * SERVER

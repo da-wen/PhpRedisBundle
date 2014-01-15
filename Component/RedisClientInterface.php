@@ -255,6 +255,55 @@ interface RedisClientInterface
     public function renameNx($srcKey, $dstKey);
 
     /**
+     * Returns the type of data pointed by a given key.
+     *
+     * @param   string  $key
+     * @return  int
+     *
+     * Depending on the type of the data pointed by the key,
+     * this method will return the following value:
+     * - string: Redis::REDIS_STRING
+     * - set:   Redis::REDIS_SET
+     * - list:  Redis::REDIS_LIST
+     * - zset:  Redis::REDIS_ZSET
+     * - hash:  Redis::REDIS_HASH
+     * - other: Redis::REDIS_NOT_FOUND
+     * @link    http://redis.io/commands/type
+     * @example $redis->type('key');
+     */
+    public function type($key);
+
+    /**
+     * Sort
+     *
+     * @param   string  $key
+     * @param   array   $option array(key => value, ...) - optional, with the following keys and values:
+     * - 'by' => 'some_pattern_*',
+     * - 'limit' => array(0, 1),
+     * - 'get' => 'some_other_pattern_*' or an array of patterns,
+     * - 'sort' => 'asc' or 'desc',
+     * - 'alpha' => TRUE,
+     * - 'store' => 'external-key'
+     * @return  array
+     * An array of values, or a number corresponding to the number of elements stored if that was used.
+     * @link    http://redis.io/commands/sort
+     * @example
+     * <pre>
+     * $redis->delete('s');
+     * $redis->sadd('s', 5);
+     * $redis->sadd('s', 4);
+     * $redis->sadd('s', 2);
+     * $redis->sadd('s', 1);
+     * $redis->sadd('s', 3);
+     *
+     * var_dump($redis->sort('s')); // 1,2,3,4,5
+     * var_dump($redis->sort('s', array('sort' => 'desc'))); // 5,4,3,2,1
+     * var_dump($redis->sort('s', array('sort' => 'desc', 'store' => 'out'))); // (int)5
+     * </pre>
+     */
+    public function sort($key, $option = null);
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

@@ -430,4 +430,24 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $res2 = $this->client->get($dstKey);
         $this->assertEquals($value2, $res2);
     }
+
+    public function testType()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+
+        $successSet = $this->client->set($key, $value);
+        $this->assertTrue($successSet);
+
+        $type = $this->client->type($key);
+        $this->assertEquals(\Redis::REDIS_STRING, $type);
+    }
+
+    public function testTypeNotFound()
+    {
+        $key = 'myTestKey';
+
+        $type = $this->client->type($key);
+        $this->assertEquals(\Redis::REDIS_NOT_FOUND, $type);
+    }
 }
