@@ -309,4 +309,18 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(2,$result);
     }
+
+    public function testTtl()
+    {
+        $key = 'testkey';
+
+        $this->redis->expects($this->once())
+            ->method('ttl')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue(2));
+
+        $result = $this->client->ttl($key);
+
+        $this->assertEquals(2,$result);
+    }
 }

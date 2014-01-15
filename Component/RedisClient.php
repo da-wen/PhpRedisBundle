@@ -380,6 +380,19 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the time to live left for a given key, in seconds. If the key doesn't exist, FALSE is returned.
+     *
+     * @param   string  $key
+     * @return  int,    the time left to live in seconds.
+     * @link    http://redis.io/commands/ttl
+     * @example $redis->ttl('key');
+     */
+    public function ttl($key)
+    {
+        return $this->redis->ttl($key);
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

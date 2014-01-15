@@ -450,4 +450,28 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $type = $this->client->type($key);
         $this->assertEquals(\Redis::REDIS_NOT_FOUND, $type);
     }
+
+    public function testTtl()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+
+        $successSet = $this->client->set($key, $value, 10);
+        $this->assertTrue($successSet);
+
+        $ttl = $this->client->ttl($key);
+        $this->assertEquals(10, $ttl);
+    }
+
+    public function testTtlUnlimited()
+    {
+        $key = 'myTestKey';
+        $value = 'a test value';
+
+        $successSet = $this->client->set($key, $value);
+        $this->assertTrue($successSet);
+
+        $ttl = $this->client->ttl($key);
+        $this->assertEquals(-1, $ttl);
+    }
 }
