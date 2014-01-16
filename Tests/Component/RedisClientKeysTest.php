@@ -323,4 +323,22 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(2,$result);
     }
+
+    public function testRestore()
+    {
+        $key = 'testkey';
+        $ttl = 12;
+        $value = 'testValue';
+
+        $this->redis->expects($this->once())
+            ->method('restore')
+            ->with($this->equalTo($key)
+                   , $this->equalTo($ttl)
+                   , $this->equalTo($value))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->restore($key, $ttl, $value);
+
+        $this->assertTrue($result);
+    }
 }

@@ -314,6 +314,23 @@ interface RedisClientInterface
     public function ttl($key);
 
     /**
+     * Restore a key from the result of a DUMP operation.
+     *
+     * @param   string  $key    The key name
+     * @param   int     $ttl    How long the key should live (if zero, no expire will be set on the key)
+     * @param   string  $value  (binary).  The Redis encoded key value (from DUMP)
+     * @return  bool
+     * @link    http://redis.io/commands/restore
+     * @example
+     * <pre>
+     * $redis->set('foo', 'bar');
+     * $val = $redis->dump('foo');
+     * $redis->restore('bar', 0, $val); // The key 'bar', will now be equal to the key 'foo'
+     * </pre>
+     */
+    public function restore($key, $ttl, $value);
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

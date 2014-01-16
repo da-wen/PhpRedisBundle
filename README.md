@@ -11,7 +11,7 @@ This bundle is under construction. It is highly recommended not using this bundl
 WORKING METHODS
 ===============
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename, renameNx, type, sort, ttl
+* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
 * server: flushDB
 * connection: close, select
 
@@ -19,10 +19,10 @@ Missing Integration Tests
 =========================
 * keys: sort (waiting for sadd function)
 
-Methods Ignore
-==============
+Methods Ignored
+===============
 * strings: delete, incrBy, decrBy, getMultiple, mSetNx, psetex
-* keys: getKeys, setTimeout, pexpire, pexpireAt, renameKey
+* keys: getKeys, setTimeout, pexpire, pexpireAt, renameKey, pttl
 
 Methods not working:
 =================

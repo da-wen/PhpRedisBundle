@@ -453,6 +453,30 @@ class LoggerRedisClient implements RedisClientInterface
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function restore($key, $ttl, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->restore($key, $ttl, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'ttl' => $ttl);
+
+        if(false === $result)
+        {
+            $this->warning('restore', $duration, $params);
+        }
+        else
+        {
+            $this->info('restore', $duration, $params);
+        }
+
+        return $result;
+    }
+
 
     /**
      * SERVER
