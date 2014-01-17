@@ -46,6 +46,38 @@ interface RedisClientInterface
      */
 
     /**
+     * Removes a values from the hash stored at key.
+     * If the hash table doesn't exist, or the key doesn't exist, FALSE is returned.
+     *
+     * @param   string  $key
+     * @param   string  $hashKey1
+     * @param   string  $hashKey2
+     * @param   string  $hashKeyN
+     * @return  int     Number of deleted fields
+     * @link    http://redis.io/commands/hdel
+     * @example
+     * <pre>
+     * $redis->hMSet('h',
+     *               array(
+     *                    'f1' => 'v1',
+     *                    'f2' => 'v2',
+     *                    'f3' => 'v3',
+     *                    'f4' => 'v4',
+     *               ));
+     *
+     * var_dump( $redis->hDel('h', 'f1') );        // int(1)
+     * var_dump( $redis->hDel('h', 'f2', 'f3') );  // int(2)
+     * s
+     * var_dump( $redis->hGetAll('h') );
+     * //// Output:
+     * //  array(1) {
+     * //    ["f4"]=> string(2) "v4"
+     * //  }
+     * </pre>
+     */
+    public function hDel($key, $hashKey1, $hashKey2 = null, $hashKeyN = null);
+
+    /**
      * Gets a value from the hash stored at key.
      * If the hash table doesn't exist, or the key doesn't exist, FALSE is returned.
      *

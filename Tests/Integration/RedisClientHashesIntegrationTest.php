@@ -114,11 +114,99 @@ class RedisClientHashesIntegrationTest extends AbstractKernelAwareTest
         $resultGet = $this->client->hGet($key, $hashKey);
         $this->assertEquals($value, $resultGet);
 
-        $resultGet = $this->client->hGet($key, $hashKey);
-        $this->assertEquals($value, $resultGet);
-
         $resultNoHashKey = $this->client->hGet($key, 'hashKeyMissing');
         $this->assertFalse($resultNoHashKey);
     }
+
+    public function testHDelOneVal()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'myHashKey';
+        $value = 'test value';
+
+        $resultSet = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultSet);
+
+        $resultGet = $this->client->hGet($key, $hashKey);
+        $this->assertEquals($value, $resultGet);
+
+        $resultDel = $this->client->hDel($key, $hashKey);
+        $this->assertEquals(1, $resultDel);
+
+        $resultNoHashKey = $this->client->hGet($key, $hashKey);
+        $this->assertFalse($resultNoHashKey);
+    }
+
+    public function testHDelTwoVal()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'myHashKey';
+        $hashKey2 = 'myHashKey2';
+        $value = 'test value';
+        $value2 = 'test value2';
+
+        $resultSet = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultSet);
+
+        $resultSet2 = $this->client->hSet($key, $hashKey2, $value2);
+        $this->assertEquals(1, $resultSet2);
+
+        $resultGet = $this->client->hGet($key, $hashKey);
+        $this->assertEquals($value, $resultGet);
+
+        $resultGet = $this->client->hGet($key, $hashKey2);
+        $this->assertEquals($value2, $resultGet);
+
+        $resultDel = $this->client->hDel($key, $hashKey, $hashKey2);
+        $this->assertEquals(2, $resultDel);
+
+        $resultNoHashKey = $this->client->hGet($key, $hashKey);
+        $this->assertFalse($resultNoHashKey);
+
+        $resultNoHashKey = $this->client->hGet($key, $hashKey2);
+        $this->assertFalse($resultNoHashKey);
+    }
+
+    public function testHDelThreeVal()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'myHashKey';
+        $hashKey2 = 'myHashKey2';
+        $hashKey3 = 'myHashKey3';
+        $value = 'test value';
+        $value2 = 'test value2';
+        $value3 = 'test value3';
+
+        $resultSet = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultSet);
+
+        $resultSet2 = $this->client->hSet($key, $hashKey2, $value2);
+        $this->assertEquals(1, $resultSet2);
+
+        $resultSet3 = $this->client->hSet($key, $hashKey3, $value3);
+        $this->assertEquals(1, $resultSet3);
+
+        $resultGet = $this->client->hGet($key, $hashKey);
+        $this->assertEquals($value, $resultGet);
+
+        $resultGet = $this->client->hGet($key, $hashKey2);
+        $this->assertEquals($value2, $resultGet);
+
+        $resultGet = $this->client->hGet($key, $hashKey3);
+        $this->assertEquals($value3, $resultGet);
+
+        $resultDel = $this->client->hDel($key, $hashKey, $hashKey2, $hashKey3);
+        $this->assertEquals(3, $resultDel);
+
+        $resultNoHashKey = $this->client->hGet($key, $hashKey);
+        $this->assertFalse($resultNoHashKey);
+
+        $resultNoHashKey = $this->client->hGet($key, $hashKey2);
+        $this->assertFalse($resultNoHashKey);
+
+        $resultNoHashKey = $this->client->hGet($key, $hashKey3);
+        $this->assertFalse($resultNoHashKey);
+    }
+
 
 }

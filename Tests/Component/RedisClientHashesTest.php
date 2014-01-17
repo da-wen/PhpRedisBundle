@@ -77,4 +77,42 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $result);
     }
+
+    public function testHDelOneVal()
+    {
+        $key = 'testkey';
+        $hashKey = 'testHashKey';
+
+        $this->redis->expects($this->once())
+            ->method('hDel')
+            ->with( $this->equalTo($key)
+                    , $this->equalTo($hashKey)
+                    , $this->equalTo(null)
+                    , $this->equalTo(null))
+            ->will($this->returnValue(1));
+
+        $result = $this->client->hDel($key, $hashKey);
+
+        $this->assertEquals(1, $result);
+    }
+
+    public function testHDelThreeVal()
+    {
+        $key = 'testkey';
+        $hashKey = 'testHashKey';
+        $hashKey2 = 'testHashKey2';
+        $hashKey3 = 'testHashKey3';
+
+        $this->redis->expects($this->once())
+            ->method('hDel')
+            ->with( $this->equalTo($key)
+                , $this->equalTo($hashKey)
+                , $this->equalTo($hashKey2)
+                , $this->equalTo($hashKey3))
+            ->will($this->returnValue(1));
+
+        $result = $this->client->hDel($key, $hashKey, $hashKey2, $hashKey3);
+
+        $this->assertEquals(1, $result);
+    }
 }
