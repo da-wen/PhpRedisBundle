@@ -60,6 +60,50 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * HASHES
+     * *************************************************************************************************
+     */
+
+    /**
+     * Gets a value from the hash stored at key.
+     * If the hash table doesn't exist, or the key doesn't exist, FALSE is returned.
+     *
+     * @param   string  $key
+     * @param   string  $hashKey
+     * @return  string  The value, if the command executed successfully BOOL FALSE in case of failure
+     * @link    http://redis.io/commands/hget
+     */
+    public function hGet($key, $hashKey)
+    {
+        return $this->redis->hGet($key, $hashKey);
+    }
+
+    /**
+     * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
+     *
+     * @param string $key
+     * @param string $hashKey
+     * @param string $value
+     * @return int
+     * 1 if value didn't exist and was added successfully,
+     * 0 if the value was already present and was replaced, FALSE if there was an error.
+     * @link    http://redis.io/commands/hset
+     * @example
+     * <pre>
+     * $redis->delete('h')
+     * $redis->hSet('h', 'key1', 'hello');  // 1, 'key1' => 'hello' in the hash at "h"
+     * $redis->hGet('h', 'key1');           // returns "hello"
+     *
+     * $redis->hSet('h', 'key1', 'plop');   // 0, value was replaced.
+     * $redis->hGet('h', 'key1');           // returns "plop"
+     * </pre>
+     */
+    public function hSet($key, $hashKey, $value)
+    {
+        return $this->redis->hSet($key, $hashKey, $value);
+    }
+
+    /**
      * KEYS
      * *************************************************************************************************
      */
