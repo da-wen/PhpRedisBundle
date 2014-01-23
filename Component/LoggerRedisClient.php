@@ -177,13 +177,7 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
-     * Gets a value from the hash stored at key.
-     * If the hash table doesn't exist, or the key doesn't exist, FALSE is returned.
-     *
-     * @param   string  $key
-     * @param   string  $hashKey
-     * @return  string  The value, if the command executed successfully BOOL FALSE in case of failure
-     * @link    http://redis.io/commands/hget
+     * @inheritdoc
      */
     public function hGet($key, $hashKey)
     {
@@ -199,6 +193,28 @@ class LoggerRedisClient implements RedisClientInterface
         else
         {
             $this->info('hGet', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hGetAll($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->hGetAll($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if(false === $result)
+        {
+            $this->warning('hGetAll', $duration, $params);
+        }
+        else
+        {
+            $this->info('hGetAll', $duration, $params);
         }
 
         return $result;

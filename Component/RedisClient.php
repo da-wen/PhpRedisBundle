@@ -133,6 +133,40 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the whole hash, as an array of strings indexed by strings.
+     *
+     * @param   string  $key
+     * @return  array   An array of elements, the contents of the hash.
+     * @link    http://redis.io/commands/hgetall
+     * @example
+     * <pre>
+     * $redis->delete('h');
+     * $redis->hSet('h', 'a', 'x');
+     * $redis->hSet('h', 'b', 'y');
+     * $redis->hSet('h', 'c', 'z');
+     * $redis->hSet('h', 'd', 't');
+     * var_dump($redis->hGetAll('h'));
+     *
+     * // Output:
+     * // array(4) {
+     * //   ["a"]=>
+     * //   string(1) "x"
+     * //   ["b"]=>
+     * //   string(1) "y"
+     * //   ["c"]=>
+     * //   string(1) "z"
+     * //   ["d"]=>
+     * //   string(1) "t"
+     * // }
+     * // The order is random and corresponds to redis' own internal representation of the set structure.
+     * </pre>
+     */
+    public function hGetAll($key)
+    {
+        return $this->redis->hGetAll($key);
+    }
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key
