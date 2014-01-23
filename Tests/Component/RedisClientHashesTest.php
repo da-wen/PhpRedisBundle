@@ -135,15 +135,34 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
     public function testHGetAll()
     {
         $key = 'testkey';
-        $result = array('one' => 1, 'two' => 'three');
+        $return = array('one' => 1, 'two' => 'three');
 
         $this->redis->expects($this->once())
             ->method('hGetAll')
             ->with( $this->equalTo($key))
-            ->will($this->returnValue($result));
+            ->will($this->returnValue($return));
 
-        $resultFnc = $this->client->hGetAll($key);
+        $result = $this->client->hGetAll($key);
 
-        $this->assertEquals($result, $resultFnc);
+        $this->assertEquals($return, $result);
+    }
+
+    public function testHIncrBy()
+    {
+        $key = 'testkey';
+        $hashKey = 'testHashKey';
+        $value = 12;
+        $return = 24;
+
+        $this->redis->expects($this->once())
+            ->method('hIncrBy')
+            ->with( $this->equalTo($key)
+                , $this->equalTo($hashKey)
+                , $this->equalTo($value))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->hIncrBy($key, $hashKey, $value);
+
+        $this->assertEquals($return, $result);
     }
 }

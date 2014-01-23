@@ -167,6 +167,26 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Increments the value of a member from a hash by a given amount.
+     *
+     * @param   string  $key
+     * @param   string  $hashKey
+     * @param   int     $value (integer) value that will be added to the member's value
+     * @return  int     the new value
+     * @link    http://redis.io/commands/hincrby
+     * @example
+     * <pre>
+     * $redis->delete('h');
+     * $redis->hIncrBy('h', 'x', 2); // returns 2: h[x] = 2 now.
+     * $redis->hIncrBy('h', 'x', 1); // h[x] ← 2 + 1. Returns 3
+     * </pre>
+     */
+    public function hIncrBy($key, $hashKey, $value)
+    {
+        return $this->redis->hIncrBy($key, $hashKey, $value);
+    }
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key

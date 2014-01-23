@@ -223,6 +223,28 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function hIncrBy($key, $hashKey, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->hIncrBy($key, $hashKey, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'hashKey' => $hashKey, 'value' => $value);
+        if(false === $result)
+        {
+            $this->warning('hIncrBy', $duration, $params);
+        }
+        else
+        {
+            $this->info('hIncrBy', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function hSet($key, $hashKey, $value)
     {
         $startTime = $this->startMeasure();

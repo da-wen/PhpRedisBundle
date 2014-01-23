@@ -251,6 +251,37 @@ class RedisClientHashesIntegrationTest extends AbstractKernelAwareTest
         $this->assertEmpty($resultHashObject);
     }
 
+    public function testHIncrBy()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'hashKey';
+        $value = 5;
+        $incr = 7;
+
+        $resultFirst = $this->client->hIncrBy($key, $hashKey, $value);
+        $this->assertEquals($value, $resultFirst);
+
+        $resultIncr = $this->client->hIncrBy($key, $hashKey, $incr);
+        $this->assertEquals($value + $incr, $resultIncr);
+    }
+
+    public function testHIncrByString()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'hashKey';
+        $value = 'string4';
+        $incr = 7;
+
+        $resultFirst = $this->client->hIncrBy($key, $hashKey, $value);
+        $this->assertFalse($resultFirst);
+
+        $resultSet = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultSet);
+
+        $resultIncr = $this->client->hIncrBy($key, $hashKey, $incr);
+        $this->assertFalse($resultIncr);
+    }
+
 
 
 }
