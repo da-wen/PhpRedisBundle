@@ -115,4 +115,20 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, $result);
     }
+
+    public function testHExists()
+    {
+        $key = 'testkey';
+        $hashKey = 'testHashKey';
+
+        $this->redis->expects($this->once())
+            ->method('hExists')
+            ->with( $this->equalTo($key)
+                , $this->equalTo($hashKey))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->hExists($key, $hashKey);
+
+        $this->assertTrue($result);
+    }
 }

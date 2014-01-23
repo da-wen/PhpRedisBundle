@@ -100,6 +100,25 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Verify if the specified member exists in a key.
+     *
+     * @param   string  $key
+     * @param   string  $hashKey
+     * @return  bool:   If the member exists in the hash table, return TRUE, otherwise return FALSE.
+     * @link    http://redis.io/commands/hexists
+     * @example
+     * <pre>
+     * $redis->hSet('h', 'a', 'x');
+     * $redis->hExists('h', 'a');               //  TRUE
+     * $redis->hExists('h', 'NonExistingKey');  // FALSE
+     * </pre>
+     */
+    public function hExists($key, $hashKey)
+    {
+        return $this->redis->hExists($key, $hashKey);
+    }
+
+    /**
      * Gets a value from the hash stored at key.
      * If the hash table doesn't exist, or the key doesn't exist, FALSE is returned.
      *

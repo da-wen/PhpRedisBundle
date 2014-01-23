@@ -208,5 +208,24 @@ class RedisClientHashesIntegrationTest extends AbstractKernelAwareTest
         $this->assertFalse($resultNoHashKey);
     }
 
+    public function testHExists()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'myHashKey';
+        $value = 'test value';
+
+        $resultSet = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultSet);
+
+        $resultExistsTrue = $this->client->hExists($key, $hashKey);
+        $this->assertTrue($resultExistsTrue);
+
+        $resultExistsFalse = $this->client->hExists($key, 'noHashKey');
+        $this->assertFalse($resultExistsFalse);
+
+        $resultExistsKeyFalse = $this->client->hExists('noKey', 'noHashKey');
+        $this->assertFalse($resultExistsKeyFalse);
+    }
+
 
 }
