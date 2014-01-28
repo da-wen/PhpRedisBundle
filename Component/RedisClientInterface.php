@@ -181,6 +181,37 @@ interface RedisClientInterface
     public function hIncrByFloat($key, $field, $increment);
 
     /**
+     * Returns the keys in a hash, as an array of strings.
+     *
+     * @param   string  $key
+     * @return  array   An array of elements, the keys of the hash. This works like PHP's array_keys().
+     * @link    http://redis.io/commands/hkeys
+     * @example
+     * <pre>
+     * $redis->delete('h');
+     * $redis->hSet('h', 'a', 'x');
+     * $redis->hSet('h', 'b', 'y');
+     * $redis->hSet('h', 'c', 'z');
+     * $redis->hSet('h', 'd', 't');
+     * var_dump($redis->hKeys('h'));
+     *
+     * // Output:
+     * // array(4) {
+     * // [0]=>
+     * // string(1) "a"
+     * // [1]=>
+     * // string(1) "b"
+     * // [2]=>
+     * // string(1) "c"
+     * // [3]=>
+     * // string(1) "d"
+     * // }
+     * // The order is random and corresponds to redis' own internal representation of the set structure.
+     * </pre>
+     */
+    public function hKeys($key);
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key
