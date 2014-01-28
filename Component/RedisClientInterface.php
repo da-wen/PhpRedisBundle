@@ -136,6 +136,51 @@ interface RedisClientInterface
     public function hGetAll($key);
 
     /**
+     * Increments the value of a member from a hash by a given amount.
+     *
+     * @param   string  $key
+     * @param   string  $hashKey
+     * @param   int     $value (integer) value that will be added to the member's value
+     * @return  int     the new value
+     * @link    http://redis.io/commands/hincrby
+     * @example
+     * <pre>
+     * $redis->delete('h');
+     * $redis->hIncrBy('h', 'x', 2); // returns 2: h[x] = 2 now.
+     * $redis->hIncrBy('h', 'x', 1); // h[x] ← 2 + 1. Returns 3
+     * </pre>
+     */
+    public function hIncrBy($key, $hashKey, $value);
+
+    /**
+     * Increment the float value of a hash field by the given amount
+     * @param   string  $key
+     * @param   string  $field
+     * @param   float   $increment
+     * @return  float
+     * @link    http://redis.io/commands/hincrbyfloat
+     * @example
+     * <pre>
+     * $redis = new Redis();
+     * $redis->connect('127.0.0.1');
+     * $redis->hset('h', 'float', 3);
+     * $redis->hset('h', 'int',   3);
+     * var_dump( $redis->hIncrByFloat('h', 'float', 1.5) ); // float(4.5)
+     *
+     * var_dump( $redis->hGetAll('h') );
+     *
+     * // Output
+     *  array(2) {
+     *    ["float"]=>
+     *    string(3) "4.5"
+     *    ["int"]=>
+     *    string(1) "3"
+     *  }
+     * </pre>
+     */
+    public function hIncrByFloat($key, $field, $increment);
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key

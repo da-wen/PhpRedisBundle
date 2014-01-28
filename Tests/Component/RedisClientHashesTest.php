@@ -165,4 +165,23 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($return, $result);
     }
+
+    public function testHIncrByFloat()
+    {
+        $key = 'testkey';
+        $hashKey = 'testHashKey';
+        $value = 1.8;
+        $return = 3.7;
+
+        $this->redis->expects($this->once())
+            ->method('hIncrByFloat')
+            ->with( $this->equalTo($key)
+                , $this->equalTo($hashKey)
+                , $this->equalTo($value))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->hIncrByFloat($key, $hashKey, $value);
+
+        $this->assertEquals($return, $result);
+    }
 }

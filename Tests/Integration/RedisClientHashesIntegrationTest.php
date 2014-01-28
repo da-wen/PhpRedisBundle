@@ -282,6 +282,78 @@ class RedisClientHashesIntegrationTest extends AbstractKernelAwareTest
         $this->assertFalse($resultIncr);
     }
 
+    public function testHIncrByFloat()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'hashKey';
+        $value = 5.2;
+        $incr = 7.2;
+
+        $resultFirst = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultFirst);
+
+        $resultIncr = $this->client->hIncrByFloat($key, $hashKey, $incr);
+        $this->assertEquals($value + $incr, $resultIncr);
+    }
+
+    public function testHIncrByFloatInt()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'hashKey';
+        $value = 5;
+        $incr = 7;
+
+        $resultFirst = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultFirst);
+
+        $resultIncr = $this->client->hIncrByFloat($key, $hashKey, $incr);
+        $this->assertEquals($value + $incr, $resultIncr);
+    }
+
+    public function testHIncrByFloatIntFloat()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'hashKey';
+        $value = 5;
+        $incr = 7.4;
+
+        $resultFirst = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultFirst);
+
+        $resultIncr = $this->client->hIncrByFloat($key, $hashKey, $incr);
+        $this->assertEquals($value + $incr, $resultIncr);
+    }
+
+    public function testHIncrByFloatNoHash()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'hashKey';
+        $value = 5;
+
+        $resultFirst = $this->client->hIncrByFloat($key, $hashKey, $value);
+        $this->assertEquals(5.0, $resultFirst);
+    }
+
+    public function testHIncrByFloatString()
+    {
+        $key = 'myTestKey';
+        $hashKey = 'hashKey';
+        $value = 5;
+        $incr = 'st7.4';
+
+        $resultFirst = $this->client->hSet($key, $hashKey, $value);
+        $this->assertEquals(1, $resultFirst);
+
+        try {
+            $resultIncr = $this->client->hIncrByFloat($key, $hashKey, $incr);
+        } catch(\Exception $exxception) {
+            $this->assertContains('to be double, string given',$exxception->getMessage());
+            return true;
+        }
+
+        $this->fail();
+    }
+
 
 
 }
