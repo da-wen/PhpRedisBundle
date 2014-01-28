@@ -252,6 +252,25 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the length of a hash, in number of items
+     *
+     * @param   string  $key
+     * @return  int     the number of items in a hash, FALSE if the key doesn't exist or isn't a hash.
+     * @link    http://redis.io/commands/hlen
+     * @example
+     * <pre>
+     * $redis->delete('h')
+     * $redis->hSet('h', 'key1', 'hello');
+     * $redis->hSet('h', 'key2', 'plop');
+     * $redis->hLen('h'); // returns 2
+     * </pre>
+     */
+    public function hLen($key)
+    {
+        return $this->redis->hLen($key);
+    }
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key
