@@ -10,9 +10,9 @@ This bundle is under construction. It is highly recommended not using this bundl
 
 WORKING METHODS
 ===============
-* hashes: hDel, hExists, hGet, hGetAll, hIncrBy, hIncrByFloat, hKeys, hLen, hSet
+* hashes: hDel, hExists, hGet, hGetAll, hIncrBy, hIncrByFloat, hKeys, hLen, hMGet, hSet
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* keys: del, dump, exists, expire, expireAt, keys, migrate, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
+* keys: del, dump, exists, expire, expireAt, keys, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
 * server: flushDB
 * connection: close, select
 
@@ -28,6 +28,7 @@ Methods Ignored
 Methods not working:
 =================
 * strings: bitOp
+* keys: migrate
 
 
 Method Informations

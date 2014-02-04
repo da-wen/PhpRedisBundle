@@ -32,6 +32,10 @@ class RedisClientConnectionIntegrationTest extends AbstractKernelAwareTest
             {
                 $redis = new \Redis();
                 $connected = $redis->pconnect($redisParams['host'], $redisParams['port']);
+                if(!$connected) {
+                    $this->skipped = true;
+                    $this->markTestSkipped('could not connect to server');
+                }
                 $redis->select($redisParams['db']);
 
                 $this->client = new RedisClient($redis);

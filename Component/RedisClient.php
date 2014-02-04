@@ -271,6 +271,27 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Retirieve the values associated to the specified fields in the hash.
+     *
+     * @param   string  $key
+     * @param   array   $hashKeys
+     * @return  array   Array An array of elements, the values of the specified fields in the hash,
+     * with the hash keys as array keys.
+     * @link    http://redis.io/commands/hmget
+     * @example
+     * <pre>
+     * $redis->delete('h');
+     * $redis->hSet('h', 'field1', 'value1');
+     * $redis->hSet('h', 'field2', 'value2');
+     * $redis->hmGet('h', array('field1', 'field2')); // returns array('field1' => 'value1', 'field2' => 'value2')
+     * </pre>
+     */
+    public function hMGet($key, array $hashKeys)
+    {
+        return $this->redis->hMGet($key, $hashKeys);
+    }
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key

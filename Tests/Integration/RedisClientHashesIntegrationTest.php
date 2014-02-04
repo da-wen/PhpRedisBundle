@@ -32,6 +32,10 @@ class RedisClientHashesIntegrationTest extends AbstractKernelAwareTest
             {
                 $redis = new \Redis();
                 $connected = $redis->pconnect($redisParams['host'], $redisParams['port']);
+                if(!$connected) {
+                    $this->skipped = true;
+                    $this->markTestSkipped('could not connect to server');
+                }
                 $redis->select($redisParams['db']);
 
                 $this->client = new RedisClient($redis);
@@ -396,6 +400,20 @@ class RedisClientHashesIntegrationTest extends AbstractKernelAwareTest
         $this->assertEmpty($resultKeys);
     }
 
+    public function testHMGet()
+    {
+        $key = 'myTestKey';
+        $hashKeys = array('hashKey1' => 300, 'hashKey2' => 'test2', 'hashKey3' => 23);
+
+        foreach($hashKeys as $hashKey => $hashValue)
+        {
+            $resultSet = $this->client->hSet($key, $hashKey, $hashValue);
+            $this->assertEquals(1, $resultSet);
+        }
+
+        $resultMGet = $this->client->hMGet($key, array_keys($hashKeys));
+        $this->assertEquals($hashKeys, $resultMGet);
+    }
 
 
 }

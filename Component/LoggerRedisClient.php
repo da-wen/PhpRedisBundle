@@ -311,6 +311,28 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function hMGet($key, array $hashKeys)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->hMGet($key, $hashKeys);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'hashKeys' => $hashKeys);
+        if(false === $result)
+        {
+            $this->warning('hMGet', $duration, $params);
+        }
+        else
+        {
+            $this->info('hMGet', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function hSet($key, $hashKey, $value)
     {
         $startTime = $this->startMeasure();
