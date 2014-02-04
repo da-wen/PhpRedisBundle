@@ -224,10 +224,27 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
         $this->redis->expects($this->once())
             ->method('hMGet')
             ->with( $this->equalTo($key)
-                   , $this->equalTo($hashKeys))
+                    , $this->equalTo($hashKeys))
             ->will($this->returnValue($return));
 
         $result = $this->client->hMGet($key, $hashKeys);
+
+        $this->assertEquals($return, $result);
+    }
+
+    public function testHMSet()
+    {
+        $key = 'testkey';
+        $hashKeys = array('one1' => 111, 'two2' => 222);
+        $return = array('one' => 1, 'two' => 2);
+
+        $this->redis->expects($this->once())
+            ->method('hMSet')
+            ->with( $this->equalTo($key)
+                    , $this->equalTo($hashKeys))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->hMSet($key, $hashKeys);
 
         $this->assertEquals($return, $result);
     }

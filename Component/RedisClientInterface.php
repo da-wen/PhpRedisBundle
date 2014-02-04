@@ -246,6 +246,23 @@ interface RedisClientInterface
     public function hMGet($key, array $hashKeys);
 
     /**
+     * Fills in a whole hash. Non-string values are converted to string, using the standard (string) cast.
+     * NULL values are stored as empty strings
+     *
+     * @param   string  $key
+     * @param   array   $hashKeys key → value array
+     * @return  bool
+     * @link    http://redis.io/commands/hmset
+     * @example
+     * <pre>
+     * $redis->delete('user:1');
+     * $redis->hMset('user:1', array('name' => 'Joe', 'salary' => 2000));
+     * $redis->hIncrBy('user:1', 'salary', 100); // Joe earns 100 more now.
+     * </pre>
+     */
+    public function hMSet($key, array $hashKeys);
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key
