@@ -248,4 +248,22 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($return, $result);
     }
+
+    public function testHSetNx()
+    {
+        $key = 'testkey';
+        $hashKey = 'testHashKey';
+        $value = "testValue";
+
+        $this->redis->expects($this->once())
+            ->method('hSetNx')
+            ->with( $this->equalTo($key)
+                , $this->equalTo($hashKey)
+                , $this->equalTo($value))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->hSetNx($key, $hashKey, $value);
+
+        $this->assertTrue($result);
+    }
 }

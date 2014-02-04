@@ -375,6 +375,28 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function hSetNx($key, $hashKey, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->hSetNx($key, $hashKey, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'hashKey' => $hashKey);
+        if(false === $result)
+        {
+            $this->warning('hSetNx', $duration, $params);
+        }
+        else
+        {
+            $this->info('hSetNx', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * KEYS
      * *************************************************************************************************
      */

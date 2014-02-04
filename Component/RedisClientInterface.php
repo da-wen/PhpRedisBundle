@@ -285,6 +285,24 @@ interface RedisClientInterface
     public function hSet($key, $hashKey, $value);
 
     /**
+     * Adds a value to the hash stored at key only if this field isn't already in the hash.
+     *
+     * @param   string  $key
+     * @param   string  $hashKey
+     * @param   string  $value
+     * @return  bool    TRUE if the field was set, FALSE if it was already present.
+     * @link    http://redis.io/commands/hsetnx
+     * @example
+     * <pre>
+     * $redis->delete('h')
+     * $redis->hSetNx('h', 'key1', 'hello'); // TRUE, 'key1' => 'hello' in the hash at "h"
+     * $redis->hSetNx('h', 'key1', 'world'); // FALSE, 'key1' => 'hello' in the hash at "h". No change since the field
+     * wasn't replaced.
+     * </pre>
+     */
+    public function hSetNx($key, $hashKey, $value);
+
+    /**
      * KEYS
      * *************************************************************************************************
      */
