@@ -303,6 +303,37 @@ interface RedisClientInterface
     public function hSetNx($key, $hashKey, $value);
 
     /**
+     * Returns the values in a hash, as an array of strings.
+     *
+     * @param   string  $key
+     * @return  array   An array of elements, the values of the hash. This works like PHP's array_values().
+     * @link    http://redis.io/commands/hvals
+     * @example
+     * <pre>
+     * $redis->delete('h');
+     * $redis->hSet('h', 'a', 'x');
+     * $redis->hSet('h', 'b', 'y');
+     * $redis->hSet('h', 'c', 'z');
+     * $redis->hSet('h', 'd', 't');
+     * var_dump($redis->hVals('h'));
+     *
+     * // Output
+     * // array(4) {
+     * //   [0]=>
+     * //   string(1) "x"
+     * //   [1]=>
+     * //   string(1) "y"
+     * //   [2]=>
+     * //   string(1) "z"
+     * //   [3]=>
+     * //   string(1) "t"
+     * // }
+     * // The order is random and corresponds to redis' own internal representation of the set structure.
+     * </pre>
+     */
+    public function hVals($key);
+
+    /**
      * KEYS
      * *************************************************************************************************
      */

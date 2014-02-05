@@ -266,4 +266,19 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testHVals()
+    {
+        $key = 'testkey';
+        $value = array(1, 'two2');
+
+        $this->redis->expects($this->once())
+            ->method('hVals')
+            ->with( $this->equalTo($key))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->hVals($key);
+
+        $this->assertEquals($value, $result);
+    }
 }
