@@ -745,6 +745,103 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * LISTS
+     * *************************************************************************************************
+     */
+
+    /**
+     * Return the specified element of the list stored at the specified key.
+     * 0 the first element, 1 the second ... -1 the last element, -2 the penultimate ...
+     * Return FALSE in case of a bad index or a key that doesn't point to a list.
+     * @param string    $key
+     * @param int       $index
+     * @return String the element at this index
+     * Bool FALSE if the key identifies a non-string data type, or no value corresponds to this index in the list Key.
+     * @link    http://redis.io/commands/lindex
+     * @example
+     * <pre>
+     * $redis->rPush('key1', 'A');
+     * $redis->rPush('key1', 'B');
+     * $redis->rPush('key1', 'C');  // key1 => [ 'A', 'B', 'C' ]
+     * $redis->lGet('key1', 0);     // 'A'
+     * $redis->lGet('key1', -1);    // 'C'
+     * $redis->lGet('key1', 10);    // `FALSE`
+     * </pre>
+     */
+    public function lIndex($key, $index)
+    {
+        return $this->redis->lIndex($key, $index);
+    }
+
+    /**
+     * @see lIndex()
+     * @param   string    $key
+     * @param   int       $index
+     * @link    http://redis.io/commands/lindex
+     */
+    public function lGet($key, $index)
+    {
+        return $this->redis->lGet($key, $index);
+    }
+    /**
+     * Adds the string values to the head (left) of the list. Creates the list if the key didn't exist.
+     * If the key exists and is not a list, FALSE is returned.
+     *
+     * @param   string $key
+     * @param   string $value1  String, value to push in key
+     * @param   string $value2  Optional
+     * @param   string $valueN  Optional
+     * @return  int    The new length of the list in case of success, FALSE in case of Failure.
+     * @link    http://redis.io/commands/lpush
+     * @example
+     * <pre>
+     * $redis->lPush('l', 'v1', 'v2', 'v3', 'v4')   // int(4)
+     * var_dump( $redis->lRange('l', 0, -1) );
+     * //// Output:
+     * // array(4) {
+     * //   [0]=> string(2) "v4"
+     * //   [1]=> string(2) "v3"
+     * //   [2]=> string(2) "v2"
+     * //   [3]=> string(2) "v1"
+     * // }
+     * </pre>
+     */
+    public function lPush($key, $value1, $value2 = null, $valueN = null)
+    {
+        if(null === $value2) {
+            return $this->redis->lPush($key, $value1);
+        } elseif(null === $valueN) {
+            return $this->redis->lPush($key, $value1, $value2);
+        }
+
+        return $this->redis->lPush($key, $value1, $value2, $valueN);
+    }
+
+    /**
+     * Set the list at index with the new value.
+     *
+     * @param string    $key
+     * @param int       $index
+     * @param string    $value
+     * @return BOOL TRUE if the new value is setted. FALSE if the index is out of range, or data type identified by key
+     * is not a list.
+     * @link    http://redis.io/commands/lset
+     * @example
+     * <pre>
+     * $redis->rPush('key1', 'A');
+     * $redis->rPush('key1', 'B');
+     * $redis->rPush('key1', 'C');  // key1 => [ 'A', 'B', 'C' ]
+     * $redis->lGet('key1', 0);     // 'A'
+     * $redis->lSet('key1', 0, 'X');
+     * $redis->lGet('key1', 0);     // 'X'
+     * </pre>
+     */
+    public function lSet($key, $index, $value)
+    {
+        return $this->redis->lSet($key, $index, $value);
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

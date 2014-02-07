@@ -806,6 +806,104 @@ class LoggerRedisClient implements RedisClientInterface
         return $result;
     }
 
+    /**
+     * LISTS
+     * *************************************************************************************************
+     */
+
+    /**
+     * @inheritdoc
+     */
+    public function lIndex($key, $index)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lIndex($key, $index);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'index' => $index);
+
+        if(false === $result)
+        {
+            $this->warning('lIndex', $duration, $params);
+        }
+        else
+        {
+            $this->info('lIndex', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function lGet($key, $index)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lGet($key, $index);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key
+                        , 'index' => $index);
+
+        if(false === $result)
+        {
+            $this->warning('lGet', $duration, $params);
+        }
+        else
+        {
+            $this->info('lGet', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function lPush($key, $value1, $value2 = null, $valueN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lPush($key, $value1, $value2, $valueN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('lPush', $duration, $params);
+        }
+        else
+        {
+            $this->info('lPush', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function lSet($key, $index, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lSet($key, $index, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'index' => $index);
+
+        if(false === $result)
+        {
+            $this->warning('lSet', $duration, $params);
+        }
+        else
+        {
+            $this->info('lSet', $duration, $params);
+        }
+
+        return $result;
+    }
 
     /**
      * SERVER
@@ -813,11 +911,7 @@ class LoggerRedisClient implements RedisClientInterface
      */
 
     /**
-     * Removes all entries from the current database.
-     *
-     * @return  bool: Always TRUE.
-     * @link    http://redis.io/commands/flushdb
-     * @example $redis->flushDB();
+     * @inheritdoc
      */
     public function flushDB()
     {
