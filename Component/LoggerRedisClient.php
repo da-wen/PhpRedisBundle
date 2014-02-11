@@ -860,6 +860,31 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function brPoplPush($srcKey, $dstKey, $timeout)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->brPoplPush($srcKey, $dstKey, $timeout);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('srcKey' => $srcKey,
+                        'dstKey' => $dstKey,
+                        'timeout' => $timeout);
+
+        if(false === $result)
+        {
+            $this->warning('brPoplPush', $duration, $params);
+        }
+        else
+        {
+            $this->info('brPoplPush', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function lIndex($key, $index)
     {
         $startTime = $this->startMeasure();

@@ -710,6 +710,17 @@ interface RedisClientInterface
     public function brPop(array $keys);
 
     /**
+     * A blocking version of rpoplpush, with an integral timeout in the third parameter.
+     *
+     * @param   string  $srcKey
+     * @param   string  $dstKey
+     * @param   int     $timeout
+     * @return  string  The element that was moved in case of success, FALSE in case of timeout.
+     * @link    http://redis.io/commands/brpoplpush
+     */
+    public function brPoplPush($srcKey, $dstKey, $timeout);
+
+    /**
      * Return the specified element of the list stored at the specified key.
      * 0 the first element, 1 the second ... -1 the last element, -2 the penultimate ...
      * Return FALSE in case of a bad index or a key that doesn't point to a list.

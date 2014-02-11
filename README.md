@@ -12,7 +12,7 @@ WORKING METHODS
 ===============
 * hashes: hDel, hExists, hGet, hGetAll, hIncrBy, hIncrByFloat, hKeys, hLen, hMGet, hMSet, hSet
 * keys: del, dump, exists, expire, expireAt, keys, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
-* lists: brPop, blPop, lGet, lIndex, lPush, lSet
+* lists: brPop, blPop, brPoplPush, lGet, lIndex, lPush, lSet
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
 * server: flushDB
 * connection: close, select
@@ -42,6 +42,10 @@ Method Informations
 Configuration
 =============
 here is a first sample configuration
+
+be aware of the logging flag. When you run many redis commands and logging is enabled on production system,
+you could get a memory limit exceeded error. The logger redis client is collecting every command in a data collector.
+
 **config.yml**
 ```
 php_redis:

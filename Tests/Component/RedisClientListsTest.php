@@ -142,4 +142,22 @@ class RedisClientListsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($return, $result);
     }
 
+    public function testBrPoplPush()
+    {
+        $srcKeys = 'srcKey';
+        $dstKey = 'dstKey';
+        $timeout = 10;
+
+        $this->redis->expects($this->once())
+            ->method('brPoplPush')
+            ->with($this->equalTo($srcKeys),
+                   $this->equalTo($dstKey),
+                   $this->equalTo($timeout))
+            ->will($this->returnValue(true));
+
+        $result = $this->client->brPoplPush($srcKeys, $dstKey, $timeout);
+
+        $this->assertTrue($result);
+    }
+
 }

@@ -161,4 +161,37 @@ class RedisClientListsIntegrationTest extends AbstractKernelAwareTest
         $this->assertFalse($resultSet);
     }
 
+    public function testBrPoplPush()
+    {
+        $srcKey = 'srcKey';
+        $dstKey = 'dstKey';
+        $value = 'myValue';
+        $value2 = 'my second value';
+
+        $resultPush = $this->client->lPush($srcKey, $value, $value2);
+        $this->assertEquals(2, $resultPush);
+
+        $resultGet1 = $this->client->lGet($srcKey, 1);
+        $this->assertEquals($value, $resultGet1);
+
+        $resultGet0 = $this->client->lGet($srcKey, 0);
+        $this->assertEquals($value2, $resultGet0);
+
+        $resultBrPoplPush = $this->client->brPoplPush($srcKey, $dstKey, 0);
+        $this->assertSame($value, $resultBrPoplPush);
+
+        $resultSrcKeyExists = $this->client->exists($srcKey);
+        $this->assertTrue($resultSrcKeyExists);
+
+        $resultDstKeyExists = $this->client->exists($dstKey);
+        $this->assertTrue($resultDstKeyExists);
+
+        $resultSrc = $this->client->lGet($srcKey, 0);
+        $this->assertEquals($value2, $resultSrc);
+
+        $resultDst = $this->client->lGet($dstKey, 0);
+        $this->assertEquals($value, $resultDst);
+
+    }
+
 }
