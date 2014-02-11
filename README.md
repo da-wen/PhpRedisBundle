@@ -12,7 +12,7 @@ WORKING METHODS
 ===============
 * hashes: hDel, hExists, hGet, hGetAll, hIncrBy, hIncrByFloat, hKeys, hLen, hMGet, hMSet, hSet
 * keys: del, dump, exists, expire, expireAt, keys, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
-* lists: lGet, lIndex, lPush, lSet
+* lists: brPop, blPop, lGet, lIndex, lPush, lSet
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
 * server: flushDB
 * connection: close, select
@@ -20,6 +20,7 @@ WORKING METHODS
 Missing Integration Tests
 =========================
 * keys: sort (waiting for sadd function)
+* lists: blPop, brPop
 
 Methods Ignored
 ===============

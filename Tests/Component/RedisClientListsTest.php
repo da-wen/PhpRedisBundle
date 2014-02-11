@@ -112,4 +112,34 @@ class RedisClientListsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    public function testBlPop()
+    {
+        $keys = array('testkey', 'key2', 'key3');
+        $return = array('testValue');
+
+        $this->redis->expects($this->once())
+            ->method('blPop')
+            ->with($this->equalTo($keys))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->blPop($keys);
+
+        $this->assertEquals($return, $result);
+    }
+
+    public function testBrPop()
+    {
+        $keys = array('testkey', 'key2', 'key3');
+        $return = array('testValue');
+
+        $this->redis->expects($this->once())
+            ->method('brPop')
+            ->with($this->equalTo($keys))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->brPop($keys);
+
+        $this->assertEquals($return, $result);
+    }
+
 }

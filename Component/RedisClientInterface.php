@@ -629,6 +629,87 @@ interface RedisClientInterface
      */
 
     /**
+     * Is a blocking lPop primitive. If at least one of the lists contains at least one element,
+     * the element will be popped from the head of the list and returned to the caller.
+     * Il all the list identified by the keys passed in arguments are empty, blPop will block
+     * during the specified timeout until an element is pushed to one of those lists. This element will be popped.
+     *
+     * @param   array $keys Array containing the keys of the lists INTEGER Timeout
+     * Or STRING Key1 STRING Key2 STRING Key3 ... STRING Keyn INTEGER Timeout
+     * @return  array array('listName', 'element')
+     * @link    http://redis.io/commands/blpop
+     * @example
+     * <pre>
+     * // Non blocking feature
+     * $redis->lPush('key1', 'A');
+     * $redis->delete('key2');
+     *
+     * $redis->blPop('key1', 'key2', 10); // array('key1', 'A')
+     * // OR
+     * $redis->blPop(array('key1', 'key2'), 10); // array('key1', 'A')
+     *
+     * $redis->brPop('key1', 'key2', 10); // array('key1', 'A')
+     * // OR
+     * $redis->brPop(array('key1', 'key2'), 10); // array('key1', 'A')
+     *
+     * // Blocking feature
+     *
+     * // process 1
+     * $redis->delete('key1');
+     * $redis->blPop('key1', 10);
+     * // blocking for 10 seconds
+     *
+     * // process 2
+     * $redis->lPush('key1', 'A');
+     *
+     * // process 1
+     * // array('key1', 'A') is returned
+     * </pre>
+     */
+    public function blPop(array $keys);
+
+    /**
+     * Is a blocking rPop primitive. If at least one of the lists contains at least one element,
+     * the element will be popped from the head of the list and returned to the caller.
+     * Il all the list identified by the keys passed in arguments are empty, brPop will
+     * block during the specified timeout until an element is pushed to one of those lists. T
+     * his element will be popped.
+     *
+     * @param   array $keys Array containing the keys of the lists INTEGER Timeout
+     * Or STRING Key1 STRING Key2 STRING Key3 ... STRING Keyn INTEGER Timeout
+     * @return  array array('listName', 'element')
+     * @link    http://redis.io/commands/brpop
+     * @example
+     * <pre>
+     * // Non blocking feature
+     * $redis->lPush('key1', 'A');
+     * $redis->delete('key2');
+     *
+     * $redis->blPop('key1', 'key2', 10); // array('key1', 'A')
+     * // OR
+     * $redis->blPop(array('key1', 'key2'), 10); // array('key1', 'A')
+     *
+     * $redis->brPop('key1', 'key2', 10); // array('key1', 'A')
+     * // OR
+     * $redis->brPop(array('key1', 'key2'), 10); // array('key1', 'A')
+     *
+     * // Blocking feature
+     *
+     * // process 1
+     * $redis->delete('key1');
+     * $redis->blPop('key1', 10);
+     * // blocking for 10 seconds
+     *
+     * // process 2
+     * $redis->lPush('key1', 'A');
+     *
+     * // process 1
+     * // array('key1', 'A') is returned
+     * </pre>
+     */
+    public function brPop(array $keys);
+
+    /**
      * Return the specified element of the list stored at the specified key.
      * 0 the first element, 1 the second ... -1 the last element, -2 the penultimate ...
      * Return FALSE in case of a bad index or a key that doesn't point to a list.
