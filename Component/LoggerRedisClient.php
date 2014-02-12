@@ -933,6 +933,53 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function lInsert($key, $position, $pivot, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lInsert($key, $position, $pivot, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key,
+                        'position' => $position);
+
+        if(-1 == $result)
+        {
+            $this->warning('lInsert', $duration, $params);
+        }
+        else
+        {
+            $this->info('lInsert', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function lLen($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lLen($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('lLen', $duration, $params);
+        }
+        else
+        {
+            $this->info('lLen', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function lPush($key, $value1, $value2 = null, $valueN = null)
     {
         $startTime = $this->startMeasure();
@@ -971,6 +1018,29 @@ class LoggerRedisClient implements RedisClientInterface
         else
         {
             $this->info('lSet', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function lSize($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lSize($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('lSize', $duration, $params);
+        }
+        else
+        {
+            $this->info('lSize', $duration, $params);
         }
 
         return $result;

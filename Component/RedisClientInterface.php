@@ -748,6 +748,58 @@ interface RedisClientInterface
      * @link    http://redis.io/commands/lindex
      */
     public function lGet($key, $index);
+
+    /**
+     * Insert value in the list before or after the pivot value. the parameter options
+     * specify the position of the insert (before or after). If the list didn't exists,
+     * or the pivot didn't exists, the value is not inserted.
+     *
+     * @param   string  $key
+     * @param   int     $position Redis::BEFORE | Redis::AFTER
+     * @param   string  $pivot
+     * @param   string  $value
+     * @return  int     The number of the elements in the list, -1 if the pivot didn't exists.
+     * @link    http://redis.io/commands/linsert
+     * @example
+     * <pre>
+     * $redis->delete('key1');
+     * $redis->lInsert('key1', Redis::AFTER, 'A', 'X');     // 0
+     *
+     * $redis->lPush('key1', 'A');
+     * $redis->lPush('key1', 'B');
+     * $redis->lPush('key1', 'C');
+     *
+     * $redis->lInsert('key1', Redis::BEFORE, 'C', 'X');    // 4
+     * $redis->lRange('key1', 0, -1);                       // array('A', 'B', 'X', 'C')
+     *
+     * $redis->lInsert('key1', Redis::AFTER, 'C', 'Y');     // 5
+     * $redis->lRange('key1', 0, -1);                       // array('A', 'B', 'X', 'C', 'Y')
+     *
+     * $redis->lInsert('key1', Redis::AFTER, 'W', 'value'); // -1
+     * </pre>
+     */
+    public function lInsert($key, $position, $pivot, $value);
+
+    /**
+     * Returns the size of a list identified by Key. If the list didn't exist or is empty,
+     * the command returns 0. If the data type identified by Key is not a list, the command return FALSE.
+     *
+     * @param   string  $key
+     * @return  int     The size of the list identified by Key exists.
+     * bool FALSE if the data type identified by Key is not list
+     * @link    http://redis.io/commands/llen
+     * @example
+     * <pre>
+     * $redis->rPush('key1', 'A');
+     * $redis->rPush('key1', 'B');
+     * $redis->rPush('key1', 'C');  // key1 => [ 'A', 'B', 'C' ]
+     * $redis->lLen('key1');       // 3
+     * $redis->rPop('key1');
+     * $redis->lLen('key1');       // 2
+     * </pre>
+     */
+    public function lLen($key);
+
     /**
      * Adds the string values to the head (left) of the list. Creates the list if the key didn't exist.
      * If the key exists and is not a list, FALSE is returned.
@@ -793,6 +845,13 @@ interface RedisClientInterface
      * </pre>
      */
     public function lSet($key, $index, $value);
+
+    /**
+     * @see     lLen()
+     * @param   string    $key
+     * @link    http://redis.io/commands/llen
+     */
+    public function lSize($key);
 
     /**
      * SERVER

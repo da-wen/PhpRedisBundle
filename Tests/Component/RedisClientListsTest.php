@@ -160,4 +160,54 @@ class RedisClientListsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    public function testLInsert()
+    {
+        $key = 'srcKey';
+        $position = \Redis::BEFORE;
+        $pivot = 'any value';
+        $value = 'new value';
+
+        $this->redis->expects($this->once())
+            ->method('lInsert')
+            ->with($this->equalTo($key),
+                   $this->equalTo($position),
+                   $this->equalTo($pivot),
+                   $this->equalTo($value))
+            ->will($this->returnValue(4));
+
+        $result = $this->client->lInsert($key, $position, $pivot, $value);
+
+        $this->assertEquals(4, $result);
+    }
+
+    public function testLLen()
+    {
+        $key = 'testKey';
+        $return = 11;
+
+        $this->redis->expects($this->once())
+            ->method('lLen')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->lLen($key);
+
+        $this->assertEquals($return, $result);
+    }
+
+    public function testLSize()
+    {
+        $key = 'testKey';
+        $return = 11;
+
+        $this->redis->expects($this->once())
+            ->method('lSize')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->lSize($key);
+
+        $this->assertEquals($return, $result);
+    }
+
 }

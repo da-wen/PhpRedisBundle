@@ -194,4 +194,75 @@ class RedisClientListsIntegrationTest extends AbstractKernelAwareTest
 
     }
 
+    public function testLInsert()
+    {
+        $key = 'srcKey';
+        $value = 'myValue';
+        $value2 = 'my second value';
+        $insertValue = 'insertVAlue';
+
+        $resultPush = $this->client->lPush($key, $value, $value2);
+        $this->assertEquals(2, $resultPush);
+
+        $resultGet1 = $this->client->lGet($key, 1);
+        $this->assertEquals($value, $resultGet1);
+
+        $resultGet0 = $this->client->lGet($key, 0);
+        $this->assertEquals($value2, $resultGet0);
+
+        $resultLInsert = $this->client->lInsert($key, \Redis::BEFORE, $value2, $insertValue);
+        $this->assertEquals(3, $resultLInsert);
+
+        $resultGetNewValue = $this->client->lGet($key, 1);
+        $this->assertEquals($resultGetNewValue, $resultGetNewValue);
+
+        $resultGetNewValue2 = $this->client->lGet($key, 2);
+        $this->assertEquals($resultGetNewValue2, $resultGetNewValue2);
+
+    }
+
+    public function testLInsertNoPivot()
+    {
+        $key = 'srcKey';
+        $value = 'myValue';
+        $insertValue = 'insertVAlue';
+
+        $resultPush = $this->client->lPush($key, $value);
+        $this->assertEquals(1, $resultPush);
+
+        $resultGet0 = $this->client->lGet($key, 0);
+        $this->assertEquals($value, $resultGet0);
+
+        $resultLInsert = $this->client->lInsert($key, \Redis::BEFORE, 'noValue', $insertValue);
+        $this->assertEquals(-1, $resultLInsert);
+    }
+
+    public function testLLen()
+    {
+        $key = 'myKey';
+        $value1 = 'value 1';
+        $value2 = 'value 2';
+        $value3 = 'value 3';
+
+        $resultPush = $this->client->lPush($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultPush);
+
+        $resultLength = $this->client->lLen($key);
+        $this->assertEquals(3, $resultLength);
+    }
+
+    public function testLSize()
+    {
+        $key = 'myKey';
+        $value1 = 'value 1';
+        $value2 = 'value 2';
+        $value3 = 'value 3';
+
+        $resultPush = $this->client->lPush($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultPush);
+
+        $resultLength = $this->client->lSize($key);
+        $this->assertEquals(3, $resultLength);
+    }
+
 }
