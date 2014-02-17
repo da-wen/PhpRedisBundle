@@ -1003,6 +1003,29 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function lPushx($key, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lPushX($key, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('lPushx', $duration, $params);
+        }
+        else
+        {
+            $this->info('lPushx', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function lSet($key, $index, $value)
     {
         $startTime = $this->startMeasure();

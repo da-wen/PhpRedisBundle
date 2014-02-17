@@ -977,6 +977,28 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Adds the string value to the head (left) of the list if the list exists.
+     *
+     * @param   string  $key
+     * @param   string  $value String, value to push in key
+     * @return  int     The new length of the list in case of success, FALSE in case of Failure.
+     * @link    http://redis.io/commands/lpushx
+     * @example
+     * <pre>
+     * $redis->delete('key1');
+     * $redis->lPushx('key1', 'A');     // returns 0
+     * $redis->lPush('key1', 'A');      // returns 1
+     * $redis->lPushx('key1', 'B');     // returns 2
+     * $redis->lPushx('key1', 'C');     // returns 3
+     * // key1 now points to the following list: [ 'A', 'B', 'C' ]
+     * </pre>
+     */
+    public function lPushx($key, $value)
+    {
+        return $this->redis->lPushX($key, $value);
+    }
+
+    /**
      * Set the list at index with the new value.
      *
      * @param string    $key
