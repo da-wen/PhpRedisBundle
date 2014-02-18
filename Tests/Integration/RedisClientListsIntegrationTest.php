@@ -311,6 +311,29 @@ class RedisClientListsIntegrationTest extends AbstractKernelAwareTest
         $this->assertContains($value3, $resultLRange2);
     }
 
+    public function testLGetRange()
+    {
+        $key = 'myKey';
+        $value1 = 'a';
+        $value2 = 'b';
+        $value3 = 'c';
+
+
+        $resultPush = $this->client->lPush($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultPush);
+
+        $resultLRange = $this->client->lGetRange($key, 0, -1);
+        $this->assertCount(3, $resultLRange);
+        $this->assertContains($value1, $resultLRange);
+        $this->assertContains($value2, $resultLRange);
+        $this->assertContains($value3, $resultLRange);
+
+        $resultLRange2 = $this->client->lGetRange($key, 0, 1);
+        $this->assertCount(2, $resultLRange2);
+        $this->assertContains($value2, $resultLRange2);
+        $this->assertContains($value3, $resultLRange2);
+    }
+
 
 
 }

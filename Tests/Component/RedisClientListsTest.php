@@ -246,4 +246,23 @@ class RedisClientListsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($return, $result);
     }
 
+    public function testLGetRange()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $end = -1;
+        $return = array('a', 'b');
+
+        $this->redis->expects($this->once())
+            ->method('lGetRange')
+            ->with($this->equalTo($key),
+                $this->equalTo($start),
+                $this->equalTo($end))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->lGetRange($key, $start, $end);
+
+        $this->assertEquals($return, $result);
+    }
+
 }

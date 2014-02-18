@@ -750,6 +750,15 @@ interface RedisClientInterface
     public function lGet($key, $index);
 
     /**
+     * @see lRange()
+     * @link http://redis.io/commands/lrange
+     * @param string    $key
+     * @param int       $start
+     * @param int       $end
+     */
+    public function lGetRange($key, $start, $end);
+
+    /**
      * Insert value in the list before or after the pivot value. the parameter options
      * specify the position of the insert (before or after). If the list didn't exists,
      * or the pivot didn't exists, the value is not inserted.

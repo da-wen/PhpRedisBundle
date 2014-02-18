@@ -862,6 +862,18 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * @see lRange()
+     * @link http://redis.io/commands/lrange
+     * @param string    $key
+     * @param int       $start
+     * @param int       $end
+     */
+    public function lGetRange($key, $start, $end)
+    {
+        return $this->redis->lGetRange($key, $start, $end);
+    }
+
+    /**
      * Return the specified element of the list stored at the specified key.
      * 0 the first element, 1 the second ... -1 the last element, -2 the penultimate ...
      * Return FALSE in case of a bad index or a key that doesn't point to a list.
