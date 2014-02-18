@@ -334,6 +334,74 @@ class RedisClientListsIntegrationTest extends AbstractKernelAwareTest
         $this->assertContains($value3, $resultLRange2);
     }
 
+    public function testLRem()
+    {
+        $key = 'myKey';
+        $value1 = 'a';
+        $value2 = 'b';
+        $value3 = 'c';
+
+
+        $resultPush1 = $this->client->lPush($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultPush1);
+
+        $resultLRange = $this->client->lGetRange($key, 0, -1);
+        $this->assertCount(3, $resultLRange);
+
+        $resultPush2 = $this->client->lPush($key, $value1);
+        $this->assertEquals(4, $resultPush2);
+
+        $resultLRem = $this->client->lRem($key, $value1, 1);
+        $this->assertEquals(1, $resultLRem);
+
+        $resultLRange = $this->client->lGetRange($key, 0, -1);
+        $this->assertCount(3, $resultLRange);
+
+        $resultPush2 = $this->client->lPush($key, $value1);
+        $this->assertEquals(4, $resultPush2);
+
+        $resultLRem = $this->client->lRem($key, $value1, 2);
+        $this->assertEquals(2, $resultLRem);
+
+        $resultLRange = $this->client->lGetRange($key, 0, -1);
+        $this->assertCount(2, $resultLRange);
+
+    }
+
+    public function testLRemove()
+    {
+        $key = 'myKey';
+        $value1 = 'a';
+        $value2 = 'b';
+        $value3 = 'c';
+
+
+        $resultPush1 = $this->client->lPush($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultPush1);
+
+        $resultLRange = $this->client->lGetRange($key, 0, -1);
+        $this->assertCount(3, $resultLRange);
+
+        $resultPush2 = $this->client->lPush($key, $value1);
+        $this->assertEquals(4, $resultPush2);
+
+        $resultLRem = $this->client->lRemove($key, $value1, 1);
+        $this->assertEquals(1, $resultLRem);
+
+        $resultLRange = $this->client->lGetRange($key, 0, -1);
+        $this->assertCount(3, $resultLRange);
+
+        $resultPush2 = $this->client->lPush($key, $value1);
+        $this->assertEquals(4, $resultPush2);
+
+        $resultLRem = $this->client->lRemove($key, $value1, 2);
+        $this->assertEquals(2, $resultLRem);
+
+        $resultLRange = $this->client->lGetRange($key, 0, -1);
+        $this->assertCount(2, $resultLRange);
+
+    }
+
 
 
 }

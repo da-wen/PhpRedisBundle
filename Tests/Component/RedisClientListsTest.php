@@ -265,4 +265,42 @@ class RedisClientListsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($return, $result);
     }
 
+    public function testLRem()
+    {
+        $key = 'testKey';
+        $value = 'a';
+        $count = 2;
+        $return = 2;
+
+        $this->redis->expects($this->once())
+            ->method('lRem')
+            ->with($this->equalTo($key),
+                $this->equalTo($value),
+                $this->equalTo($count))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->lRem($key, $value, $count);
+
+        $this->assertEquals($return, $result);
+    }
+
+    public function testLRemove()
+    {
+        $key = 'testKey';
+        $value = 'a';
+        $count = 2;
+        $return = 2;
+
+        $this->redis->expects($this->once())
+            ->method('lRemove')
+            ->with($this->equalTo($key),
+                $this->equalTo($value),
+                $this->equalTo($count))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->lRemove($key, $value, $count);
+
+        $this->assertEquals($return, $result);
+    }
+
 }

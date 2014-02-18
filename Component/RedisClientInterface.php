@@ -873,6 +873,41 @@ interface RedisClientInterface
     public function lRange($key, $start, $end);
 
     /**
+     * Removes the first count occurences of the value element from the list.
+     * If count is zero, all the matching elements are removed. If count is negative,
+     * elements are removed from tail to head.
+     *
+     * @param   string  $key
+     * @param   string  $value
+     * @param   int     $count
+     * @return  int     the number of elements to remove
+     * bool FALSE if the value identified by key is not a list.
+     * @link    http://redis.io/commands/lrem
+     * @example
+     * <pre>
+     * $redis->lPush('key1', 'A');
+     * $redis->lPush('key1', 'B');
+     * $redis->lPush('key1', 'C');
+     * $redis->lPush('key1', 'A');
+     * $redis->lPush('key1', 'A');
+     *
+     * $redis->lRange('key1', 0, -1);   // array('A', 'A', 'C', 'B', 'A')
+     * $redis->lRem('key1', 'A', 2);    // 2
+     * $redis->lRange('key1', 0, -1);   // array('C', 'B', 'A')
+     * </pre>
+     */
+    public function lRem($key, $value, $count);
+
+    /**
+     * @see lRem
+     * @link    http://redis.io/commands/lremove
+     * @param string    $key
+     * @param string    $value
+     * @param int       $count
+     */
+    public function lRemove($key, $value, $count);
+
+    /**
      * Set the list at index with the new value.
      *
      * @param string    $key
