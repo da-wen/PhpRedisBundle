@@ -845,6 +845,25 @@ interface RedisClientInterface
     public function lPushx($key, $value);
 
     /**
+     * Returns the specified elements of the list stored at the specified key in
+     * the range [start, end]. start and stop are interpretated as indices: 0 the first element,
+     * 1 the second ... -1 the last element, -2 the penultimate ...
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @return  array containing the values in specified range.
+     * @link    http://redis.io/commands/lrange
+     * @example
+     * <pre>
+     * $redis->rPush('key1', 'A');
+     * $redis->rPush('key1', 'B');
+     * $redis->rPush('key1', 'C');
+     * $redis->lRange('key1', 0, -1); // array('A', 'B', 'C')
+     * </pre>
+     */
+    public function lRange($key, $start, $end);
+
+    /**
      * Set the list at index with the new value.
      *
      * @param string    $key
