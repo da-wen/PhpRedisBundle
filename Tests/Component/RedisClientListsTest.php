@@ -341,4 +341,19 @@ class RedisClientListsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    public function testRPop()
+    {
+        $key = 'testKey';
+        $return = 'value';
+
+        $this->redis->expects($this->once())
+            ->method('rPop')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->rPop($key);
+
+        $this->assertEquals($return, $result);
+    }
+
 }

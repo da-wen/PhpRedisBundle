@@ -12,7 +12,7 @@ WORKING METHODS
 ===============
 * hashes: hDel, hExists, hGet, hGetAll, hIncrBy, hIncrByFloat, hKeys, hLen, hMGet, hMSet, hSet
 * keys: del, dump, exists, expire, expireAt, keys, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
-* lists: brPop, blPop, brPoplPush, lGet, lGetRange, lInsert, lLen, lIndex, lPush, lPushx, lRange, lRem, lRemove, lSet, lSize, lTrim, ListTrim
+* lists: brPop, blPop, brPoplPush, lGet, lGetRange, lInsert, lLen, lIndex, lPush, lPushx, lRange, lRem, lRemove, lSet, lSize, lTrim, ListTrim, rPop
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
 * server: flushDB
 * connection: close, select

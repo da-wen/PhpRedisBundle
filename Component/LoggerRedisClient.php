@@ -1216,6 +1216,29 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function rPop($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->rPop($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('rPop', $duration, $params);
+        }
+        else
+        {
+            $this->info('rPop', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

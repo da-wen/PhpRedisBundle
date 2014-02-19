@@ -1143,6 +1143,25 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns and removes the last element of the list.
+     *
+     * @param   string $key
+     * @return  string if command executed successfully BOOL FALSE in case of failure (empty list)
+     * @link    http://redis.io/commands/rpop
+     * @example
+     * <pre>
+     * $redis->rPush('key1', 'A');
+     * $redis->rPush('key1', 'B');
+     * $redis->rPush('key1', 'C');  // key1 => [ 'A', 'B', 'C' ]
+     * $redis->rPop('key1');        // key1 => [ 'A', 'B' ]
+     * </pre>
+     */
+    public function rPop($key)
+    {
+        return $this->redis->rPop($key);
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */
