@@ -402,6 +402,51 @@ class RedisClientListsIntegrationTest extends AbstractKernelAwareTest
 
     }
 
+    public function testLTrim()
+    {
+        $key = 'myKey';
+        $value1 = 'a';
+        $value2 = 'b';
+        $value3 = 'c';
+
+
+        $resultPush1 = $this->client->lPush($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultPush1);
+
+        $this->assertEquals(3, $this->client->lLen($key));
+
+        $resultTrim = $this->client->lTrim($key, 0, 1);
+        $this->assertTrue($resultTrim);
+
+        $this->assertEquals(2, $this->client->lLen($key));
+
+        $result = $this->client->lRange($key, 0 , -1);
+        $this->assertContains($value2, $result);
+        $this->assertContains($value3, $result);
+    }
+
+    public function testListTrim()
+    {
+        $key = 'myKey';
+        $value1 = 'a';
+        $value2 = 'b';
+        $value3 = 'c';
+
+
+        $resultPush1 = $this->client->lPush($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultPush1);
+
+        $this->assertEquals(3, $this->client->lLen($key));
+
+        $resultTrim = $this->client->listTrim($key, 0, 1);
+        $this->assertTrue($resultTrim);
+
+        $this->assertEquals(2, $this->client->lLen($key));
+
+        $result = $this->client->lRange($key, 0 , -1);
+        $this->assertContains($value2, $result);
+        $this->assertContains($value3, $result);
+    }
 
 
 }

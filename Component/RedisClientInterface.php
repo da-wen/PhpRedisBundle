@@ -936,6 +936,35 @@ interface RedisClientInterface
     public function lSize($key);
 
     /**
+     * Trims an existing list so that it will contain only a specified range of elements.
+     *
+     * @param string    $key
+     * @param int       $start
+     * @param int       $stop
+     * @return bool    Bool return FALSE if the key identify a non-list value.
+     * @link        http://redis.io/commands/ltrim
+     * @example
+     * <pre>
+     * $redis->rPush('key1', 'A');
+     * $redis->rPush('key1', 'B');
+     * $redis->rPush('key1', 'C');
+     * $redis->lRange('key1', 0, -1); // array('A', 'B', 'C')
+     * $redis->lTrim('key1', 0, 1);
+     * $redis->lRange('key1', 0, -1); // array('A', 'B')
+     * </pre>
+     */
+    public function lTrim($key, $start, $stop);
+
+    /**
+     * @see lTrim()
+     * @link  http://redis.io/commands/ltrim
+     * @param string    $key
+     * @param int       $start
+     * @param int       $stop
+     */
+    public function listTrim($key, $start, $stop);
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

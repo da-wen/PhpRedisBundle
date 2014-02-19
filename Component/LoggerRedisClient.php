@@ -1166,6 +1166,56 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function lTrim($key, $start, $stop)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lTrim($key, $start, $stop);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key,
+                        'start' => $start,
+                        'stop' => $stop);
+
+        if(false === $result)
+        {
+            $this->warning('lTrim', $duration, $params);
+        }
+        else
+        {
+            $this->info('lTrim', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function listTrim($key, $start, $stop)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->listTrim($key, $start, $stop);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key,
+            'start' => $start,
+            'stop' => $stop);
+
+        if(false === $result)
+        {
+            $this->warning('listTrim', $duration, $params);
+        }
+        else
+        {
+            $this->info('listTrim', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

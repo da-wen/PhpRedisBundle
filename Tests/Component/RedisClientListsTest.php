@@ -303,4 +303,42 @@ class RedisClientListsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($return, $result);
     }
 
+    public function testLTrim()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $stop = 2;
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('lTrim')
+            ->with($this->equalTo($key),
+                   $this->equalTo($start),
+                   $this->equalTo($stop))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->lTrim($key, $start, $stop);
+
+        $this->assertTrue($result);
+    }
+
+    public function testListTrim()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $stop = 2;
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('listTrim')
+            ->with($this->equalTo($key),
+                $this->equalTo($start),
+                $this->equalTo($stop))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->listTrim($key, $start, $stop);
+
+        $this->assertTrue($result);
+    }
+
 }
