@@ -1239,6 +1239,29 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function rPopLPush($srcKey, $dstKey)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->rPopLPush($srcKey, $dstKey);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('srcKey' => $srcKey, 'dstKey' => $dstKey);
+
+        if(false === $result)
+        {
+            $this->warning('rpoplpush', $duration, $params);
+        }
+        else
+        {
+            $this->info('rpoplpush', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */

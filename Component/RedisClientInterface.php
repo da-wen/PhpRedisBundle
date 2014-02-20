@@ -981,6 +981,48 @@ interface RedisClientInterface
     public function rPop($key);
 
     /**
+     * Pops a value from the tail of a list, and pushes it to the front of another list.
+     * Also return this value.
+     *
+     * @since   redis >= 1.1
+     * @param   string  $srcKey
+     * @param   string  $dstKey
+     * @return  string  The element that was moved in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/rpoplpush
+     * @example
+     * <pre>
+     * $redis->delete('x', 'y');
+     *
+     * $redis->lPush('x', 'abc');
+     * $redis->lPush('x', 'def');
+     * $redis->lPush('y', '123');
+     * $redis->lPush('y', '456');
+     *
+     * // move the last of x to the front of y.
+     * var_dump($redis->rpoplpush('x', 'y'));
+     * var_dump($redis->lRange('x', 0, -1));
+     * var_dump($redis->lRange('y', 0, -1));
+     *
+     * //Output:
+     * //
+     * //string(3) "abc"
+     * //array(1) {
+     * //  [0]=>
+     * //  string(3) "def"
+     * //}
+     * //array(3) {
+     * //  [0]=>
+     * //  string(3) "abc"
+     * //  [1]=>
+     * //  string(3) "456"
+     * //  [2]=>
+     * //  string(3) "123"
+     * //}
+     * </pre>
+     */
+    public function rPopLPush($srcKey, $dstKey);
+
+    /**
      * SERVER
      * *************************************************************************************************
      */
