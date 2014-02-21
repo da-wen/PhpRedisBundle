@@ -524,4 +524,33 @@ class RedisClientListsIntegrationTest extends AbstractKernelAwareTest
         $resultRPushSingle = $this->client->rPush($key, 'testVal');
         $this->assertEquals(5, $resultRPushSingle);
     }
+
+    public function testRPushx()
+    {
+        $key = 'testKey';
+        $value1 = 'a';
+        $value2 = 'b';
+        $value3 = 'c';
+
+        $resultNoKey = $this->client->rPushx('noKey', 'noValue');
+        $this->assertEquals(0, $resultNoKey);
+
+        $this->assertEquals(0, $this->client->lLen('noKey'));
+
+        $resultLPush = $this->client->lPush($key, $value1);
+        $this->assertEquals(1, $resultLPush);
+
+        $resultRPushx = $this->client->rPushx($key, $value2);
+        $this->assertEquals(2, $resultRPushx);
+
+        $resultRPushx = $this->client->rPushx($key, $value3);
+        $this->assertEquals(3, $resultRPushx);
+
+        $resultRange = $this->client->lRange($key, 0 , -1);
+        $this->assertCount(3, $resultRange);
+        $this->assertEquals($value1, $resultRange[0]);
+        $this->assertEquals($value2, $resultRange[1]);
+        $this->assertEquals($value3, $resultRange[2]);
+
+    }
 }

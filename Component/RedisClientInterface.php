@@ -1048,6 +1048,25 @@ interface RedisClientInterface
     public function rPush($key, $value1, $value2 = null, $valueN = null);
 
     /**
+     * Adds the string value to the tail (right) of the list if the ist exists. FALSE in case of Failure.
+     *
+     * @param   string  $key
+     * @param   string  $value String, value to push in key
+     * @return  int     The new length of the list in case of success, FALSE in case of Failure.
+     * @link    http://redis.io/commands/rpushx
+     * @example
+     * <pre>
+     * $redis->delete('key1');
+     * $redis->rPushx('key1', 'A'); // returns 0
+     * $redis->rPush('key1', 'A'); // returns 1
+     * $redis->rPushx('key1', 'B'); // returns 2
+     * $redis->rPushx('key1', 'C'); // returns 3
+     * // key1 now points to the following list: [ 'A', 'B', 'C' ]
+     * </pre>
+     */
+    public function rPushx($key, $value);
+
+    /**
      * SERVER
      * *************************************************************************************************
      */
