@@ -12,14 +12,14 @@ WORKING METHODS
 ===============
 * hashes: hDel, hExists, hGet, hGetAll, hIncrBy, hIncrByFloat, hKeys, hLen, hMGet, hMSet, hSet
 * keys: del, dump, exists, expire, expireAt, keys, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
-* lists: brPop, blPop, brPoplPush, lGet, lGetRange, lInsert, lLen, lIndex, lPush, lPushx, lRange, lRem, lRemove, lSet, lSize, lTrim, ListTrim, rPop, rPopLPush
+* lists: brPop, blPop, brPoplPush, lGet, lGetRange, lInsert, lLen, lIndex, lPush, lPushx, lRange, lRem, lRemove, lSet, lSize, lTrim, ListTrim, rPop, rPopLPush, rPush
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
 * server: flushDB
 * connection: close, select
 
 Missing Integration Tests
 =========================
-* keys: sort (waiting for sadd function)
+* keys: sort (waiting for sadd function)s
 * lists: blPop, brPop
 
 Methods Ignored
@@ -38,7 +38,9 @@ Method Informations
 * set: parameter timeout is defined as float in docbloc and function. It is an int or long. Float will rase an error
 * bitOf: always returns 0
 * migrate: returns false when successful
-* lTrim, listTrim: return value is commented as array. Bool will be returned
+* lTrim: listTrim: return value is commented as array. Bool will be returned
+* lPush: if optional parameter will be null, it inserts plank strings
+* rPush: if optional parameter will be null, it inserts plank strings
 
 Configuration
 =============

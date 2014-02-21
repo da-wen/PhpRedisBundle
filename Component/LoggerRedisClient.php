@@ -1251,11 +1251,34 @@ class LoggerRedisClient implements RedisClientInterface
 
         if(false === $result)
         {
-            $this->warning('rpoplpush', $duration, $params);
+            $this->warning('rPopLPush', $duration, $params);
         }
         else
         {
-            $this->info('rpoplpush', $duration, $params);
+            $this->info('rPopLPush', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rPush($key, $value1, $value2 = null, $valueN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->rPush($key, $value1, $value2, $valueN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false === $result)
+        {
+            $this->warning('rPush', $duration, $params);
+        }
+        else
+        {
+            $this->info('rPush', $duration, $params);
         }
 
         return $result;

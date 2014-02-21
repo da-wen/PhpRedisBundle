@@ -1207,6 +1207,40 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Adds the string values to the tail (right) of the list. Creates the list if the key didn't exist.
+     * If the key exists and is not a list, FALSE is returned.
+     *
+     * @param   string  $key
+     * @param   string  $value1 String, value to push in key
+     * @param   string  $value2 Optional
+     * @param   string  $valueN Optional
+     * @return  int     The new length of the list in case of success, FALSE in case of Failure.
+     * @link    http://redis.io/commands/rpush
+     * @example
+     * <pre>
+     * $redis->rPush('l', 'v1', 'v2', 'v3', 'v4');    // int(4)
+     * var_dump( $redis->lRange('l', 0, -1) );
+     * //// Output:
+     * // array(4) {
+     * //   [0]=> string(2) "v1"
+     * //   [1]=> string(2) "v2"
+     * //   [2]=> string(2) "v3"
+     * //   [3]=> string(2) "v4"
+     * // }
+     * </pre>
+     */
+    public function rPush($key, $value1, $value2 = null, $valueN = null)
+    {
+
+        if(null === $value2) {
+            return $this->redis->lPush($key, $value1);
+        } elseif(null === $valueN) {
+            return $this->redis->lPush($key, $value1, $value2);
+        }
+        return $this->redis->rPush($key, $value1, $value2, $valueN);
+    }
+
+    /**
      * SERVER
      * *************************************************************************************************
      */
