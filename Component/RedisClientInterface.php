@@ -24,6 +24,22 @@ interface RedisClientInterface
     public function close();
 
     /**
+     * returns the givel values as string
+     *
+     * @param string
+     * @return string
+     */
+    public function cEcho($value);
+
+    /**
+     * Check the current connection status
+     *
+     * @return  string STRING: +PONG on success. Throws a RedisException object on connectivity error, as described above.
+     * @link    http://redis.io/commands/ping
+     */
+    public function ping();
+
+    /**
      * Switches to a given database.
      *
      * @param   int     $dbindex
@@ -39,6 +55,22 @@ interface RedisClientInterface
      * </pre>
      */
     public function select($dbindex);
+
+    /**
+     * Set client option.
+     *
+     * @param   string  $name    parameter name
+     * @param   string  $value   parameter value
+     * @return  bool:   TRUE on success, FALSE on error.
+     * @example
+     * <pre>
+     * $redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_NONE);        // don't serialize data
+     * $redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);         // use built-in serialize/unserialize
+     * $redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_IGBINARY);    // use igBinary serialize/unserialize
+     * $redis->setOption(Redis::OPT_PREFIX, 'myAppName:');                      // use custom prefix on all keys
+     * </pre>
+     */
+    public function setOption($name, $value);
 
     /**
      * HASHES

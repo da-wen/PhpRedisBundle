@@ -70,6 +70,56 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function cEcho($value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->cEcho($value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('value' => $value);
+        if(false === $result)
+        {
+            $this->warning('cEcho', $duration, $params);
+        }
+        else
+        {
+            $this->info('cEcho', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function ping()
+    {
+        $startTime = $this->startMeasure();
+        $exception = null;
+        $result = null;
+        try {
+            $result = $this->redis->ping();
+        } catch(\Exception $e) {
+            $exception = $e;
+        }
+
+        $duration = $this->endMeasure($startTime);
+
+        if(null !== $exception)
+        {
+            $this->warning('ping', $duration, array());
+        }
+        else
+        {
+            $this->info('ping', $duration, array());
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function select($dbindex)
     {
         $startTime = $this->startMeasure();
@@ -84,6 +134,28 @@ class LoggerRedisClient implements RedisClientInterface
         else
         {
             $this->info('select', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setOption($name, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->setOption($name, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('name' => $name, 'value' => $value);
+        if(false === $result)
+        {
+            $this->warning('setOption', $duration, $params);
+        }
+        else
+        {
+            $this->info('setOption', $duration, $params);
         }
 
         return $result;

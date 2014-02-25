@@ -102,4 +102,36 @@ class RedisClientConnectionIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue($exists);
     }
 
+    public function testCEcho()
+    {
+        $value = 'testechostring';
+
+        $result = $this->client->cEcho($value);
+        $this->assertSame($value, $result);
+    }
+
+    public function testPing()
+    {
+        $result = $this->client->ping();
+        $this->assertSame('+PONG', $result);
+    }
+
+    public function testSetOption()
+    {
+        $name = \Redis::OPT_PREFIX;
+        $valuePrefix = 'AllKEyPrefix_';
+        $key = 'myKey';
+        $value = 'testValue';
+
+        $resultSetOption = $this->client->setOption($name, $valuePrefix);
+        $this->assertTrue($resultSetOption);
+
+        $resultSet = $this->client->set($key, $value);
+        $this->assertTrue($resultSet);
+
+        $resultKeys = $this->client->keys('*');
+        $this->assertContains($valuePrefix . $key, $resultKeys);
+
+    }
+
 }
