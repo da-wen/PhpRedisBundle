@@ -92,6 +92,28 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function getOption($name)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->getOption($name);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('name' => $name);
+        if(false === $result)
+        {
+            $this->warning('getOption', $duration, $params);
+        }
+        else
+        {
+            $this->info('getOption', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function ping()
     {
         $startTime = $this->startMeasure();

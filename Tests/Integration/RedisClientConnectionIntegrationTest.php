@@ -134,4 +134,13 @@ class RedisClientConnectionIntegrationTest extends AbstractKernelAwareTest
 
     }
 
+    public function testGetOption()
+    {
+        $name = \Redis::OPT_SERIALIZER;
+        $expected = \Redis::SERIALIZER_NONE;
+
+        $resultGetOption = $this->client->getOption($name);
+        $this->assertSame($expected, $resultGetOption);
+    }
+
 }

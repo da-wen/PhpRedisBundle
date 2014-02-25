@@ -94,6 +94,21 @@ class RedisClientConnectionTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testGetOption()
+    {
+        $name = 'testName';
+        $value = 'testValue';
+        $return = 0;
+
+        $this->redis->expects($this->once())
+            ->method('getOption')
+            ->with($this->equalTo($name))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->getOption($name);
+        $this->assertSame($return, $result);
+    }
+
 //    public function testCEcho()
 //    {
 //        $value = 'myVal';

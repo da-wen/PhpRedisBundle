@@ -51,6 +51,20 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Get client option
+     *
+     * @param   string  $name parameter name
+     * @return  int     Parameter value.
+     * @example
+     * // return Redis::SERIALIZER_NONE, Redis::SERIALIZER_PHP, or Redis::SERIALIZER_IGBINARY.
+     * $redis->getOption(Redis::OPT_SERIALIZER);
+     */
+    public function getOption($name)
+    {
+        return $this->redis->getOption($name);
+    }
+
+    /**
      * Check the current connection status
      *
      * @return  string STRING: +PONG on success. Throws a RedisException object on connectivity error, as described above.
