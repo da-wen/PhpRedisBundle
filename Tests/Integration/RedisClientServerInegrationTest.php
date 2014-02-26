@@ -123,6 +123,12 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue($result);
     }
 
+    public function testBgsave()
+    {
+        $result = $this->client->bgsave();
+        $this->assertFalse($result);
+    }
+
 
 
 }

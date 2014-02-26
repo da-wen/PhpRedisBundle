@@ -127,5 +127,18 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testbgsave()
+    {
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('bgsave')
+            ->will($this->returnValue($return));
+
+        $result = $this->client->bgsave();
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

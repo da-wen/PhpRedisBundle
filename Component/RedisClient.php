@@ -1348,6 +1348,19 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Performs a background save.
+     *
+     * @return  bool:    TRUE in case of success, FALSE in case of failure.
+     * If a save is already running, this command will fail and return FALSE.
+     * @link    http://redis.io/commands/bgsave
+     * @example $redis->bgSave();
+     */
+    public function bgsave()
+    {
+        return $this->redis->bgsave();
+    }
+
+    /**
      * Get or Set the redis config keys.
      *
      * @param   string  $operation  either `GET` or `SET`

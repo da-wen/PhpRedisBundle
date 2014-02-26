@@ -1446,7 +1446,28 @@ class LoggerRedisClient implements RedisClientInterface
         }
 
         return $result;
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function bgsave()
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->bgsave();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if(false !== $result)
+        {
+            $this->info('bgsafe', $duration, $params);
+        }
+        else
+        {
+            $this->error('bgsafe', $duration, $params);
+        }
+
+        return $result;
     }
 
     /**
