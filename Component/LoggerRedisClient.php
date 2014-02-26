@@ -1429,6 +1429,28 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function config($operation, $key, $value = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->config($operation, $key, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if(false !== $result)
+        {
+            $this->info('config', $duration, $params);
+        }
+        else
+        {
+            $this->error('config', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function flushDB()
     {
         $startTime = $this->startMeasure();

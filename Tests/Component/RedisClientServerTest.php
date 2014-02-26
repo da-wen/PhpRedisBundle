@@ -9,6 +9,7 @@
 namespace Dawen\Bundle\PhpRedisBundle\Tests\Component;
 
 use Dawen\Bundle\PhpRedisBundle\Component\RedisClient;
+use Dawen\Bundle\PhpRedisBundle\Component\RedisClientInterface;
 
 class RedisClientServerTest extends \PHPUnit_Framework_TestCase
 {
@@ -54,5 +55,62 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
         $result = $this->client->flushDB();
 
         $this->assertTrue($result);
+    }
+
+    public function testConfigGet()
+    {
+
+        $operation = RedisClientInterface::CONFIG_OPERATION_GET;
+        $key = 'testKey';
+        $return = array('a', 'b');
+
+        $this->redis->expects($this->once())
+            ->method('config')
+            ->with($this->equalTo($operation),
+                   $this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->config($operation, $key);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testConfigSet()
+    {
+
+        $operation = RedisClientInterface::CONFIG_OPERATION_SET;
+        $key = 'testKey';
+        $value = 'my val';
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('config')
+            ->with($this->equalTo($operation),
+                   $this->equalTo($key),
+                   $this->equalTo($value))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->config($operation, $key, $value);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testConfigSetNullVal()
+    {
+
+        $operation = RedisClientInterface::CONFIG_OPERATION_SET;
+        $key = 'testKey';
+        $value = null;
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('config')
+            ->with($this->equalTo($operation),
+                $this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->config($operation, $key, $value);
+
+        $this->assertSame($return, $result);
     }
 }

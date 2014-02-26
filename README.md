@@ -14,7 +14,7 @@ WORKING METHODS
 * keys: del, dump, exists, expire, expireAt, keys, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
 * lists: brPop, blPop, brPoplPush, lGet, lGetRange, lInsert, lLen, lIndex, lPush, lPushx, lRange, lRem, lRemove, lSet, lSize, lTrim, ListTrim, rPop, rPopLPush, rPush, rPushx
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* server: flushDB
+* server: config, flushDB
 * connection: auth, close, echo (cEcho), getOption, ping, select, setOption
 
 Missing Integration Tests
@@ -24,6 +24,7 @@ Missing Integration Tests
 
 Methods Ignored
 ===============
+* connection: connect, pconnect, open, popen
 * strings: delete, incrBy, decrBy, getMultiple, mSetNx, psetex
 * keys: getKeys, setTimeout, pexpire, pexpireAt, renameKey, pttl
 

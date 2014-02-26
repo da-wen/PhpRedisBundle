@@ -9,12 +9,13 @@
 namespace Dawen\Bundle\PhpRedisBundle\Tests\Integration;
 
 use Dawen\Bundle\PhpRedisBundle\Component\RedisClient;
+use Dawen\Bundle\PhpRedisBundle\Component\RedisClientInterface;
 use Dawen\Bundle\PhpRedisBundle\Tests\Fixtures\AbstractKernelAwareTest;
 
 class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
 {
 
-    /** @var RedisClient */
+    /** @var RedisClientInterface */
     private $client;
 
     private $skipped = false;
@@ -85,6 +86,35 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
 
         $keys = $this->client->keys('*');
         $this->assertEmpty($keys);
+    }
+
+    public function testConfigGet()
+    {
+        $key = '*';
+
+        $resultConfigGet = $this->client->config(RedisClientInterface::CONFIG_OPERATION_GET, $key);
+        $this->assertLessThan(count($resultConfigGet),20);
+
+    }
+
+    public function testConfigSet()
+    {
+        $key = 'maxmemory-samples';
+        $newValue = 5;
+
+        $resultConfigGet = $this->client->config(RedisClientInterface::CONFIG_OPERATION_GET, $key);
+
+        $resultSetNew = $this->client->config(RedisClientInterface::CONFIG_OPERATION_SET, $key, $newValue);
+        $this->assertTrue($resultSetNew);
+
+        $resultConfigAfterSet = $this->client->config(RedisClientInterface::CONFIG_OPERATION_GET, $key);
+        $this->assertEquals(5, $resultConfigAfterSet[$key]);
+
+        $resultSetOld = $this->client->config(RedisClientInterface::CONFIG_OPERATION_SET, $key, $resultConfigGet[$key]);
+        $this->assertTrue($resultSetOld);
+
+        $resultConfigLastGet = $this->client->config(RedisClientInterface::CONFIG_OPERATION_GET, $key);
+        $this->assertEquals(3, $resultConfigLastGet[$key]);
     }
 
 
