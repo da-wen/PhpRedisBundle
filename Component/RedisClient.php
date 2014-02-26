@@ -1336,6 +1336,18 @@ class RedisClient implements RedisClientInterface
      */
 
     /**
+     * Starts the background rewrite of AOF (Append-Only File)
+     *
+     * @return  bool:   TRUE in case of success, FALSE in case of failure.
+     * @link    http://redis.io/commands/bgrewriteaof
+     * @example $redis->bgrewriteaof();
+     */
+    public function bgrewriteaof()
+    {
+        return $this->redis->bgrewriteaof();
+    }
+
+    /**
      * Get or Set the redis config keys.
      *
      * @param   string  $operation  either `GET` or `SET`

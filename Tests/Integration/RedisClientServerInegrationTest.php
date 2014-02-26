@@ -117,6 +117,12 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals(3, $resultConfigLastGet[$key]);
     }
 
+    public function testBgrewriteaof()
+    {
+        $result = $this->client->bgrewriteaof();
+        $this->assertTrue($result);
+    }
+
 
 
 }

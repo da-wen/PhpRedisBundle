@@ -113,4 +113,19 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($return, $result);
     }
+
+    public function testbgrewriteaof()
+    {
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('bgrewriteaof')
+            ->will($this->returnValue($return));
+
+        $result = $this->client->bgrewriteaof();
+
+        $this->assertSame($return, $result);
+    }
+
+
 }

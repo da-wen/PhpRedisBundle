@@ -1429,6 +1429,29 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function bgrewriteaof()
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->bgrewriteaof();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if(false !== $result)
+        {
+            $this->info('bgrewriteaof', $duration, $params);
+        }
+        else
+        {
+            $this->error('bgrewriteaof', $duration, $params);
+        }
+
+        return $result;
+
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function config($operation, $key, $value = null)
     {
         $startTime = $this->startMeasure();
