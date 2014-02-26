@@ -30,6 +30,20 @@ class RedisClient implements RedisClientInterface
      */
 
     /**
+     * Authenticate the connection using a password.
+     * Warning: The password is sent in plain-text over the network.
+     *
+     * @param   string  $password
+     * @return  bool:   TRUE if the connection is authenticated, FALSE otherwise.
+     * @link    http://redis.io/commands/auth
+     * @example $redis->auth('foobared');
+     */
+    public function auth($password)
+    {
+        return $this->redis->auth($password);
+    }
+
+    /**
      * Disconnects from the Redis instance, except when pconnect is used.
      *
      * @return void

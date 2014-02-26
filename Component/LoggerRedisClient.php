@@ -53,9 +53,29 @@ class LoggerRedisClient implements RedisClientInterface
      */
 
     /**
-     * Disconnects from the Redis instance, except when pconnect is used.
-     *
-     * @return void
+     * @inheritdoc
+     */
+    public function auth($password)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->auth($password);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('password' => $password);
+        if(false === $result)
+        {
+            $this->warning('auth', $duration, $params);
+        }
+        else
+        {
+            $this->info('auth', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function close()
     {

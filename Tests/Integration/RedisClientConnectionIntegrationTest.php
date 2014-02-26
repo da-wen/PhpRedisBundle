@@ -143,4 +143,12 @@ class RedisClientConnectionIntegrationTest extends AbstractKernelAwareTest
         $this->assertSame($expected, $resultGetOption);
     }
 
+    public function testAuth()
+    {
+        $password = 'testPass';
+
+        $resultAuth = $this->client->auth($password);
+        $this->assertFalse($resultAuth);
+    }
+
 }
