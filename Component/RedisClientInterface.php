@@ -1183,6 +1183,29 @@ interface RedisClientInterface
     public function flushDB();
 
     /**
+     * SETS
+     * *************************************************************************************************
+     */
+
+    /**
+     * Adds a values to the set value stored at key.
+     * If this value is already in the set, FALSE is returned.
+     *
+     * @param   string  $key        Required key
+     * @param   string  $value1     Required value
+     * @param   string  $value2     Optional value
+     * @param   string  $valueN     Optional value
+     * @return  int     The number of elements added to the set
+     * @link    http://redis.io/commands/sadd
+     * @example
+     * <pre>
+     * $redis->sAdd('k', 'v1');                // int(1)
+     * $redis->sAdd('k', 'v1', 'v2', 'v3');    // int(2)
+     * </pre>
+     */
+    public function sAdd($key, $value1, $value2 = null, $valueN = null);
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */
