@@ -20,6 +20,8 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
 
     private $skipped = false;
 
+    private $params;
+
     public function setUp()
     {
         parent::setUp();
@@ -36,6 +38,8 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
                     $this->markTestSkipped('could not connect to server');
                 }
                 $redis->select($redisParams['db']);
+
+                $this->params = $redisParams;
 
                 $this->client = new RedisClient($redis);
             }
@@ -62,6 +66,7 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
             $this->client->close();
         }
 
+        $this->params = null;
         $this->client = null;
         $this->skipped = false;
     }
@@ -128,6 +133,27 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
 //        $result = $this->client->bgsave();
 //        $this->assertFalse($result);
 //    }
+
+    public function testFlushAll()
+    {
+        $this->client->set('myKey', 'myVal');
+        $this->assertCount(1, $this->client->keys('*'));
+
+        $this->client->select($this->params['db2']);
+
+        $this->client->set('myKey', 'myVal');
+        $this->assertCount(1, $this->client->keys('*'));
+
+        $result = $this->client->flushAll();
+        $this->assertTrue($result);
+
+        $this->assertCount(0, $this->client->keys('*'));
+
+        $this->client->select($this->params['db']);
+
+        $this->assertCount(0, $this->client->keys('*'));
+
+    }
 
 
 

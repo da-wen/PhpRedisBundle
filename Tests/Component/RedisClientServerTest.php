@@ -45,6 +45,18 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Dawen\Bundle\PhpRedisBundle\Component\RedisClientInterface', $this->client);
     }
 
+    public function testFlushAll()
+    {
+
+        $this->redis->expects($this->once())
+            ->method('flushAll')
+            ->will($this->returnValue(true));
+
+        $result = $this->client->flushAll();
+
+        $this->assertTrue($result);
+    }
+
     public function testFlushDB()
     {
 

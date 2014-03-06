@@ -1165,6 +1165,15 @@ interface RedisClientInterface
     public function config($operation, $key, $value = null);
 
     /**
+     * Removes all entries from all databases.
+     *
+     * @return  bool: Always TRUE.
+     * @link    http://redis.io/commands/flushall
+     * @example $redis->flushAll();
+     */
+    public function flushAll();
+
+    /**
      * Removes all entries from the current database.
      *
      * @return  bool: Always TRUE.
