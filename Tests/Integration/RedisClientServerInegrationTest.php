@@ -162,6 +162,26 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals(1, $this->client->dbSize());
     }
 
+    public function testInfo()
+    {
+        $result = $this->client->info();
+
+        $this->assertContains('process_id', $result);
+        $this->assertContains('redis_version', $result);
+
+
+    }
+
+    public function testInfoOption()
+    {
+        $result = $this->client->info('CPU');
+
+        $this->assertNotContains('process_id', $result);
+        $this->assertNotContains('redis_version', $result);
+        $this->assertTrue(isset($result['used_cpu_sys']));
+        $this->assertTrue(isset($result['used_cpu_user']));
+    }
+
 
 
 }

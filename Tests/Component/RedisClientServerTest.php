@@ -165,5 +165,32 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testInfo()
+    {
+        $option = null;
+        $return = array('testinfo' => 'value');
 
+        $this->redis->expects($this->once())
+                    ->method('info')
+                    ->will($this->returnValue($return));
+
+        $result = $this->client->info($option);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testInfoParam()
+    {
+        $option = 'CPU';
+        $return = array('testinfo' => 'value');
+
+        $this->redis->expects($this->once())
+            ->method('info')
+                    ->with($this->equalTo($option))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->info($option);
+
+        $this->assertSame($return, $result);
+    }
 }
