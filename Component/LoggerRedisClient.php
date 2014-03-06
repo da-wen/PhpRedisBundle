@@ -1495,6 +1495,27 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function dbSize(){
+        $startTime = $this->startMeasure();
+        $result = $this->redis->dbSize();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if($result)
+        {
+            $this->info('dbSize', $duration, $params);
+        }
+        else
+        {
+            $this->error('dbSize', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function flushAll()
     {
         $startTime = $this->startMeasure();

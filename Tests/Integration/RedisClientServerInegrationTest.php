@@ -155,6 +155,13 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
 
     }
 
+    public function testDbSize()
+    {
+        $this->assertEquals(0, $this->client->dbSize());
+        $this->client->set('myKey', 'myVal');
+        $this->assertEquals(1, $this->client->dbSize());
+    }
+
 
 
 }

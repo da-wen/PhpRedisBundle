@@ -152,5 +152,18 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testdbSize()
+    {
+        $return = 4;
+
+        $this->redis->expects($this->once())
+            ->method('dbSize')
+            ->will($this->returnValue($return));
+
+        $result = $this->client->dbSize();
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

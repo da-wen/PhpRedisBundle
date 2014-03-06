@@ -1417,6 +1417,22 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the current database's size.
+     *
+     * @return int:     DB size, in number of keys.
+     * @link    http://redis.io/commands/dbsize
+     * @example
+     * <pre>
+     * $count = $redis->dbSize();
+     * echo "Redis has $count keys\n";
+     * </pre>
+     */
+    public function dbSize()
+    {
+        return $this->redis->dbSize();
+    }
+
+    /**
      * Removes all entries from all databases.
      *
      * @return  bool: Always TRUE.
