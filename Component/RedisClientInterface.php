@@ -1292,6 +1292,27 @@ interface RedisClientInterface
     public function save();
 
     /**
+     * Describes the object pointed to by a key.
+     * The information to retrieve (string) and the key (string).
+     * Info can be one of the following:
+     * - "encoding"
+     * - "refcount"
+     * - "idletime"
+     *
+     * @param string $host
+     * @param int $port
+     * @return  string  for "encoding", int for "refcount" and "idletime", FALSE if the key doesn't exist.
+     * @link    http://redis.io/commands/object
+     * @example
+     * <pre>
+     * $redis->object("encoding", "l"); // → ziplist
+     * $redis->object("refcount", "l"); // → 1
+     * $redis->object("idletime", "l"); // → 400 (in seconds, with a precision of 10 seconds).
+     * </pre>
+     */
+    public function slaveof($host = '127.0.0.1', $port = 6379);
+
+    /**
      * SETS
      * *************************************************************************************************
      */

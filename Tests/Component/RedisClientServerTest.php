@@ -232,4 +232,21 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($return, $result);
     }
+
+    public function testSlaveof()
+    {
+        $host = '111.111.111.222';
+        $port = 12345;
+        $return = 1;
+
+        $this->redis->expects($this->once())
+                    ->method('slaveof')
+                    ->with($this->equalTo($host),
+                           $this->equalTo($port))
+                    ->will($this->returnValue($return));
+
+        $result = $this->client->slaveof($host, $port);
+
+        $this->assertSame($return, $result);
+    }
 }

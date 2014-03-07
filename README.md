@@ -15,13 +15,14 @@ WORKING METHODS
 * lists: brPop, blPop, brPoplPush, lGet, lGetRange, lInsert, lLen, lIndex, lPush, lPushx, lRange, lRem, lRemove, lSet, lSize, lTrim, ListTrim, rPop, rPopLPush, rPush, rPushx
 * sets: sAdd
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
-* server: bgrewriteaof, bgsave, config, dbSize, flushAll, flushDB, info, lastSave, resetStat, save
+* server: bgrewriteaof, bgsave, config, dbSize, flushAll, flushDB, info, lastSave, resetStat, save, slaveOf
 * connection: auth, close, echo (cEcho), getOption, ping, select, setOption
 
 Missing Integration Tests
 =========================
 * keys: sort (waiting for sadd function)s
-* lists: blPop, brPop
+* lists: blPop, brPop,
+* serve: resetStats, slaveOf
 
 Methods Ignored
 ===============
