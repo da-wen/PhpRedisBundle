@@ -68,7 +68,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('auth', $duration, $params);
+            $this->logInfo('auth', $duration, $params);
         }
 
         return $result;
@@ -84,7 +84,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
         $params = array();
-        $this->info('close', $duration, $params);
+        $this->logInfo('close', $duration, $params);
     }
 
     /**
@@ -103,7 +103,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('cEcho', $duration, $params);
+            $this->logInfo('cEcho', $duration, $params);
         }
 
         return $result;
@@ -125,7 +125,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('getOption', $duration, $params);
+            $this->logInfo('getOption', $duration, $params);
         }
 
         return $result;
@@ -153,7 +153,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('ping', $duration, array());
+            $this->logInfo('ping', $duration, array());
         }
 
         return $result;
@@ -175,7 +175,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('select', $duration, $params);
+            $this->logInfo('select', $duration, $params);
         }
 
         return $result;
@@ -197,7 +197,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('setOption', $duration, $params);
+            $this->logInfo('setOption', $duration, $params);
         }
 
         return $result;
@@ -258,7 +258,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hDel', $duration, $params);
+            $this->logInfo('hDel', $duration, $params);
         }
 
         return $result;
@@ -285,7 +285,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
         $params = array('key' => $key, 'hashKey' => $hashKey);
-        $this->info('hExists', $duration, $params);
+        $this->logInfo('hExists', $duration, $params);
 
         return $result;
     }
@@ -306,7 +306,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hGet', $duration, $params);
+            $this->logInfo('hGet', $duration, $params);
         }
 
         return $result;
@@ -328,7 +328,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hGetAll', $duration, $params);
+            $this->logInfo('hGetAll', $duration, $params);
         }
 
         return $result;
@@ -350,7 +350,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hIncrBy', $duration, $params);
+            $this->logInfo('hIncrBy', $duration, $params);
         }
 
         return $result;
@@ -372,7 +372,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hIncrByFloat', $duration, $params);
+            $this->logInfo('hIncrByFloat', $duration, $params);
         }
 
         return $result;
@@ -394,7 +394,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hKeys', $duration, $params);
+            $this->logInfo('hKeys', $duration, $params);
         }
 
         return $result;
@@ -416,7 +416,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hLen', $duration, $params);
+            $this->logInfo('hLen', $duration, $params);
         }
 
         return $result;
@@ -438,7 +438,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hMGet', $duration, $params);
+            $this->logInfo('hMGet', $duration, $params);
         }
 
         return $result;
@@ -460,7 +460,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hMSet', $duration, $params);
+            $this->logInfo('hMSet', $duration, $params);
         }
 
         return $result;
@@ -482,7 +482,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hSet', $duration, $params);
+            $this->logInfo('hSet', $duration, $params);
         }
 
         return $result;
@@ -504,7 +504,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hSetNx', $duration, $params);
+            $this->logInfo('hSetNx', $duration, $params);
         }
 
         return $result;
@@ -526,7 +526,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('hVals', $duration, $params);
+            $this->logInfo('hVals', $duration, $params);
         }
 
         return $result;
@@ -551,7 +551,7 @@ class LoggerRedisClient implements RedisClientInterface
                         , 'key3' => $key3
                         , 'result' => $result);
 
-        $this->info('del', $duration, $params);
+        $this->logInfo('del', $duration, $params);
 
         return $result;
     }
@@ -572,7 +572,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('dump', $duration, $params);
+            $this->logInfo('dump', $duration, $params);
         }
 
         return $result;
@@ -589,7 +589,7 @@ class LoggerRedisClient implements RedisClientInterface
 
         $params = array('key' => $key);
 
-        $this->info('exists', $duration, $params);
+        $this->logInfo('exists', $duration, $params);
 
         return $success;
     }
@@ -612,7 +612,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('expire', $duration, $params);
+            $this->logInfo('expire', $duration, $params);
         }
 
         return $result;
@@ -636,7 +636,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('expire', $duration, $params);
+            $this->logInfo('expire', $duration, $params);
         }
 
         return $result;
@@ -652,7 +652,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
         $params = array('pattern' => $pattern);
-        $this->info('keys', $duration, $params);
+        $this->logInfo('keys', $duration, $params);
 
         return $strings;
     }
@@ -678,7 +678,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('migrate', $duration, $params);
+            $this->logInfo('migrate', $duration, $params);
         }
 
         return $result;
@@ -702,7 +702,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('move', $duration, $params);
+            $this->logInfo('move', $duration, $params);
         }
 
         return $result;
@@ -727,7 +727,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('object', $duration, $params);
+            $this->logInfo('object', $duration, $params);
         }
 
         return $result;
@@ -750,7 +750,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('persist', $duration, $params);
+            $this->logInfo('persist', $duration, $params);
         }
 
         return $result;
@@ -773,7 +773,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('randomKey', $duration, $params);
+            $this->logInfo('randomKey', $duration, $params);
         }
 
         return $result;
@@ -797,7 +797,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('rename', $duration, $params);
+            $this->logInfo('rename', $duration, $params);
         }
 
         return $result;
@@ -821,7 +821,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('renameNx', $duration, $params);
+            $this->logInfo('renameNx', $duration, $params);
         }
 
         return $result;
@@ -844,7 +844,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('type', $duration, $params);
+            $this->logInfo('type', $duration, $params);
         }
 
         return $result;
@@ -867,7 +867,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('sort', $duration, $params);
+            $this->logInfo('sort', $duration, $params);
         }
 
         return $result;
@@ -890,7 +890,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('ttl', $duration, $params);
+            $this->logInfo('ttl', $duration, $params);
         }
 
         return $result;
@@ -914,7 +914,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('restore', $duration, $params);
+            $this->logInfo('restore', $duration, $params);
         }
 
         return $result;
@@ -942,7 +942,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('blPop', $duration, $params);
+            $this->logInfo('blPop', $duration, $params);
         }
 
         return $result;
@@ -965,7 +965,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('brPop', $duration, $params);
+            $this->logInfo('brPop', $duration, $params);
         }
 
         return $result;
@@ -990,7 +990,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('brPoplPush', $duration, $params);
+            $this->logInfo('brPoplPush', $duration, $params);
         }
 
         return $result;
@@ -1014,7 +1014,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lIndex', $duration, $params);
+            $this->logInfo('lIndex', $duration, $params);
         }
 
         return $result;
@@ -1038,7 +1038,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lGet', $duration, $params);
+            $this->logInfo('lGet', $duration, $params);
         }
 
         return $result;
@@ -1063,7 +1063,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lGetRange', $duration, $params);
+            $this->logInfo('lGetRange', $duration, $params);
         }
 
         return $result;
@@ -1087,7 +1087,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lInsert', $duration, $params);
+            $this->logInfo('lInsert', $duration, $params);
         }
 
         return $result;
@@ -1110,7 +1110,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lLen', $duration, $params);
+            $this->logInfo('lLen', $duration, $params);
         }
 
         return $result;
@@ -1133,7 +1133,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lPush', $duration, $params);
+            $this->logInfo('lPush', $duration, $params);
         }
 
         return $result;
@@ -1156,7 +1156,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lPushx', $duration, $params);
+            $this->logInfo('lPushx', $duration, $params);
         }
 
         return $result;
@@ -1181,7 +1181,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lRange', $duration, $params);
+            $this->logInfo('lRange', $duration, $params);
         }
 
         return $result;
@@ -1204,7 +1204,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lRem', $duration, $params);
+            $this->logInfo('lRem', $duration, $params);
         }
 
         return $result;
@@ -1227,7 +1227,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lRemove', $duration, $params);
+            $this->logInfo('lRemove', $duration, $params);
         }
 
         return $result;
@@ -1250,7 +1250,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lSet', $duration, $params);
+            $this->logInfo('lSet', $duration, $params);
         }
 
         return $result;
@@ -1273,7 +1273,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lSize', $duration, $params);
+            $this->logInfo('lSize', $duration, $params);
         }
 
         return $result;
@@ -1298,7 +1298,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('lTrim', $duration, $params);
+            $this->logInfo('lTrim', $duration, $params);
         }
 
         return $result;
@@ -1323,7 +1323,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('listTrim', $duration, $params);
+            $this->logInfo('listTrim', $duration, $params);
         }
 
         return $result;
@@ -1346,7 +1346,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('rPop', $duration, $params);
+            $this->logInfo('rPop', $duration, $params);
         }
 
         return $result;
@@ -1369,7 +1369,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('rPopLPush', $duration, $params);
+            $this->logInfo('rPopLPush', $duration, $params);
         }
 
         return $result;
@@ -1392,7 +1392,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('rPush', $duration, $params);
+            $this->logInfo('rPush', $duration, $params);
         }
 
         return $result;
@@ -1415,7 +1415,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('rPushx', $duration, $params);
+            $this->logInfo('rPushx', $duration, $params);
         }
 
         return $result;
@@ -1438,7 +1438,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array();
         if(false !== $result)
         {
-            $this->info('bgrewriteaof', $duration, $params);
+            $this->logInfo('bgrewriteaof', $duration, $params);
         }
         else
         {
@@ -1460,7 +1460,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array();
         if(false !== $result)
         {
-            $this->info('bgsafe', $duration, $params);
+            $this->logInfo('bgsafe', $duration, $params);
         }
         else
         {
@@ -1482,7 +1482,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array();
         if(false !== $result)
         {
-            $this->info('config', $duration, $params);
+            $this->logInfo('config', $duration, $params);
         }
         else
         {
@@ -1503,7 +1503,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array();
         if($result)
         {
-            $this->info('dbSize', $duration, $params);
+            $this->logInfo('dbSize', $duration, $params);
         }
         else
         {
@@ -1525,7 +1525,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array();
         if($result)
         {
-            $this->info('flushAll', $duration, $params);
+            $this->logInfo('flushAll', $duration, $params);
         }
         else
         {
@@ -1547,7 +1547,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array();
         if($result)
         {
-            $this->info('flushDB', $duration, $params);
+            $this->logInfo('flushDB', $duration, $params);
         }
         else
         {
@@ -1563,17 +1563,83 @@ class LoggerRedisClient implements RedisClientInterface
     public function info($option = null)
     {
         $startTime = $this->startMeasure();
-        $result = $this->redis->info($option);;
+        $result = $this->redis->logInfo($option);
         $duration = $this->endMeasure($startTime);
 
         $params = array('option' => $option);
         if($result)
         {
-            $this->info('info', $duration, $params);
+            $this->logInfo('info', $duration, $params);
         }
         else
         {
             $this->error('info', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function lastSave()
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->lastSave();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if($result)
+        {
+            $this->logInfo('lastSave', $duration, $params);
+        }
+        else
+        {
+            $this->error('lastSave', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function resetStat()
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->resetStat();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if($result)
+        {
+            $this->logInfo('resetStat', $duration, $params);
+        }
+        else
+        {
+            $this->error('resetStat', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function save()
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->save();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if($result)
+        {
+            $this->logInfo('save', $duration, $params);
+        }
+        else
+        {
+            $this->error('save', $duration, $params);
         }
 
         return $result;
@@ -1610,7 +1676,7 @@ class LoggerRedisClient implements RedisClientInterface
 
         if($result)
         {
-            $this->info('sAdd', $duration, $params);
+            $this->logInfo('sAdd', $duration, $params);
         }
         else
         {
@@ -1635,7 +1701,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
         $params = array('key' => $key, 'stringSize' => $stringSize);
-        $this->info('append', $duration, $params);
+        $this->logInfo('append', $duration, $params);
 
         return $stringSize;
     }
@@ -1650,7 +1716,7 @@ class LoggerRedisClient implements RedisClientInterface
         $duration = $this->endMeasure($startTime);
 
         $params = array('key' => $key);
-        $this->info('bitCount', $duration, $params);
+        $this->logInfo('bitCount', $duration, $params);
 
         return $result;
     }
@@ -1694,7 +1760,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('decr', $duration, $params);
+            $this->logInfo('decr', $duration, $params);
         }
 
         return $result;
@@ -1716,7 +1782,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('get', $duration, $params);
+            $this->logInfo('get', $duration, $params);
         }
 
         return $value;
@@ -1739,7 +1805,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('getBit', $duration, $params);
+            $this->logInfo('getBit', $duration, $params);
         }
 
         return $result;
@@ -1763,7 +1829,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('getRange', $duration, $params);
+            $this->logInfo('getRange', $duration, $params);
         }
 
         return $result;
@@ -1785,7 +1851,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('getSet', $duration, $params);
+            $this->logInfo('getSet', $duration, $params);
         }
 
         return $result;
@@ -1807,7 +1873,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('incr', $duration, $params);
+            $this->logInfo('incr', $duration, $params);
         }
 
         return $result;
@@ -1831,7 +1897,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('incrByFLoat', $duration, $params);
+            $this->logInfo('incrByFLoat', $duration, $params);
         }
 
         return $result;
@@ -1853,7 +1919,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('mget', $duration, $params);
+            $this->logInfo('mget', $duration, $params);
         }
 
         return $result;
@@ -1875,7 +1941,7 @@ class LoggerRedisClient implements RedisClientInterface
         }
         else
         {
-            $this->info('mset', $duration, $params);
+            $this->logInfo('mset', $duration, $params);
         }
 
         return $result;
@@ -1893,7 +1959,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array('key' => $key, 'timeout' => (int)$timeout);
         if($success)
         {
-            $this->info('set', $duration, $params);
+            $this->logInfo('set', $duration, $params);
         }
         else
         {
@@ -1917,7 +1983,7 @@ class LoggerRedisClient implements RedisClientInterface
                         , 'offset' => $offset);
         if($success)
         {
-            $this->info('setBit', $duration, $params);
+            $this->logInfo('setBit', $duration, $params);
         }
         else
         {
@@ -1941,7 +2007,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array('key' => $key, 'ttl' => (int)$ttl);
         if($success)
         {
-            $this->info('setex', $duration, $params);
+            $this->logInfo('setex', $duration, $params);
         }
         else
         {
@@ -1963,7 +2029,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array('key' => $key);
         $params['notExistingKey'] = $success;
 
-        $this->info('setnx', $duration, $params);
+        $this->logInfo('setnx', $duration, $params);
 
         return $success;
     }
@@ -1981,7 +2047,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array('key' => $key, 'offset' => $offset);
         if($result)
         {
-            $this->info('setRange', $duration, $params);
+            $this->logInfo('setRange', $duration, $params);
         }
         else
         {
@@ -2003,7 +2069,7 @@ class LoggerRedisClient implements RedisClientInterface
         $params = array('key' => $key);
         if($result)
         {
-            $this->info('strlen', $duration, $params);
+            $this->logInfo('strlen', $duration, $params);
         }
         else
         {
@@ -2068,8 +2134,9 @@ class LoggerRedisClient implements RedisClientInterface
      * @param string $method
      * @param float $timeTaken
      * @param array $params
+     * @return string|void
      */
-    private function info($method, $timeTaken, array $params)
+    private function logInfo($method, $timeTaken, array $params)
     {
         //add data to data collector
         $this->collect($method, $timeTaken, 'info', $params);

@@ -182,6 +182,14 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue(isset($result['used_cpu_user']));
     }
 
+    public function testLastSave()
+    {
+        $this->assertGreaterThan(100000, $this->client->lastSave());
+    }
 
+    public function testSave()
+    {
+        $this->assertTrue($this->client->save());
+    }
 
 }

@@ -193,4 +193,43 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($return, $result);
     }
+
+    public function testLastSave()
+    {
+        $return = 1028374682;
+
+        $this->redis->expects($this->once())
+            ->method('lastSave')
+            ->will($this->returnValue($return));
+
+        $result = $this->client->lastSave();
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testResetStat()
+    {
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('resetStat')
+            ->will($this->returnValue($return));
+
+        $result = $this->client->resetStat();
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testSave()
+    {
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('save')
+            ->will($this->returnValue($return));
+
+        $result = $this->client->save();
+
+        $this->assertSame($return, $result);
+    }
 }

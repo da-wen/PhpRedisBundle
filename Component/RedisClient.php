@@ -1526,6 +1526,49 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the timestamp of the last disk save.
+     *
+     * @return  int:    timestamp.
+     * @link    http://redis.io/commands/lastsave
+     * @example $redis->lastSave();
+     */
+    public function lastSave()
+    {
+        return $this->redis->lastSave();
+    }
+
+    /**
+     * Resets the statistics reported by Redis using the INFO command (`info()` function).
+     * These are the counters that are reset:
+     *      - Keyspace hits
+     *      - Keyspace misses
+     *      - Number of commands processed
+     *      - Number of connections received
+     *      - Number of expired keys
+     *
+     * @return bool: `TRUE` in case of success, `FALSE` in case of failure.
+     * @example $redis->resetStat();
+     * @link http://redis.io/commands/config-resetstat
+     */
+    public function resetStat()
+    {
+        return $this->redis->resetStat();
+    }
+
+    /**
+     * Performs a synchronous save.
+     *
+     * @return  bool:   TRUE in case of success, FALSE in case of failure.
+     * If a save is already running, this command will fail and return FALSE.
+     * @link    http://redis.io/commands/save
+     * @example $redis->save();
+     */
+    public function save()
+    {
+        return $this->redis->save();
+    }
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */
