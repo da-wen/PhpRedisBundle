@@ -1612,6 +1612,22 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * operations on slowlog
+     * Operations:
+     * - get (returns array(), length param is needed)
+     * - len (returns int)
+     * - reset (returns bool)
+     *
+     * @param string $operation
+     * @param int $length
+     * @return mixed
+     */
+    public function slowlog($operation, $length = 0)
+    {
+        return $this->redis->slowlog($operation, $length);
+    }
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */

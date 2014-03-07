@@ -262,4 +262,21 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($return, $result);
     }
+
+    public function testSlowlog()
+    {
+        $operation = 'get';
+        $length = 10;
+        $return = array('12313', '12312313');
+
+        $this->redis->expects($this->once())
+                    ->method('slowlog')
+                    ->with($this->equalTo($operation),
+                           $this->equalTo($length))
+                    ->will($this->returnValue($return));
+
+        $result = $this->client->slowlog($operation, $length);
+
+        $this->assertSame($return, $result);
+    }
 }

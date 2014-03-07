@@ -197,4 +197,25 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
         $this->assertCount(2, $this->client->time());
     }
 
+    public function testSlowLogGet()
+    {
+        $operation = 'get';
+        $length = 10;
+
+        $this->assertTrue(is_array($this->client->slowlog($operation, $length)));
+    }
+
+    public function testSlowLogLen()
+    {
+        $operation = 'len';
+
+        $this->assertTrue(is_int($this->client->slowlog($operation)));
+    }
+
+    public function testSlowLogReset()
+    {
+        $operation = 'reset';
+
+        $this->assertTrue($this->client->slowlog($operation));
+    }
 }

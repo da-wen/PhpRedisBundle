@@ -1690,6 +1690,28 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function slowlog($operation, $length = 0)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->slowlog($operation, $length);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('operation' => $operation, 'length' => $length);
+        if($result)
+        {
+            $this->logInfo('slowlog', $duration, $params);
+        }
+        else
+        {
+            $this->error('slowlog', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * SETS
      * *************************************************************************************************
      */

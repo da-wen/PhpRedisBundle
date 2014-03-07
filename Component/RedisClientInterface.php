@@ -1329,6 +1329,19 @@ interface RedisClientInterface
     public function time();
 
     /**
+     * operations on slowlog
+     * Operations:
+     * - get (returns array(), length param is needed)
+     * - len (returns int)
+     * - reset (returns bool)
+     *
+     * @param string $operation
+     * @param int $length
+     * @return mixed
+     */
+    public function slowlog($operation, $length = 0);
+
+    /**
      * SETS
      * *************************************************************************************************
      */
