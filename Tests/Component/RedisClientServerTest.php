@@ -249,4 +249,17 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($return, $result);
     }
+
+    public function testTime()
+    {
+        $return = array('12313', '12312313');
+
+        $this->redis->expects($this->once())
+            ->method('time')
+            ->will($this->returnValue($return));
+
+        $result = $this->client->time();
+
+        $this->assertSame($return, $result);
+    }
 }

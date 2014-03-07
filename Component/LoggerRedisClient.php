@@ -1668,6 +1668,28 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function time()
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->time();
+        $duration = $this->endMeasure($startTime);
+
+        $params = array();
+        if($result)
+        {
+            $this->logInfo('time', $duration, $params);
+        }
+        else
+        {
+            $this->error('time', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * SETS
      * *************************************************************************************************
      */

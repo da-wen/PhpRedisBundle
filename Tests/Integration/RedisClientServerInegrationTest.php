@@ -192,4 +192,9 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue($this->client->save());
     }
 
+    public function testTime()
+    {
+        $this->assertCount(2, $this->client->time());
+    }
+
 }

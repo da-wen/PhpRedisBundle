@@ -1593,6 +1593,25 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Return the current Redis server time.
+     * @return  array If successfull, the time will come back as an associative array with element zero being the
+     * unix timestamp, and element one being microseconds.
+     * @link    http://redis.io/commands/time
+     * @example
+     * <pre>
+     * var_dump( $redis->time() );
+     * // array(2) {
+     * //   [0] => string(10) "1342364352"
+     * //   [1] => string(6) "253002"
+     * // }
+     * </pre>
+     */
+    public function time()
+    {
+        return $this->redis->time();
+    }
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */
