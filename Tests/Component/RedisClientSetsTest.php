@@ -67,5 +67,35 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSCard()
+    {
+        $key = 'testKey';
+        $return = 5;
+
+        $this->redis->expects($this->once())
+            ->method('sCard')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sCard($key);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testSSize()
+    {
+        $key = 'testKey';
+        $return = 5;
+
+        $this->redis->expects($this->once())
+            ->method('sSize')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sSize($key);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

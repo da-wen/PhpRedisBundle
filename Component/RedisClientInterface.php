@@ -1365,6 +1365,30 @@ interface RedisClientInterface
     public function sAdd($key, $value1, $value2 = null, $valueN = null);
 
     /**
+     * Returns the cardinality of the set identified by key.
+     *
+     * @param   string  $key
+     * @return  int     the cardinality of the set identified by key, 0 if the set doesn't exist.
+     * @link    http://redis.io/commands/scard
+     * @example
+     * <pre>
+     * $redis->sAdd('key1' , 'set1');
+     * $redis->sAdd('key1' , 'set2');
+     * $redis->sAdd('key1' , 'set3');   // 'key1' => {'set1', 'set2', 'set3'}
+     * $redis->sCard('key1');           // 3
+     * $redis->sCard('keyX');           // 0
+     * </pre>
+     */
+    public function sCard($key);
+
+    /**
+     * Returns the cardinality of the set identified by key.
+     *
+     * @see sCard
+     */
+    public function sSize($key);
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */

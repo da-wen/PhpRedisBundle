@@ -101,4 +101,32 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals(3, $result);
     }
 
+    public function testSCard()
+    {
+        $key = 'testKey';
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultSCard = $this->client->sCard($key);
+        $this->assertSame(3, $resultSCard);
+    }
+
+    public function testSize()
+    {
+        $key = 'testKey';
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultSSize = $this->client->sSize($key);
+        $this->assertSame(3, $resultSSize);
+    }
+
 }
