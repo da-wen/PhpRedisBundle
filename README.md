@@ -13,7 +13,7 @@ WORKING METHODS
 * hashes: hDel, hExists, hGet, hGetAll, hIncrBy, hIncrByFloat, hKeys, hLen, hMGet, hMSet, hSet
 * keys: del, dump, exists, expire, expireAt, keys, move, object, persist, randomKey, rename, renameNx, type, sort, ttl, restore
 * lists: brPop, blPop, brPoplPush, lGet, lGetRange, lInsert, lLen, lIndex, lPush, lPushx, lRange, lRem, lRemove, lSet, lSize, lTrim, ListTrim, rPop, rPopLPush, rPush, rPushx
-* sets: sAdd, sCard, sDiff, sDiffStore, sSize
+* sets: sAdd, sCard, sDiff, sDiffStore, sInter, sSize
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
 * server: bgrewriteaof, bgsave, config, dbSize, flushAll, flushDB, info, lastSave, resetStat, save, slaveOf, time, slowlog
 * connection: auth, close, echo (cEcho), getOption, ping, select, setOption
@@ -46,6 +46,7 @@ Method Informations
 * rPush: if optional parameter will be null, it inserts plank strings
 * sDiff: Third param seems to be ignored
 * sDiffStore: Third param seems to be ignored
+* sInter: Third param seems to be ignored
 
 Configuration
 =============

@@ -1464,6 +1464,49 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the members of a set resulting from the intersection of all the sets
+     * held at the specified keys. If just a single key is specified, then this command
+     * produces the members of this set. If one of the keys is missing, FALSE is returned.
+     *
+     * @param   string  $key1  keys identifying the different sets on which we will apply the intersection.
+     * @param   string  $key2  ...
+     * @param   string  $keyN  ...
+     * @return  array, contain the result of the intersection between those keys.
+     * If the intersection between the different sets is empty, the return value will be empty array.
+     * @link    http://redis.io/commands/sinterstore
+     * @example
+     * <pre>
+     * $redis->sAdd('key1', 'val1');
+     * $redis->sAdd('key1', 'val2');
+     * $redis->sAdd('key1', 'val3');
+     * $redis->sAdd('key1', 'val4');
+     *
+     * $redis->sAdd('key2', 'val3');
+     * $redis->sAdd('key2', 'val4');
+     *
+     * $redis->sAdd('key3', 'val3');
+     * $redis->sAdd('key3', 'val4');
+     *
+     * var_dump($redis->sInter('key1', 'key2', 'key3'));
+     *
+     * //array(2) {
+     * //  [0]=>
+     * //  string(4) "val4"
+     * //  [1]=>
+     * //  string(4) "val3"
+     * //}
+     * </pre>
+     */
+    public function sInter($key1, $key2, $keyN = null)
+    {
+        if(null === $keyN) {
+            return $this->redis->sInter($key1, $key2);
+        }
+
+        return $this->redis->sInter($key1, $key2, $keyN);
+    }
+
+    /**
      * Returns the cardinality of the set identified by key.
      *
      * @see sCard

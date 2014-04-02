@@ -133,5 +133,22 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSInter()
+    {
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $return = array('foo', 'bar');
+
+        $this->redis->expects($this->once())
+            ->method('sInter')
+            ->with($this->equalTo($key1),
+                   $this->equalTo($key2))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sInter($key1, $key2);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

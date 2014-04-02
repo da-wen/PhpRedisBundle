@@ -199,4 +199,30 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         //problems with 3 keys. Tests for 3 is missing
     }
 
+    public function testSInter()
+    {
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $key3 = 'testKey3';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+        $value6 = 'value6';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2, $value3);
+        $this->assertEquals(3, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value3, $value5, $value6);
+        $this->assertEquals(3, $result2);
+
+        $resultSInter = $this->client->sInter($key1, $key2);
+        $this->assertCount(1, $resultSInter);
+        $this->assertContains($value3, $resultSInter);
+
+        //problems with 3 keys. Tests for 3 is missing
+    }
+
 }
