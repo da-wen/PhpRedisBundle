@@ -1776,13 +1776,39 @@ class LoggerRedisClient implements RedisClientInterface
             $params['keyN'] = $keyN;
         }
 
-        if(false !== $result)
+        if($result)
         {
             $this->logInfo('sDiff', $duration, $params);
         }
         else
         {
             $this->error('sDiff', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function sDiffStore($dstKey, $key1, $key2, $keyN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sDiffStore($dstKey, $key1, $key2, $keyN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('dstKey' => $dstKey, 'key1' => $key1, 'key2' => $key2);
+        if(null !== $keyN) {
+            $params['keyN'] = $keyN;
+        }
+
+        if($result)
+        {
+            $this->logInfo('sDiffStore', $duration, $params);
+        }
+        else
+        {
+            $this->error('sDiffStoreStore', $duration, $params);
         }
 
         return $result;

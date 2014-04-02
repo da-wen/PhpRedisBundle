@@ -114,5 +114,24 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSDiffStore()
+    {
+        $dstKey = 'dstKey';
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $return = array('foo', 'bar');
+
+        $this->redis->expects($this->once())
+            ->method('sDiffStore')
+            ->with($this->equalTo($dstKey),
+                   $this->equalTo($key1),
+                   $this->equalTo($key2))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sDiffStore($dstKey, $key1, $key2);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

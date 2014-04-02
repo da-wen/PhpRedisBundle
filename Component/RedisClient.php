@@ -1422,6 +1422,48 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Performs the same action as sDiff, but stores the result in the first key
+     *
+     * @param   string  $dstKey    the key to store the diff into.
+     * @param   string  $key1      Any number of keys corresponding to sets in redis
+     * @param   string  $key2      ...
+     * @param   string  $keyN      ...
+     * @return  int:    The cardinality of the resulting set, or FALSE in case of a missing key.
+     * @link    http://redis.io/commands/sdiffstore
+     * @example
+     * <pre>
+     * $redis->delete('s0', 's1', 's2');
+     *
+     * $redis->sAdd('s0', '1');
+     * $redis->sAdd('s0', '2');
+     * $redis->sAdd('s0', '3');
+     * $redis->sAdd('s0', '4');
+     *
+     * $redis->sAdd('s1', '1');
+     * $redis->sAdd('s2', '3');
+     *
+     * var_dump($redis->sDiffStore('dst', 's0', 's1', 's2'));
+     * var_dump($redis->sMembers('dst'));
+     *
+     * //int(2)
+     * //array(2) {
+     * //  [0]=>
+     * //  string(1) "4"
+     * //  [1]=>
+     * //  string(1) "2"
+     * //}
+     * </pre>
+     */
+    public function sDiffStore($dstKey, $key1, $key2, $keyN = null)
+    {
+        if(null === $keyN) {
+            return $this->redis->sDiffStore($dstKey, $key1, $key2);
+        }
+
+        return $this->redis->sDiffStore($dstKey, $key1, $key2, $keyN);
+    }
+
+    /**
      * Returns the cardinality of the set identified by key.
      *
      * @see sCard
