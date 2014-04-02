@@ -1382,6 +1382,38 @@ interface RedisClientInterface
     public function sCard($key);
 
     /**
+     * Performs the difference between N sets and returns it.
+     *
+     * @param   string  $key1 Any number of keys corresponding to sets in redis.
+     * @param   string  $key2 ...
+     * @param   string  $keyN ...
+     * @return  array   of strings: The difference of the first set will all the others.
+     * @link    http://redis.io/commands/sdiff
+     * @example
+     * <pre>
+     * $redis->delete('s0', 's1', 's2');
+     *
+     * $redis->sAdd('s0', '1');
+     * $redis->sAdd('s0', '2');
+     * $redis->sAdd('s0', '3');
+     * $redis->sAdd('s0', '4');
+     *
+     * $redis->sAdd('s1', '1');
+     * $redis->sAdd('s2', '3');
+     *
+     * var_dump($redis->sDiff('s0', 's1', 's2'));
+     *
+     * //array(2) {
+     * //  [0]=>
+     * //  string(1) "4"
+     * //  [1]=>
+     * //  string(1) "2"
+     * //}
+     * </pre>
+     */
+    public function sDiff($key1, $key2, $keyN = null);
+
+    /**
      * Returns the cardinality of the set identified by key.
      *
      * @see sCard

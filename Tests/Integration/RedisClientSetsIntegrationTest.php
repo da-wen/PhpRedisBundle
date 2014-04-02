@@ -115,7 +115,7 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertSame(3, $resultSCard);
     }
 
-    public function testSize()
+    public function testSSize()
     {
         $key = 'testKey';
         $value1 = 'value1';
@@ -127,6 +127,48 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
 
         $resultSSize = $this->client->sSize($key);
         $this->assertSame(3, $resultSSize);
+    }
+
+    public function testSDiff()
+    {
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $key3 = 'testKey3';
+        $key4 = 'testKey4';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+        $value6 = 'value6';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2, $value3);
+        $this->assertEquals(3, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value4, $value5, $value6);
+        $this->assertEquals(3, $result2);
+
+        $result3 = $this->client->sAdd($key3, $value1, $value2, $value6);
+        $this->assertEquals(3, $result3);
+
+        $result4 = $this->client->sAdd($key4, 'hello');
+        $this->assertEquals(1, $result4);
+
+        $resultSDiff1 = $this->client->sDiff($key1, $key2);
+        $this->assertContains($value1, $resultSDiff1);
+        $this->assertContains($value2, $resultSDiff1);
+        $this->assertContains($value3, $resultSDiff1);
+
+        $resultSDiff2 = $this->client->sDiff($key2,$key1);
+        $this->assertContains($value4, $resultSDiff2);
+        $this->assertContains($value5, $resultSDiff2);
+        $this->assertContains($value6, $resultSDiff2);
+
+        $resultSDiff3 = $this->client->sDiff($key2, $key1);
+        $this->assertContains($value6, $resultSDiff3);
+
+        //problems with 3 keys. Tests for 3 is missing
     }
 
 }
