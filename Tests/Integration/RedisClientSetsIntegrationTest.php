@@ -225,4 +225,95 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         //problems with 3 keys. Tests for 3 is missing
     }
 
+    public function testSInterStore()
+    {
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $dstKey = 'destKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+        $value6 = 'value6';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2, $value3);
+        $this->assertEquals(3, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value3, $value5, $value6);
+        $this->assertEquals(3, $result2);
+
+        $resultSInterStore = $this->client->sInterStore($dstKey, $key1, $key2);
+        $this->assertEquals(1, $resultSInterStore);
+
+        //problems with 3 keys. Tests for 3 is missing
+    }
+
+    public function testSIsMember()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+
+        $resultSIsMember = $this->client->sIsMember($key, $value2);
+        $this->assertTrue($resultSIsMember);
+    }
+
+    public function testSContains()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+
+        $resultSIsMember = $this->client->sContains($key, $value3);
+        $this->assertTrue($resultSIsMember);
+    }
+
+    public function testSMembers()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultSMembers = $this->client->sMembers($key);
+        $this->assertContains($value1, $resultSMembers);
+        $this->assertContains($value2, $resultSMembers);
+        $this->assertContains($value3, $resultSMembers);
+    }
+
+    public function testSGetMembers()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultSMembers = $this->client->sGetMembers($key);
+        $this->assertContains($value1, $resultSMembers);
+        $this->assertContains($value2, $resultSMembers);
+        $this->assertContains($value3, $resultSMembers);
+    }
+
 }

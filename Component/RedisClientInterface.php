@@ -1382,6 +1382,14 @@ interface RedisClientInterface
     public function sCard($key);
 
     /**
+     * @see sIsMember()
+     * @link    http://redis.io/commands/sismember
+     * @param   string  $key
+     * @param   string  $value
+     */
+    public function sContains($key, $value);
+
+    /**
      * Performs the difference between N sets and returns it.
      *
      * @param   string  $key1 Any number of keys corresponding to sets in redis.
@@ -1449,6 +1457,13 @@ interface RedisClientInterface
     public function sDiffStore($dstKey, $key1, $key2, $keyN = null);
 
     /**
+     * @see sMembers()
+     * @param   string  $key
+     * @link    http://redis.io/commands/smembers
+     */
+    public function sGetMembers($key);
+
+    /**
      * Returns the members of a set resulting from the intersection of all the sets
      * held at the specified keys. If just a single key is specified, then this command
      * produces the members of this set. If one of the keys is missing, FALSE is returned.
@@ -1483,6 +1498,90 @@ interface RedisClientInterface
      * </pre>
      */
     public function sInter($key1, $key2, $keyN = null);
+
+    /**
+     * Performs a sInter command and stores the result in a new set.
+     *
+     * @param   string  $dstKey the key to store the diff into.
+     * @param   string  $key1 are intersected as in sInter.
+     * @param   string  $key2 ...
+     * @param   string  $keyN ...
+     * @return  int:    The cardinality of the resulting set, or FALSE in case of a missing key.
+     * @link    http://redis.io/commands/sinterstore
+     * @example
+     * <pre>
+     * $redis->sAdd('key1', 'val1');
+     * $redis->sAdd('key1', 'val2');
+     * $redis->sAdd('key1', 'val3');
+     * $redis->sAdd('key1', 'val4');
+     *
+     * $redis->sAdd('key2', 'val3');
+     * $redis->sAdd('key2', 'val4');
+     *
+     * $redis->sAdd('key3', 'val3');
+     * $redis->sAdd('key3', 'val4');
+     *
+     * var_dump($redis->sInterStore('output', 'key1', 'key2', 'key3'));
+     * var_dump($redis->sMembers('output'));
+     *
+     * //int(2)
+     * //
+     * //array(2) {
+     * //  [0]=>
+     * //  string(4) "val4"
+     * //  [1]=>
+     * //  string(4) "val3"
+     * //}
+     * </pre>
+     */
+    public function sInterStore($dstKey, $key1, $key2, $keyN = null);
+
+    /**
+     * Checks if value is a member of the set stored at the key key.
+     *
+     * @param   string  $key
+     * @param   string  $value
+     * @return  bool    TRUE if value is a member of the set at key key, FALSE otherwise.
+     * @link    http://redis.io/commands/sismember
+     * @example
+     * <pre>
+     * $redis->sAdd('key1' , 'set1');
+     * $redis->sAdd('key1' , 'set2');
+     * $redis->sAdd('key1' , 'set3'); // 'key1' => {'set1', 'set2', 'set3'}
+     *
+     * $redis->sIsMember('key1', 'set1'); // TRUE
+     * $redis->sIsMember('key1', 'setX'); // FALSE
+     * </pre>
+     */
+    public function sIsMember($key, $value);
+
+    /**
+     * Returns the contents of a set.
+     *
+     * @param   string  $key
+     * @return  array   An array of elements, the contents of the set.
+     * @link    http://redis.io/commands/smembers
+     * @example
+     * <pre>
+     * $redis->delete('s');
+     * $redis->sAdd('s', 'a');
+     * $redis->sAdd('s', 'b');
+     * $redis->sAdd('s', 'a');
+     * $redis->sAdd('s', 'c');
+     * var_dump($redis->sMembers('s'));
+     *
+     * //array(3) {
+     * //  [0]=>
+     * //  string(1) "c"
+     * //  [1]=>
+     * //  string(1) "a"
+     * //  [2]=>
+     * //  string(1) "b"
+     * //}
+     * // The order is random and corresponds to redis' own internal representation of the set structure.
+     * </pre>
+     */
+    public function sMembers($key);
 
     /**
      * Returns the cardinality of the set identified by key.

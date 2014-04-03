@@ -1765,6 +1765,22 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function sContains($key, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sContains($key, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        $this->logInfo('sInterStore', $duration, $params);
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function sDiff($key1, $key2, $keyN = null)
     {
         $startTime = $this->startMeasure();
@@ -1817,6 +1833,29 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function sGetMembers($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sGetMembers($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false !== $result)
+        {
+            $this->logInfo('sGetMembers', $duration, $params);
+        }
+        else
+        {
+            $this->error('sGetMembers', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function sInter($key1, $key2, $keyN = null)
     {
         $startTime = $this->startMeasure();
@@ -1835,6 +1874,71 @@ class LoggerRedisClient implements RedisClientInterface
         else
         {
             $this->error('sInter', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function sInterStore($dstKey, $key1, $key2, $keyN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sInterStore($dstKey, $key1, $key2, $keyN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('dstKey' => $dstKey, 'key1' => $key1, 'key2' => $key2);
+        if(null !== $keyN) {
+            $params['keyN'] = $keyN;
+        }
+
+        if($result)
+        {
+            $this->logInfo('sInterStore', $duration, $params);
+        }
+        else
+        {
+            $this->error('sInterStore', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function sIsMember($key, $value)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sIsMember($key, $value);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        $this->logInfo('sIsMember', $duration, $params);
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function sMembers($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sMembers($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false !== $result)
+        {
+            $this->logInfo('sMembers', $duration, $params);
+        }
+        else
+        {
+            $this->error('sMembers', $duration, $params);
         }
 
         return $result;

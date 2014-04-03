@@ -150,5 +150,88 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSInterStore()
+    {
+        $dstKey = 'dstKey';
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $return = 1;
+
+        $this->redis->expects($this->once())
+            ->method('sInterStore')
+            ->with($this->equalTo($dstKey),
+                   $this->equalTo($key1),
+                   $this->equalTo($key2))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sInterStore($dstKey, $key1, $key2);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testSIsMember()
+    {
+        $key = 'testKey';
+        $value = 'testValue';
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('sIsMember')
+            ->with($this->equalTo($key),
+                   $this->equalTo($value))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sIsMember($key, $value);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testSContains()
+    {
+        $key = 'testKey';
+        $value = 'testValue';
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('sContains')
+            ->with($this->equalTo($key),
+                $this->equalTo($value))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sContains($key, $value);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testSMembers()
+    {
+        $key = 'testKey';
+        $return = array('foo', 'bar');
+
+        $this->redis->expects($this->once())
+            ->method('sMembers')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sMembers($key);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testSGetMembers()
+    {
+        $key = 'testKey';
+        $return = array('foo', 'bar');
+
+        $this->redis->expects($this->once())
+            ->method('sGetMembers')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sGetMembers($key);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }
