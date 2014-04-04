@@ -233,5 +233,24 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSMove()
+    {
+        $srcKey = 'srcKey';
+        $dstKey = 'dstKey';
+        $value = 'value';
+        $return = true;
+
+        $this->redis->expects($this->once())
+            ->method('sMove')
+            ->with($this->equalTo($srcKey),
+                   $this->equalTo($dstKey),
+                   $this->equalTo($value))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sMove($srcKey, $dstKey, $value);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

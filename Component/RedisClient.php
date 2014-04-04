@@ -1624,6 +1624,31 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Moves the specified member from the set at srcKey to the set at dstKey.
+     *
+     * @param   string  $srcKey
+     * @param   string  $dstKey
+     * @param   string  $member
+     * @return  bool    If the operation is successful, return TRUE.
+     * If the srcKey and/or dstKey didn't exist, and/or the member didn't exist in srcKey, FALSE is returned.
+     * @link    http://redis.io/commands/smove
+     * @example
+     * <pre>
+     * $redis->sAdd('key1' , 'set11');
+     * $redis->sAdd('key1' , 'set12');
+     * $redis->sAdd('key1' , 'set13');          // 'key1' => {'set11', 'set12', 'set13'}
+     * $redis->sAdd('key2' , 'set21');
+     * $redis->sAdd('key2' , 'set22');          // 'key2' => {'set21', 'set22'}
+     * $redis->sMove('key1', 'key2', 'set13');  // 'key1' =>  {'set11', 'set12'}
+     *                                          // 'key2' =>  {'set21', 'set22', 'set13'}
+     * </pre>
+     */
+    public function sMove($srcKey, $dstKey, $member)
+    {
+        return $this->redis->sMove($srcKey, $dstKey, $member);
+    }
+
+    /**
      * Returns the cardinality of the set identified by key.
      *
      * @see sCard

@@ -316,4 +316,40 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertContains($value3, $resultSMembers);
     }
 
+    public function testSMove()
+    {
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2, $value3);
+        $this->assertEquals(3, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value3);
+        $this->assertEquals(1, $result2);
+
+        $resultSMembers = $this->client->sGetMembers($key1);
+        $this->assertContains($value1, $resultSMembers);
+        $this->assertContains($value2, $resultSMembers);
+        $this->assertContains($value3, $resultSMembers);
+
+        $resultSMembers = $this->client->sGetMembers($key2);
+        $this->assertContains($value3, $resultSMembers);
+
+        $resultMove = $this->client->sMove($key1, $key2, $value1);
+        $this->assertTrue($resultMove);
+
+        $resultSMembers3 = $this->client->sGetMembers($key1);
+        $this->assertNotContains($value1, $resultSMembers3);
+        $this->assertContains($value2, $resultSMembers3);
+        $this->assertContains($value3, $resultSMembers3);
+
+        $resultSMembers4 = $this->client->sGetMembers($key2);
+        $this->assertContains($value3, $resultSMembers4);
+        $this->assertContains($value1, $resultSMembers4);
+    }
+
 }

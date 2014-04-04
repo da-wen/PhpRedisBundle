@@ -1947,6 +1947,28 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function sMove($srcKey, $dstKey, $member)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sMove($srcKey, $dstKey, $member);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('srcKey' => $srcKey, 'dstKey' => $dstKey);
+        if($result)
+        {
+            $this->logInfo('sMove', $duration, $params);
+        }
+        else
+        {
+            $this->error('sMove', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function sSize($key)
     {
         $startTime = $this->startMeasure();
