@@ -267,5 +267,20 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSRandMember()
+    {
+        $key = 'testKey';
+        $return = 'result_value';
+
+        $this->redis->expects($this->once())
+            ->method('sRandMember')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sRandMember($key);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

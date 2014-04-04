@@ -1992,6 +1992,29 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function sRandMember($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sRandMember($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false !== $result)
+        {
+            $this->logInfo('sRandMember', $duration, $params);
+        }
+        else
+        {
+            $this->error('sRandMember', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function sSize($key)
     {
         $startTime = $this->startMeasure();

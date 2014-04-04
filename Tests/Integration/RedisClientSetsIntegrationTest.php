@@ -369,4 +369,21 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertNotContains($resultSPop, $resultSMembers);
     }
 
+    public function testSRandMember()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $possibleValues = array($value1, $value2, $value3);
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultSPop = $this->client->sRandMember($key);
+        $this->assertContains($resultSPop, $possibleValues);
+    }
+
 }

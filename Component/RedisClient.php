@@ -1670,6 +1670,27 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns a random element from the set value at Key, without removing it.
+     *
+     * @param   string  $key
+     * @return  string  value from the set
+     * bool FALSE if set identified by key is empty or doesn't exist.
+     * @link    http://redis.io/commands/srandmember
+     * @example
+     * <pre>
+     * $redis->sAdd('key1' , 'set1');
+     * $redis->sAdd('key1' , 'set2');
+     * $redis->sAdd('key1' , 'set3');   // 'key1' => {'set3', 'set1', 'set2'}
+     * $redis->sRandMember('key1');     // 'set1', 'key1' => {'set3', 'set1', 'set2'}
+     * $redis->sRandMember('key1');     // 'set3', 'key1' => {'set3', 'set1', 'set2'}
+     * </pre>
+     */
+    public function sRandMember($key)
+    {
+        return $this->redis->sRandMember($key);
+    }
+
+    /**
      * Returns the cardinality of the set identified by key.
      *
      * @see sCard
