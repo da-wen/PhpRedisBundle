@@ -252,5 +252,20 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSPop()
+    {
+        $key = 'testKey';
+        $return = 'resultvalue';
+
+        $this->redis->expects($this->once())
+            ->method('sPop')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sPop($key);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

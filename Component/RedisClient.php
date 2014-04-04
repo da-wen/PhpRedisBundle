@@ -1649,6 +1649,27 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Removes and returns a random element from the set value at Key.
+     *
+     * @param   string  $key
+     * @return  string  "popped" value
+     * bool FALSE if set identified by key is empty or doesn't exist.
+     * @link    http://redis.io/commands/spop
+     * @example
+     * <pre>
+     * $redis->sAdd('key1' , 'set1');
+     * $redis->sAdd('key1' , 'set2');
+     * $redis->sAdd('key1' , 'set3');   // 'key1' => {'set3', 'set1', 'set2'}
+     * $redis->sPop('key1');            // 'set1', 'key1' => {'set3', 'set2'}
+     * $redis->sPop('key1');            // 'set3', 'key1' => {'set2'}
+     * </pre>
+     */
+    public function sPop($key)
+    {
+        return $this->redis->sPop($key);
+    }
+
+    /**
      * Returns the cardinality of the set identified by key.
      *
      * @see sCard
