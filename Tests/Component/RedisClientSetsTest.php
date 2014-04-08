@@ -282,5 +282,47 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSRem()
+    {
+        $key = 'testKey';
+        $val1 = 'value1';
+        $val2 = 'value2';
+        $val3 = 'value3';
+        $return = 3;
+
+        $this->redis->expects($this->once())
+            ->method('sRem')
+            ->with($this->equalTo($key),
+                   $this->equalTo($val1),
+                   $this->equalTo($val2),
+                   $this->equalTo($val3))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sRem($key, $val1, $val2, $val3);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testSRemove()
+    {
+        $key = 'testKey';
+        $val1 = 'value1';
+        $val2 = 'value2';
+        $val3 = 'value3';
+        $return = 3;
+
+        $this->redis->expects($this->once())
+            ->method('sRemove')
+            ->with($this->equalTo($key),
+                $this->equalTo($val1),
+                $this->equalTo($val2),
+                $this->equalTo($val3))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sRemove($key, $val1, $val2, $val3);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

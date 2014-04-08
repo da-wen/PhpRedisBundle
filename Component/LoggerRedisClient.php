@@ -2015,6 +2015,52 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function sRem($key, $member1, $member2 = null, $memberN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sRem($key, $member1, $member2, $memberN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false !== $result)
+        {
+            $this->logInfo('sRem', $duration, $params);
+        }
+        else
+        {
+            $this->error('sRem', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function sRemove( $key, $member1, $member2 = null, $memberN = null )
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sRemove($key, $member1, $member2, $memberN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false !== $result)
+        {
+            $this->logInfo('sRemove', $duration, $params);
+        }
+        else
+        {
+            $this->error('sRemove', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function sSize($key)
     {
         $startTime = $this->startMeasure();

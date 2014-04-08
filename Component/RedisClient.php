@@ -1691,6 +1691,57 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Removes the specified members from the set value stored at key.
+     *
+     * @param   string  $key
+     * @param   string  $member1
+     * @param   string  $member2
+     * @param   string  $memberN
+     * @return  int     The number of elements removed from the set.
+     * @link    http://redis.io/commands/srem
+     * @example
+     * <pre>
+     * var_dump( $redis->sAdd('k', 'v1', 'v2', 'v3') );    // int(3)
+     * var_dump( $redis->sRem('k', 'v2', 'v3') );          // int(2)
+     * var_dump( $redis->sMembers('k') );
+     * //// Output:
+     * // array(1) {
+     * //   [0]=> string(2) "v1"
+     * // }
+     * </pre>
+     */
+    public function sRem($key, $member1, $member2 = null, $memberN = null)
+    {
+        if(null === $member2 && null === $memberN) {
+            return $this->redis->sRem($key, $member1);
+        } elseif(null === $memberN) {
+            return $this->redis->sRem($key, $member1, $member2);
+        }
+
+        return $this->redis->sRem($key, $member1, $member2, $memberN);
+    }
+
+    /**
+     * @see sRem()
+     * @link    http://redis.io/commands/srem
+     * @param   string $key
+     * @param   string $member1
+     * @param   string $member2
+     * @param   string $memberN
+     * @return int
+     */
+    public function sRemove( $key, $member1, $member2 = null, $memberN = null )
+    {
+        if(null === $member2 && null === $memberN) {
+            return $this->redis->sRemove($key, $member1);
+        } elseif(null === $memberN) {
+            return $this->redis->sRemove($key, $member1, $member2);
+        }
+
+        return $this->redis->sRemove($key, $member1, $member2, $memberN);
+    }
+
+    /**
      * Returns the cardinality of the set identified by key.
      *
      * @see sCard

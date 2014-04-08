@@ -386,4 +386,172 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertContains($resultSPop, $possibleValues);
     }
 
+    public function testSRemOne()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $possibleValues = array($value1, $value2, $value3);
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->sAdd($key, $value4, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->sSize($key));
+
+        $resultSRem = $this->client->sRem($key, $value1);
+        $this->assertEquals(1, $resultSRem);
+
+        $resultMembers = $this->client->sMembers($key);
+        $this->assertNotContains($value1, $resultMembers);
+    }
+
+    public function testSRemTwo()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $possibleValues = array($value1, $value2, $value3);
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->sAdd($key, $value4, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->sSize($key));
+
+        $resultSRem = $this->client->sRem($key, $value1, $value2);
+        $this->assertEquals(2, $resultSRem);
+
+        $resultMembers = $this->client->sMembers($key);
+        $this->assertNotContains($value1, $resultMembers);
+        $this->assertNotContains($value2, $resultMembers);
+    }
+
+    public function testSRemThree()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $possibleValues = array($value1, $value2, $value3);
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->sAdd($key, $value4, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->sSize($key));
+
+        $resultSRem = $this->client->sRem($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultSRem);
+
+        $resultMembers = $this->client->sMembers($key);
+        $this->assertNotContains($value1, $resultMembers);
+        $this->assertNotContains($value2, $resultMembers);
+        $this->assertNotContains($value3, $resultMembers);
+    }
+
+    public function testSRemoveOne()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $possibleValues = array($value1, $value2, $value3);
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->sAdd($key, $value4, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->sSize($key));
+
+        $resultSRem = $this->client->sRemove($key, $value1);
+        $this->assertEquals(1, $resultSRem);
+
+        $resultMembers = $this->client->sMembers($key);
+        $this->assertNotContains($value1, $resultMembers);
+    }
+
+    public function testSRemoveTwo()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $possibleValues = array($value1, $value2, $value3);
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->sAdd($key, $value4, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->sSize($key));
+
+        $resultSRem = $this->client->sRemove($key, $value1, $value2);
+        $this->assertEquals(2, $resultSRem);
+
+        $resultMembers = $this->client->sMembers($key);
+        $this->assertNotContains($value1, $resultMembers);
+        $this->assertNotContains($value2, $resultMembers);
+    }
+
+    public function testSRemoveThree()
+    {
+        $key = 'testKey';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $possibleValues = array($value1, $value2, $value3);
+
+        $result = $this->client->sAdd($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->sAdd($key, $value4, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->sSize($key));
+
+        $resultSRem = $this->client->sRemove($key, $value1, $value2, $value3);
+        $this->assertEquals(3, $resultSRem);
+
+        $resultMembers = $this->client->sMembers($key);
+        $this->assertNotContains($value1, $resultMembers);
+        $this->assertNotContains($value2, $resultMembers);
+        $this->assertNotContains($value3, $resultMembers);
+    }
+
 }
