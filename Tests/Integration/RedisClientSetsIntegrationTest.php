@@ -554,4 +554,64 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertNotContains($value3, $resultMembers);
     }
 
+    public function testSUnion()
+    {
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2);
+        $this->assertEquals(2, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value3, $value4);
+        $this->assertEquals(2, $result2);
+
+
+        $resultSUnion = $this->client->sUnion($key1, $key2);
+        $this->assertCount(4, $resultSUnion);
+
+        $this->assertContains($value1, $resultSUnion);
+        $this->assertContains($value2, $resultSUnion);
+        $this->assertContains($value3, $resultSUnion);
+        $this->assertContains($value4, $resultSUnion);
+    }
+
+    public function testSUnion3Params()
+    {
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $key3 = 'testKey3';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+        $value6 = 'value6';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2);
+        $this->assertEquals(2, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value3, $value4);
+        $this->assertEquals(2, $result2);
+
+        $result3 = $this->client->sAdd($key3, $value5, $value6);
+        $this->assertEquals(2, $result3);
+
+
+        $resultSUnion = $this->client->sUnion($key1, $key2, $key3);
+        $this->assertCount(6, $resultSUnion);
+
+        $this->assertContains($value1, $resultSUnion);
+        $this->assertContains($value2, $resultSUnion);
+        $this->assertContains($value3, $resultSUnion);
+        $this->assertContains($value4, $resultSUnion);
+        $this->assertContains($value5, $resultSUnion);
+        $this->assertContains($value6, $resultSUnion);
+    }
+
 }

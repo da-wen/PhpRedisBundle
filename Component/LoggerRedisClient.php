@@ -2082,6 +2082,32 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function sUnion($key1, $key2, $keyN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sUnion($key1, $key2, $keyN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key1' => $key1, 'key2' => $key2);
+        if(null !== $keyN) {
+            $params['keyN'] = $keyN;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('sUnion', $duration, $params);
+        }
+        else
+        {
+            $this->error('sUnion', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */

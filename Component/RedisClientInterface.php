@@ -1682,6 +1682,41 @@ interface RedisClientInterface
     public function sSize($key);
 
     /**
+     * Performs the union between N sets and returns it.
+     *
+     * @param   string  $key1 Any number of keys corresponding to sets in redis.
+     * @param   string  $key2 ...
+     * @param   string  $keyN ...
+     * @return  array   of strings: The union of all these sets.
+     * @link    http://redis.io/commands/sunionstore
+     * @example
+     * <pre>
+     * $redis->delete('s0', 's1', 's2');
+     *
+     * $redis->sAdd('s0', '1');
+     * $redis->sAdd('s0', '2');
+     * $redis->sAdd('s1', '3');
+     * $redis->sAdd('s1', '1');
+     * $redis->sAdd('s2', '3');
+     * $redis->sAdd('s2', '4');
+     *
+     * var_dump($redis->sUnion('s0', 's1', 's2'));
+     *
+     * array(4) {
+     * //  [0]=>
+     * //  string(1) "3"
+     * //  [1]=>
+     * //  string(1) "4"
+     * //  [2]=>
+     * //  string(1) "1"
+     * //  [3]=>
+     * //  string(1) "2"
+     * //}
+     * </pre>
+     */
+    public function sUnion($key1, $key2, $keyN = null);
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */
