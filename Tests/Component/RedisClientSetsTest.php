@@ -343,5 +343,26 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSUnionStore()
+    {
+        $dstKey = 'dstKey';
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $key3 = 'testKey3';
+        $return = 3;
+
+        $this->redis->expects($this->once())
+            ->method('sUnionStore')
+            ->with($this->equalTo($dstKey),
+                   $this->equalTo($key1),
+                   $this->equalTo($key2),
+                   $this->equalTo($key3))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->sUnionStore($dstKey, $key1, $key2, $key3);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

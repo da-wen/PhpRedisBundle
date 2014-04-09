@@ -614,4 +614,70 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertContains($value6, $resultSUnion);
     }
 
+    public function testSUnionStore()
+    {
+        $dstKey = 'dstKey';
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2);
+        $this->assertEquals(2, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value3, $value4);
+        $this->assertEquals(2, $result2);
+
+
+        $resultSUnionStore = $this->client->sUnionStore($dstKey, $key1, $key2);
+        $this->assertEquals(4, $resultSUnionStore);
+
+        $resultMembers = $this->client->sMembers($dstKey);
+        $this->assertCount(4,$resultMembers);
+        $this->assertContains($value1, $resultMembers);
+        $this->assertContains($value2, $resultMembers);
+        $this->assertContains($value3, $resultMembers);
+        $this->assertContains($value4, $resultMembers);
+    }
+
+    public function testSUnionStore3Keys()
+    {
+        $dstKey = 'dstKey';
+        $key1 = 'testKey1';
+        $key2 = 'testKey2';
+        $key3 = 'testKey3';
+
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+        $value6 = 'value6';
+
+        $result1 = $this->client->sAdd($key1, $value1, $value2);
+        $this->assertEquals(2, $result1);
+
+        $result2 = $this->client->sAdd($key2, $value3, $value4);
+        $this->assertEquals(2, $result2);
+
+        $result3 = $this->client->sAdd($key3, $value5, $value6);
+        $this->assertEquals(2, $result3);
+
+
+        $resultSUnionStore = $this->client->sUnionStore($dstKey, $key1, $key2, $key3);
+        $this->assertEquals(6, $resultSUnionStore);
+
+        $resultMembers = $this->client->sMembers($dstKey);
+        $this->assertCount(6,$resultMembers);
+        $this->assertContains($value1, $resultMembers);
+        $this->assertContains($value2, $resultMembers);
+        $this->assertContains($value3, $resultMembers);
+        $this->assertContains($value4, $resultMembers);
+        $this->assertContains($value5, $resultMembers);
+        $this->assertContains($value6, $resultMembers);
+    }
+
 }

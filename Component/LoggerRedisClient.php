@@ -2108,6 +2108,32 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function sUnionStore($dstKey, $key1, $key2, $keyN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->sUnionStore($dstKey, $key1, $key2, $keyN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('dstKey' => $dstKey, 'key1' => $key1, 'key2' => $key2);
+        if(null !== $keyN) {
+            $params['keyN'] = $keyN;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('sUnionStore', $duration, $params);
+        }
+        else
+        {
+            $this->error('sUnionStore', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */

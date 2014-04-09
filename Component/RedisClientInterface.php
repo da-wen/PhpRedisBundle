@@ -1717,6 +1717,44 @@ interface RedisClientInterface
     public function sUnion($key1, $key2, $keyN = null);
 
     /**
+     * Performs the same action as sUnion, but stores the result in the first key
+     *
+     * @param   string  $dstKey  the key to store the diff into.
+     * @param   string  $key1    Any number of keys corresponding to sets in redis.
+     * @param   string  $key2    ...
+     * @param   string  $keyN    ...
+     * @return  int     Any number of keys corresponding to sets in redis.
+     * @link    http://redis.io/commands/sunionstore
+     * @example
+     * <pre>
+     * $redis->delete('s0', 's1', 's2');
+     *
+     * $redis->sAdd('s0', '1');
+     * $redis->sAdd('s0', '2');
+     * $redis->sAdd('s1', '3');
+     * $redis->sAdd('s1', '1');
+     * $redis->sAdd('s2', '3');
+     * $redis->sAdd('s2', '4');
+     *
+     * var_dump($redis->sUnionStore('dst', 's0', 's1', 's2'));
+     * var_dump($redis->sMembers('dst'));
+     *
+     * //int(4)
+     * //array(4) {
+     * //  [0]=>
+     * //  string(1) "3"
+     * //  [1]=>
+     * //  string(1) "4"
+     * //  [2]=>
+     * //  string(1) "1"
+     * //  [3]=>
+     * //  string(1) "2"
+     * //}
+     * </pre>
+     */
+    public function sUnionStore($dstKey, $key1, $key2, $keyN = null);
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */
