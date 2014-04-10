@@ -2134,6 +2134,88 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * SORTED SETS
+     * *************************************************************************************************
+     */
+
+
+    /**
+     * @inheritdoc
+     */
+    public function zAdd($key, $score1, $value1, $score2 = null, $value2 = null, $scoreN = null, $valueN = null )
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zAdd($key, $score1, $value1, $score2, $value2, $scoreN, $valueN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'score1' => $score1);
+        if(null !== $score2) {
+            $params['score2'] = $score2;
+        }
+
+        if(null !== $score2 && null !== $scoreN) {
+            $params['scoreN'] = $scoreN;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('zAdd', $duration, $params);
+        }
+        else
+        {
+            $this->error('zAdd', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zCard($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zCard($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zCard', $duration, $params);
+        }
+        else
+        {
+            $this->error('zCard', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zSize($key)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zSize($key);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zSize', $duration, $params);
+        }
+        else
+        {
+            $this->error('zSize', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */

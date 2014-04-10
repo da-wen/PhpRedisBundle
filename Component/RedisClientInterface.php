@@ -1755,6 +1755,62 @@ interface RedisClientInterface
     public function sUnionStore($dstKey, $key1, $key2, $keyN = null);
 
     /**
+     * SORTED SETS
+     * *************************************************************************************************
+     */
+
+
+    /**
+     * Adds the specified member with a given score to the sorted set stored at key.
+     *
+     * @param   string  $key    Required key
+     * @param   float   $score1 Required score
+     * @param   string  $value1 Required value
+     * @param   float   $score2 Optional score
+     * @param   string  $value2 Optional value
+     * @param   float   $scoreN Optional score
+     * @param   string  $valueN Optional value
+     * @return  int     Number of values added
+     * @link    http://redis.io/commands/zadd
+     * @example
+     * <pre>
+     * <pre>
+     * $redis->zAdd('z', 1, 'v2', 2, 'v2', 3, 'v3', 4, 'v4' );  // int(2)
+     * $redis->zRem('z', 'v2', 'v3');                           // int(2)
+     * var_dump( $redis->zRange('z', 0, -1) );
+     * //// Output:
+     * // array(2) {
+     * //   [0]=> string(2) "v1"
+     * //   [1]=> string(2) "v4"
+     * // }
+     * </pre>
+     * </pre>
+     */
+    public function zAdd($key, $score1, $value1, $score2 = null, $value2 = null, $scoreN = null, $valueN = null );
+
+    /**
+     * Returns the cardinality of an ordered set.
+     *
+     * @param   string  $key
+     * @return  int     the set's cardinality
+     * @link    http://redis.io/commands/zsize
+     * @example
+     * <pre>
+     * $redis->zAdd('key', 0, 'val0');
+     * $redis->zAdd('key', 2, 'val2');
+     * $redis->zAdd('key', 10, 'val10');
+     * $redis->zCard('key');            // 3
+     * </pre>
+     */
+    public function zCard($key);
+
+    /**
+     * @see zCard()
+     * @param string $key
+     */
+    public function zSize($key);
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */
