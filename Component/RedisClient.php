@@ -2166,6 +2166,29 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the number of elements of the sorted set stored at the specified key which have
+     * scores in the range [start,end]. Adding a parenthesis before start or end excludes it
+     * from the range. +inf and -inf are also valid limits.
+     *
+     * @param   string  $key
+     * @param   string  $start
+     * @param   string  $end
+     * @return  int     the size of a corresponding zRangeByScore.
+     * @link    http://redis.io/commands/zcount
+     * @example
+     * <pre>
+     * $redis->zAdd('key', 0, 'val0');
+     * $redis->zAdd('key', 2, 'val2');
+     * $redis->zAdd('key', 10, 'val10');
+     * $redis->zCount('key', 0, 3); // 2, corresponding to array('val0', 'val2')
+     * </pre>
+     */
+    public function zCount($key, $start, $end)
+    {
+        return $this->redis->zCount($key, $start, $end);
+    }
+
+    /**
      * @see zCard()
      * @param string $key
      */

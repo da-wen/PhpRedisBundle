@@ -88,6 +88,7 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+
     public function testZSize()
     {
         $key = 'testKey';
@@ -99,6 +100,25 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($return));
 
         $result = $this->client->zSize($key);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZCount()
+    {
+        $key = 'testKey';
+        $start = 1;
+        $end = 5;
+        $return = 5;
+
+        $this->redis->expects($this->once())
+            ->method('zCount')
+            ->with($this->equalTo($key),
+                   $this->equalTo($start),
+                   $this->equalTo($end))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zCount($key, $start, $end);
 
         $this->assertSame($return, $result);
     }

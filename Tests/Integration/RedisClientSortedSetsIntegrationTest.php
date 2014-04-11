@@ -141,5 +141,24 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertSame(3, $resultSSize);
     }
 
+    public function testZCount()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultSSize = $this->client->zSize($key);
+        $this->assertSame(3, $resultSSize);
+
+        $this->assertEquals(2, $this->client->zCount($key, 0, 2));
+    }
+
 
 }
