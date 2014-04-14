@@ -184,5 +184,46 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZRangeByScore()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $end = 3;
+        $options = array();
+        $return = array('value1' => 1, 'value2' => 2);
+
+        $this->redis->expects($this->once())
+            ->method('zRangeByScore')
+            ->with($this->equalTo($key),
+                $this->equalTo($start),
+                $this->equalTo($end),
+                $this->equalTo($options))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRangeByScore($key, $start, $end, $options);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZRevRangeByScore()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $end = 3;
+        $options = array();
+        $return = array('value1' => 1, 'value2' => 2);
+
+        $this->redis->expects($this->once())
+            ->method('zRevRangeByScore')
+            ->with($this->equalTo($key),
+                $this->equalTo($start),
+                $this->equalTo($end),
+                $this->equalTo($options))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRevRangeByScore($key, $start, $end, $options);
+
+        $this->assertSame($return, $result);
+    }
 
 }

@@ -2306,6 +2306,58 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function zRangeByScore($key, $start, $end, array $options = array())
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRangeByScore($key, $start, $end, $options);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'start' => $start, 'end' => $start);
+        if(!empty($options)) {
+            $params['options'] = $options;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRangeByScore', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRangeByScore', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zRevRangeByScore($key, $start, $end, array $options = array())
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRevRangeByScore($key, $start, $end, $options);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'start' => $start, 'end' => $start);
+        if(!empty($options)) {
+            $params['options'] = $options;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRevRangeByScore', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRevRangeByScore', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function zSize($key)
     {
         $startTime = $this->startMeasure();

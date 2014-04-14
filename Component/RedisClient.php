@@ -2289,6 +2289,52 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the elements of the sorted set stored at the specified key which have scores in the
+     * range [start,end]. Adding a parenthesis before start or end excludes it from the range.
+     * +inf and -inf are also valid limits.
+     *
+     * zRevRangeByScore returns the same items in reverse order, when the start and end parameters are swapped.
+     *
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @param   array   $options Two options are available:
+     *                      - withscores => TRUE,
+     *                      - and limit => array($offset, $count)
+     * @return  array   Array containing the values in specified range.
+     * @link    http://redis.io/commands/zrangebyscore
+     * @example
+     * <pre>
+     * $redis->zAdd('key', 0, 'val0');
+     * $redis->zAdd('key', 2, 'val2');
+     * $redis->zAdd('key', 10, 'val10');
+     * $redis->zRangeByScore('key', 0, 3);                                          // array('val0', 'val2')
+     * $redis->zRangeByScore('key', 0, 3, array('withscores' => TRUE);              // array('val0' => 0, 'val2' => 2)
+     * $redis->zRangeByScore('key', 0, 3, array('limit' => array(1, 1));                        // array('val2' => 2)
+     * $redis->zRangeByScore('key', 0, 3, array('limit' => array(1, 1));                        // array('val2')
+     * $redis->zRangeByScore('key', 0, 3, array('withscores' => TRUE, 'limit' => array(1, 1));  // array('val2' => 2)
+     * </pre>
+     */
+    public function zRangeByScore($key, $start, $end, array $options = array())
+    {
+        return $this->redis->zRangeByScore($key, $start, $end, $options);
+    }
+
+    /**
+     * @see zRangeByScore()
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @param   array   $options
+     *
+     * @return 	array
+     */
+    public function zRevRangeByScore($key, $start, $end, array $options = array())
+    {
+        return $this->redis->zRevRangeByScore($key, $start, $end, $options);
+    }
+
+    /**
      * @see zCard()
      * @param string $key
      */
