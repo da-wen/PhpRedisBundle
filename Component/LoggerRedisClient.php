@@ -2233,6 +2233,56 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function zIncrBy($key, $value, $member)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zIncrBy($key, $value, $member);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'value' => $value);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zIncrBy', $duration, $params);
+        }
+        else
+        {
+            $this->error('zIncrBy', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zInter($Output, $ZSetKeys, array $Weights = null, $aggregateFunction = 'SUM')
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zInter($Output, $ZSetKeys, $Weights, $aggregateFunction);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array(
+            'output' => $Output,
+            'zSezKeys' => $ZSetKeys,
+            'weights' => $Weights,
+            'aggregationFunction' => $aggregateFunction);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zInter', $duration, $params);
+        }
+        else
+        {
+            $this->error('zInter', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function zSize($key)
     {
         $startTime = $this->startMeasure();

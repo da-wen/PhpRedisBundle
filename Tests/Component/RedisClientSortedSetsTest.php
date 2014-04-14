@@ -123,5 +123,45 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZIncrBy()
+    {
+        $key = 'testKey';
+        $value = 3;
+        $member = 'value2';
+        $return = 5;
+
+        $this->redis->expects($this->once())
+            ->method('zIncrBy')
+            ->with($this->equalTo($key),
+                   $this->equalTo($value),
+                   $this->equalTo($member))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zIncrBy($key, $value, $member);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZInter()
+    {
+        $out = 'testKey';
+        $keys = array('key1', 'key2');
+        $weights = array(1.4);
+        $methods = 'SUM';
+        $return = 5;
+
+        $this->redis->expects($this->once())
+            ->method('zInter')
+            ->with($this->equalTo($out),
+                   $this->equalTo($keys),
+                   $this->equalTo($weights),
+                   $this->equalTo($methods))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zInter($out, $keys, $weights, $methods);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }

@@ -160,5 +160,82 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals(2, $this->client->zCount($key, 0, 2));
     }
 
+    public function testZIncrBy()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $this->assertEquals(4, $this->client->zIncrBy($key, 2, $value2));
+        $this->assertEquals(1, $this->client->zCount($key, 4, 4));
+    }
+
+    public function testZInter()
+    {
+        $outKey = 'outKey';
+        $key1 = 'testKey';
+        $key2 = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $score4 = 4;
+        $score5 = 5;
+        $score6 = 6;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+        $value6 = 'value6';
+
+        $result1 = $this->client->zAdd($key1, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result1);
+
+        $result2 = $this->client->zAdd($key2, $score4, $value4, $score5, $value5, $score6, $value6);
+        $this->assertEquals(3, $result2);
+
+        $resultZInter = $this->client->zInter($outKey, array($key1, $key2));
+        $this->assertEquals(6, $resultZInter);
+
+//        $this->assertEquals(6, $this->client->sSize($outKey));
+    }
+
+//    public function testZInterWeights()
+//    {
+//        $outKey = 'outKey';
+//        $key1 = 'testKey';
+//        $key2 = 'testKey';
+//        $score1 = 1;
+//        $score2 = 2;
+//        $score3 = 3;
+//        $score4 = 4;
+//        $score5 = 5;
+//        $score6 = 6;
+//        $value1 = 'value1';
+//        $value2 = 'value2';
+//        $value3 = 'value3';
+//        $value4 = 'value4';
+//        $value5 = 'value5';
+//        $value6 = 'value6';
+//
+//        $result1 = $this->client->zAdd($key1, $score1, $value1, $score2, $value2, $score3, $value3);
+//        $this->assertEquals(3, $result1);
+//
+//        $result2 = $this->client->zAdd($key2, $score4, $value4, $score5, $value5, $score6, $value6);
+//        $this->assertEquals(3, $result2);
+//
+//        $resultZInter = $this->client->zInter($outKey, array($key1, $key2), array(6,1));
+//        $this->assertEquals(2, $resultZInter);
+//
+////        $this->assertEquals(6, $this->client->sSize($outKey));
+//    }
+
 
 }
