@@ -2256,6 +2256,39 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns a range of elements from the ordered set stored at the specified key,
+     * with values in the range [start, end]. start and stop are interpreted as zero-based indices:
+     * 0 the first element,
+     * 1 the second ...
+     * -1 the last element,
+     * -2 the penultimate ...
+     *
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @param   bool    $withscores
+     * @return  array   Array containing the values in specified range.
+     * @link    http://redis.io/commands/zrange
+     * @example
+     * <pre>
+     * $redis->zAdd('key1', 0, 'val0');
+     * $redis->zAdd('key1', 2, 'val2');
+     * $redis->zAdd('key1', 10, 'val10');
+     * $redis->zRange('key1', 0, -1); // array('val0', 'val2', 'val10')
+     * // with scores
+     * $redis->zRange('key1', 0, -1, true); // array('val0' => 0, 'val2' => 2, 'val10' => 10)
+     * </pre>
+     */
+    public function zRange($key, $start, $end, $withscores = null)
+    {
+        if(null === $withscores) {
+            return $this->redis->zRange($key, $start, $end);
+        }
+
+        return $this->redis->zRange($key, $start, $end, $withscores);
+    }
+
+    /**
      * @see zCard()
      * @param string $key
      */

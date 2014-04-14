@@ -2283,6 +2283,29 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function zRange($key, $start, $end, $withscores = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRange($key, $start, $end, $withscores);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'start' => $start, 'end' => $start, 'withscores' => $withscores);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRange', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRange', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function zSize($key)
     {
         $startTime = $this->startMeasure();

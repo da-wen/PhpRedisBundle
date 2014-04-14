@@ -237,5 +237,64 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
 ////        $this->assertEquals(6, $this->client->sSize($outKey));
 //    }
 
+    public function testZRange()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultRangeFull = $this->client->zRange($key, 0, -1);
+        $this->assertCount(3, $resultRangeFull);
+        $this->assertContains($value1, $resultRangeFull);
+        $this->assertContains($value2, $resultRangeFull);
+        $this->assertContains($value3, $resultRangeFull);
+
+        $resultRangePart = $this->client->zRange($key, 0, 1);
+        $this->assertCount(2, $resultRangePart);
+        $this->assertContains($value1, $resultRangePart);
+        $this->assertContains($value2, $resultRangePart);
+
+    }
+
+    public function testZRangeWithScores()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $resultRangeFull = $this->client->zRange($key, 0, -1, true);
+        $this->assertCount(3, $resultRangeFull);
+        $this->assertArrayHasKey($value1, $resultRangeFull);
+        $this->assertArrayHasKey($value2, $resultRangeFull);
+        $this->assertArrayHasKey($value3, $resultRangeFull);
+        $this->assertEquals($score1, $resultRangeFull[$value1]);
+        $this->assertEquals($score2, $resultRangeFull[$value2]);
+        $this->assertEquals($score3, $resultRangeFull[$value3]);
+
+        $resultRangePart = $this->client->zRange($key, 0, 1, true);
+        $this->assertCount(2, $resultRangePart);
+        $this->assertArrayHasKey($value1, $resultRangePart);
+        $this->assertArrayHasKey($value2, $resultRangePart);
+        $this->assertEquals($score1, $resultRangePart[$value1]);
+        $this->assertEquals($score2, $resultRangePart[$value2]);
+
+    }
+
+
+
 
 }

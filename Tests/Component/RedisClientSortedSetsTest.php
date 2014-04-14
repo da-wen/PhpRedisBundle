@@ -163,5 +163,26 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZRange()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $end = -1;
+        $withScores = true;
+        $return = array('value1' => 1, 'value2' => 2);
+
+        $this->redis->expects($this->once())
+            ->method('zRange')
+            ->with($this->equalTo($key),
+                   $this->equalTo($start),
+                   $this->equalTo($end),
+                   $this->equalTo($withScores))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRange($key, $start, $end, $withScores);
+
+        $this->assertSame($return, $result);
+    }
+
 
 }
