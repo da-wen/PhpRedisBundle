@@ -412,7 +412,41 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
 
     }
 
+    public function testZRank()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
 
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $this->assertEquals(0, $this->client->zRank($key, $value1));
+        $this->assertEquals(1, $this->client->zRank($key, $value2));
+        $this->assertEquals(2, $this->client->zRank($key, $value3));
+    }
+
+    public function testZRevRank()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $this->assertEquals(2, $this->client->zRevRank($key, $value1));
+        $this->assertEquals(1, $this->client->zRevRank($key, $value2));
+        $this->assertEquals(0, $this->client->zRevRank($key, $value3));
+    }
 
 
 }

@@ -2358,6 +2358,58 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function zRank($key, $member)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRank($key, $member);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if(!empty($options)) {
+            $params['options'] = $options;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRank', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRank', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zRevRank($key, $member)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRevRank($key, $member);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key);
+        if(!empty($options)) {
+            $params['options'] = $options;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRevRank', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRevRank', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function zSize($key)
     {
         $startTime = $this->startMeasure();

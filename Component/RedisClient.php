@@ -2334,6 +2334,43 @@ class RedisClient implements RedisClientInterface
         return $this->redis->zRevRangeByScore($key, $start, $end, $options);
     }
 
+
+    /**
+     * Returns the rank of a given member in the specified sorted set, starting at 0 for the item
+     * with the smallest score. zRevRank starts at 0 for the item with the largest score.
+     *
+     * @param   string  $key
+     * @param   string  $member
+     * @return  int     the item's score.
+     * @link    http://redis.io/commands/zrank
+     * @example
+     * <pre>
+     * $redis->delete('z');
+     * $redis->zAdd('key', 1, 'one');
+     * $redis->zAdd('key', 2, 'two');
+     * $redis->zRank('key', 'one');     // 0
+     * $redis->zRank('key', 'two');     // 1
+     * $redis->zRevRank('key', 'one');  // 1
+     * $redis->zRevRank('key', 'two');  // 0
+     * </pre>
+     */
+    public function zRank($key, $member)
+    {
+        return $this->redis->zRank($key, $member);
+    }
+
+    /**
+     * @see zRank()
+     * @param  string $key
+     * @param  string $member
+     * @return int    the item's score
+     * @link   http://redis.io/commands/zrevrank
+     */
+    public function zRevRank($key, $member)
+    {
+        return $this->redis->zRevRank($key, $member);
+    }
+
     /**
      * @see zCard()
      * @param string $key

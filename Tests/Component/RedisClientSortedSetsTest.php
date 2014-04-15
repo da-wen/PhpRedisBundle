@@ -226,4 +226,38 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZRank()
+    {
+        $key = 'testKey';
+        $member = 'value2';
+        $return = 2;
+
+        $this->redis->expects($this->once())
+            ->method('zRank')
+            ->with($this->equalTo($key),
+                $this->equalTo($member))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRank($key, $member);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZRevRank()
+    {
+        $key = 'testKey';
+        $member = 'value2';
+        $return = 2;
+
+        $this->redis->expects($this->once())
+            ->method('zRevRank')
+            ->with($this->equalTo($key),
+                $this->equalTo($member))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRevRank($key, $member);
+
+        $this->assertSame($return, $result);
+    }
+
 }
