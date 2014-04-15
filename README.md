@@ -3,10 +3,13 @@ PhpRedisBundle
 
 Symfony 2 Bundle for phpredis extension
 
+---
+
 !!!WARNING
 ==========
 This bundle is under construction. It is highly recommended not using this bundle for production
 
+---
 
 WORKING METHODS
 ===============
@@ -18,6 +21,8 @@ WORKING METHODS
 * strings: append, bitCount, decr, get, getBit, getRange, getSet, incr, incrByFloat, mget, mset, set, setBit, setex, setnx, setRange, strlen
 * server: bgrewriteaof, bgsave, config, dbSize, flushAll, flushDB, info, lastSave, resetStat, save, slaveOf, time, slowlog
 * connection: auth, close, echo (cEcho), getOption, ping, select, setOption
+
+---
 
 Missing Integration Tests
 =========================
@@ -31,8 +36,8 @@ Methods Ignored
 * strings: delete, incrBy, decrBy, getMultiple, mSetNx, psetex
 * keys: getKeys, setTimeout, pexpire, pexpireAt, renameKey, pttl
 
-Methods not working:
-=================
+Methods not working
+===================
 * strings: bitOp
 * keys: migrate
 
@@ -50,6 +55,8 @@ Method Informations
 * sInter: Third param seems to be ignored
 * sInterStore: Third param seems to be ignored
 * zInter: outKey is not stored, weight is not working
+
+---
 
 Configuration
 =============
@@ -77,7 +84,7 @@ php_redis:
             logging: true
 ```
 
-
+---
 
 Testing within Symfony2
 =======================
@@ -94,3 +101,8 @@ parameters:
 ```
 
 Please keep in mind, that you have to run your own redis server.
+
+**Information** The flushAll command will be performed in tests.
+It would be better to run an own instance for the tests
+
+---

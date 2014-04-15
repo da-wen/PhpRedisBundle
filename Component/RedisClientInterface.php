@@ -1982,6 +1982,40 @@ interface RedisClientInterface
     public function zRevRank($key, $member);
 
     /**
+     * Deletes a specified member from the ordered set.
+     *
+     * @param   string  $key
+     * @param   string  $member1
+     * @param   string  $member2
+     * @param   string  $memberN
+     * @return  int     Number of deleted values
+     * @link    http://redis.io/commands/zrem
+     * @example
+     * <pre>
+     * $redis->zAdd('z', 1, 'v2', 2, 'v2', 3, 'v3', 4, 'v4' );  // int(2)
+     * $redis->zRem('z', 'v2', 'v3');                           // int(2)
+     * var_dump( $redis->zRange('z', 0, -1) );
+     * //// Output:
+     * // array(2) {
+     * //   [0]=> string(2) "v1"
+     * //   [1]=> string(2) "v4"
+     * // }
+     * </pre>
+     */
+    public function zRem($key, $member1, $member2 = null, $memberN = null);
+
+    /**
+     * @see zRem()
+     * @param   string  $key
+     * @param   string  $member1
+     * @param   string  $member2
+     * @param   string  $memberN
+     * @return  int     Number of deleted values
+     * @link    http://redis.io/commands/zrem
+     */
+    public function zDelete($key, $member1, $member2 = null, $memberN = null);
+
+    /**
      * @see zCard()
      * @param string $key
      */

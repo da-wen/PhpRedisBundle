@@ -448,5 +448,125 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals(0, $this->client->zRevRank($key, $value3));
     }
 
+    public function testZRem1Param()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $this->assertEquals(1, $this->client->zRem($key, $value1));
+        $this->assertEquals(2, $this->client->zSize($key));
+    }
+
+    public function testZRem2Params()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $this->assertEquals(2, $this->client->zRem($key, $value1, $value2));
+        $this->assertEquals(1, $this->client->zSize($key));
+    }
+
+    public function testZRem3Params()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $score4 = 4;
+        $score5 = 5;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->zAdd($key, $score4, $value4, $score5, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->zSize($key));
+
+        $this->assertEquals(3, $this->client->zRem($key, $value1, $value2, $value3));
+        $this->assertEquals(2, $this->client->zSize($key));
+    }
+
+    public function testZDelete1Param()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $this->assertEquals(1, $this->client->zDelete($key, $value1));
+        $this->assertEquals(2, $this->client->zSize($key));
+    }
+
+    public function testZDelete2Params()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $this->assertEquals(2, $this->client->zDelete($key, $value1, $value2));
+        $this->assertEquals(1, $this->client->zSize($key));
+    }
+
+    public function testZDelete3Params()
+    {
+        $key = 'testKey';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $score4 = 4;
+        $score5 = 5;
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $value5 = 'value5';
+
+        $result = $this->client->zAdd($key, $score1, $value1, $score2, $value2, $score3, $value3);
+        $this->assertEquals(3, $result);
+
+        $result = $this->client->zAdd($key, $score4, $value4, $score5, $value5);
+        $this->assertEquals(2, $result);
+
+        $this->assertEquals(5, $this->client->zSize($key));
+
+        $this->assertEquals(3, $this->client->zDelete($key, $value1, $value2, $value3));
+        $this->assertEquals(2, $this->client->zSize($key));
+    }
+
 
 }

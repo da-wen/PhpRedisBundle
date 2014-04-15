@@ -260,4 +260,48 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZRem()
+    {
+
+        $key = 'testKey';
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $return = 4;
+
+        $this->redis->expects($this->once())
+            ->method('zRem')
+            ->with($this->equalTo($key),
+                $this->equalTo($value1),
+                $this->equalTo($value2),
+                $this->equalTo($value3))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRem($key, $value1, $value2, $value3);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZDelete()
+    {
+
+        $key = 'testKey';
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $return = 4;
+
+        $this->redis->expects($this->once())
+            ->method('zDelete')
+            ->with($this->equalTo($key),
+                $this->equalTo($value1),
+                $this->equalTo($value2),
+                $this->equalTo($value3))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zDelete($key, $value1, $value2, $value3);
+
+        $this->assertSame($return, $result);
+    }
+
 }
