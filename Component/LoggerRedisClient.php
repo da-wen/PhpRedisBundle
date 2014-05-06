@@ -2433,6 +2433,28 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function zDeleteRangeByScore($key, $start, $end) {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zDeleteRangeByScore($key, $start, $end);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'start' => $start, 'end' => $end);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zDeleteRangeByScore', $duration, $params);
+        }
+        else
+        {
+            $this->error('zDeleteRangeByScore', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function zRemRangeByRank( $key, $start, $end )
     {
         $startTime = $this->startMeasure();
@@ -2448,6 +2470,29 @@ class LoggerRedisClient implements RedisClientInterface
         else
         {
             $this->error('zRemRangeByRank', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zRemRangeByScore( $key, $start, $end )
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRemRangeByScore($key, $start, $end);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'start' => $start, 'end' => $end);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRemRangeByScore', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRemRangeByScore', $duration, $params);
         }
 
         return $result;

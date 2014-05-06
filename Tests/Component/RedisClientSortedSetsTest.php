@@ -344,4 +344,42 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZDeleteRangeByScore()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $end = 1;
+        $return = 2;
+
+        $this->redis->expects($this->once())
+            ->method('zDeleteRangeByScore')
+            ->with($this->equalTo($key),
+                $this->equalTo($start),
+                $this->equalTo($end))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zDeleteRangeByScore($key, $start, $end);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZRemRangeByScore()
+    {
+        $key = 'testKey';
+        $start = 0;
+        $end = 1;
+        $return = 2;
+
+        $this->redis->expects($this->once())
+            ->method('zRemRangeByScore')
+            ->with($this->equalTo($key),
+                $this->equalTo($start),
+                $this->equalTo($end))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRemRangeByScore($key, $start, $end);
+
+        $this->assertSame($return, $result);
+    }
+
 }

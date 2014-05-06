@@ -2025,6 +2025,14 @@ interface RedisClientInterface
     public function zDeleteRangeByRank($key, $start, $end);
 
     /**
+     * @see zRemRangeByScore()
+     * @param string    $key
+     * @param float     $start
+     * @param float     $end
+     */
+    public function zDeleteRangeByScore($key, $start, $end);
+
+    /**
      * Deletes the elements of the sorted set stored at the specified key which have rank in the range [start,end].
      *
      * @param   string  $key
@@ -2042,6 +2050,24 @@ interface RedisClientInterface
      * </pre>
      */
     public function zRemRangeByRank( $key, $start, $end );
+
+    /**
+     * Deletes the elements of the sorted set stored at the specified key which have scores in the range [start,end].
+     *
+     * @param   string          $key
+     * @param   float|string    $start double or "+inf" or "-inf" string
+     * @param   float|string    $end double or "+inf" or "-inf" string
+     * @return  int             The number of values deleted from the sorted set
+     * @link    http://redis.io/commands/zremrangebyscore
+     * @example
+     * <pre>
+     * $redis->zAdd('key', 0, 'val0');
+     * $redis->zAdd('key', 2, 'val2');
+     * $redis->zAdd('key', 10, 'val10');
+     * $redis->zRemRangeByScore('key', 0, 3); // 2
+     * </pre>
+     */
+    public function zRemRangeByScore( $key, $start, $end );
 
     /**
      * @see zCard()
