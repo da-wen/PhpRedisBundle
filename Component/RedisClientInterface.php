@@ -2016,6 +2016,34 @@ interface RedisClientInterface
     public function zDelete($key, $member1, $member2 = null, $memberN = null);
 
     /**
+     * @see zRemRangeByRank()
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @link    http://redis.io/commands/zremrangebyscore
+     */
+    public function zDeleteRangeByRank($key, $start, $end);
+
+    /**
+     * Deletes the elements of the sorted set stored at the specified key which have rank in the range [start,end].
+     *
+     * @param   string  $key
+     * @param   int     $start
+     * @param   int     $end
+     * @return  int     The number of values deleted from the sorted set
+     * @link    http://redis.io/commands/zremrangebyrank
+     * @example
+     * <pre>
+     * $redis->zAdd('key', 1, 'one');
+     * $redis->zAdd('key', 2, 'two');
+     * $redis->zAdd('key', 3, 'three');
+     * $redis->zRemRangeByRank('key', 0, 1); // 2
+     * $redis->zRange('key', 0, -1, array('withscores' => TRUE)); // array('three' => 3)
+     * </pre>
+     */
+    public function zRemRangeByRank( $key, $start, $end );
+
+    /**
      * @see zCard()
      * @param string $key
      */

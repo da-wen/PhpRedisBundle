@@ -2410,6 +2410,52 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function zDeleteRangeByRank($key, $start, $end)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zDeleteRangeByRank($key, $start, $end);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'start' => $start, 'end' => $end);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zDeleteRangeByRank', $duration, $params);
+        }
+        else
+        {
+            $this->error('zDeleteRangeByRank', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zRemRangeByRank( $key, $start, $end )
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRemRangeByRank($key, $start, $end);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'start' => $start, 'end' => $end);
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRemRangeByRank', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRemRangeByRank', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function zSize($key)
     {
         $startTime = $this->startMeasure();
