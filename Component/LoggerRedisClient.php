@@ -2384,6 +2384,68 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function zRem($key, $member1, $member2 = null, $memberN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zRem($key, $member1, $member2, $memberN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'member1' => $member1);
+
+        if(null !== $member2) {
+            $params['member2'] = $member2;
+        }
+
+        if(null !== $memberN) {
+            $params['memberN'] = $memberN;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('zRem', $duration, $params);
+        }
+        else
+        {
+            $this->error('zRem', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function zDelete($key, $member1, $member2 = null, $memberN = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $$this->redis->zDelete($key, $member1, $member2, $memberN);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'member1' => $member1);
+
+        if(null !== $member2) {
+            $params['member2'] = $member2;
+        }
+
+        if(null !== $memberN) {
+            $params['memberN'] = $memberN;
+        }
+
+        if(false !== $result)
+        {
+            $this->logInfo('zDelete', $duration, $params);
+        }
+        else
+        {
+            $this->error('zDelete', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function zRevRank($key, $member)
     {
         $startTime = $this->startMeasure();
