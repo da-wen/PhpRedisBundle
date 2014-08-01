@@ -469,6 +469,37 @@ class LoggerRedisClient implements RedisClientInterface
     /**
      * @inheritdoc
      */
+    public function hScan($key, &$cursor, $pattern = null, $count = null)
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->hScan($key, $cursor, $pattern, $count);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array('key' => $key, 'cursor' => $cursor);
+
+        if(null !== $pattern) {
+            $params['pattern'] = $pattern;
+        }
+
+        if(null !== $pattern) {
+            $params['count'] = $count;
+        }
+
+        if(false === $result)
+        {
+            $this->warning('hScan', $duration, $params);
+        }
+        else
+        {
+            $this->logInfo('hScan', $duration, $params);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function hSet($key, $hashKey, $value)
     {
         $startTime = $this->startMeasure();

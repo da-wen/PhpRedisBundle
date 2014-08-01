@@ -281,4 +281,26 @@ class RedisClientHashesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($value, $result);
     }
+
+    public function testHScan()
+    {
+        $key = 'testkey';
+        $cursor = 'cursor';
+        $pattern = 'pattern';
+        $count = 'count';
+
+        $value = array('one' => 'two');
+
+        $this->redis->expects($this->once())
+            ->method('hScan')
+            ->with($this->equalTo($key),
+                   $this->equalTo($cursor),
+                   $this->equalTo($pattern),
+                   $this->equalTo($count))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->hScan($key, $cursor, $pattern, $count);
+
+        $this->assertEquals($value, $result);
+    }
 }

@@ -319,6 +319,16 @@ interface RedisClientInterface
      */
     public function hMSet($key, array $hashKeys);
 
+
+    /**
+     * @param $key
+     * @param $cursor
+     * @param null $pattern
+     * @param null $count
+     * @return mixed
+     */
+    public function hScan($key, &$cursor, $pattern = null, $count = null);
+
     /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *

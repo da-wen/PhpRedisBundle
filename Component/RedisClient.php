@@ -381,6 +381,18 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * @param $key
+     * @param $cursor
+     * @param null $pattern
+     * @param null $count
+     * @return mixed
+     */
+    public function hScan($key, &$cursor, $pattern = null, $count = null)
+    {
+        return $this->redis->hScan($key, $cursor, $pattern, $count);
+    }
+
+    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key
