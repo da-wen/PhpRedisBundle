@@ -2501,6 +2501,24 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
+     * Returns the score of a given member in the specified sorted set.
+     *
+     * @param   string  $key
+     * @param   string  $member
+     * @return  float
+     * @link    http://redis.io/commands/zscore
+     * @example
+     * <pre>
+     * $redis->zAdd('key', 2.5, 'val2');
+     * $redis->zScore('key', 'val2'); // 2.5
+     * </pre>
+     */
+    public function zScore($key, $member)
+    {
+        return $this->redis->zScore($key, $member);
+    }
+
+    /**
      * @see zCard()
      * @param string $key
      */

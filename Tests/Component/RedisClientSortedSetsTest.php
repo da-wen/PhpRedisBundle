@@ -382,4 +382,21 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZScore()
+    {
+        $key = 'testKey';
+        $member = 'member1';
+        $return = 2.5;
+
+        $this->redis->expects($this->once())
+            ->method('zScore')
+            ->with($this->equalTo($key),
+                   $this->equalTo($member))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zScore($key, $member);
+
+        $this->assertSame($return, $result);
+    }
+
 }
