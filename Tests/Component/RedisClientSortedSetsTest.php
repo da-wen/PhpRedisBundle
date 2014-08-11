@@ -399,4 +399,25 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function zUnion()
+    {
+        $output = 'out';
+        $keys = array('key1', 'key2');
+        $weights = array(1,3);
+        $function = 'MIN';
+        $return = 7;
+
+        $this->redis->expects($this->once())
+            ->method('zUnion')
+            ->with($this->equalTo($output),
+                   $this->equalTo($keys),
+                   $this->equalTo($weights),
+                   $this->equalTo($function))
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zUnion($output, $keys, $weights, $function);
+
+        $this->assertSame($return, $result);
+    }
+
 }

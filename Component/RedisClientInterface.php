@@ -2101,6 +2101,45 @@ interface RedisClientInterface
     public function zSize($key);
 
     /**
+     * Creates an union of sorted sets given in second argument.
+     * The result of the union will be stored in the sorted set defined by the first argument.
+     * The third optionnel argument defines weights to apply to the sorted sets in input.
+     * In this case, the weights will be multiplied by the score of each element in the sorted set
+     * before applying the aggregation. The forth argument defines the AGGREGATE option which
+     * specify how the results of the union are aggregated.
+     *
+     * @param string    $Output
+     * @param array     $ZSetKeys
+     * @param array     $Weights
+     * @param string    $aggregateFunction  Either "SUM", "MIN", or "MAX": defines the behaviour to use on
+     * duplicate entries during the zUnion.
+     * @return int The number of values in the new sorted set.
+     * @link    http://redis.io/commands/zunionstore
+     * @example
+     * <pre>
+     * $redis->delete('k1');
+     * $redis->delete('k2');
+     * $redis->delete('k3');
+     * $redis->delete('ko1');
+     * $redis->delete('ko2');
+     * $redis->delete('ko3');
+     *
+     * $redis->zAdd('k1', 0, 'val0');
+     * $redis->zAdd('k1', 1, 'val1');
+     *
+     * $redis->zAdd('k2', 2, 'val2');
+     * $redis->zAdd('k2', 3, 'val3');
+     *
+     * $redis->zUnion('ko1', array('k1', 'k2')); // 4, 'ko1' => array('val0', 'val1', 'val2', 'val3')
+     *
+     * // Weighted zUnion
+     * $redis->zUnion('ko2', array('k1', 'k2'), array(1, 1)); // 4, 'ko2' => array('val0', 'val1', 'val2', 'val3')
+     * $redis->zUnion('ko3', array('k1', 'k2'), array(5, 1)); // 4, 'ko3' => array('val0', 'val2', 'val3', 'val1')
+     * </pre>
+     */
+    public function zUnion($Output, $ZSetKeys, array $Weights = null, $aggregateFunction = 'SUM');
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */

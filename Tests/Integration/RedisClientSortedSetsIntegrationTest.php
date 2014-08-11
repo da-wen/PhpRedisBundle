@@ -658,4 +658,34 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals(3, $this->client->zScore($key, $value3));
     }
 
+    public function testZUnion()
+    {
+        $output = 'testOut';
+        $key1 = 'key1';
+        $key2 = 'key2';
+        $value1 = 'value1';
+        $value2 = 'value2';
+        $value3 = 'value3';
+        $value4 = 'value4';
+        $score1 = 1;
+        $score2 = 2;
+        $score3 = 3;
+        $score4 = 4;
+
+        $result = $this->client->zAdd($key1, $score1, $value1, $score2, $value2);
+        $this->assertEquals(2, $result);
+
+        $result = $this->client->zAdd($key2, $score3, $value3, $score4, $value4);
+        $this->assertEquals(2, $result);
+
+        $result = $this->client->zUnion($output, array($key1, $key2));
+        $this->assertEquals(4, $result);
+
+        $values = $this->client->zRange($output, 0, -1);
+        $this->assertContains($value1, $values);
+        $this->assertContains($value2, $values);
+        $this->assertContains($value3, $values);
+        $this->assertContains($value4, $values);
+    }
+
 }

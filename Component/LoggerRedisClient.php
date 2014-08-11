@@ -2638,6 +2638,32 @@ class LoggerRedisClient implements RedisClientInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function zUnion($Output, $ZSetKeys, array $Weights = null, $aggregateFunction = 'SUM')
+    {
+        $startTime = $this->startMeasure();
+        $result = $this->redis->zUnion($Output, $ZSetKeys, $Weights, $aggregateFunction);
+        $duration = $this->endMeasure($startTime);
+
+        $params = array(
+            'Output' => $Output,
+            'ZSetKeys' => $ZSetKeys,
+            'Weights' => $Weights,
+            'aggregateFunction' => $aggregateFunction
+        );
+
+        if(false !== $result)
+        {
+            $this->logInfo('zUnion', $duration, $params);
+        }
+        else
+        {
+            $this->error('zUnion', $duration, $params);
+        }
+    }
+
+    /**
      * STRINGS
      * *************************************************************************************************
      */
