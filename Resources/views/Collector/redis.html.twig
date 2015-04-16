@@ -71,9 +71,11 @@
                 <tr>
                     <th>#</th>
                     <th>Command</th>
+                    <th>Key</th>
                     <th>Time</th>
                     <th>Connection</th>
                     <th>Log Type</th>
+                    <th>Params</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,9 +83,11 @@
                     <tr>
                         <td>{{ key }}</td>
                         <td>{{ command.cmd }}</td>
+                        <td>{% if command.params.key is defined %}{{ command.params.key }}{% endif %}</td>
                         <td>{{ '%0.2f'|format(command.time_taken) }} ms</td>
                         <td>{{ command.config.connection_name }}</td>
                         <td>{{ command.log_type }}</td>
+                        <td>{{ command.params | json_encode }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
