@@ -2,10 +2,9 @@
 
 namespace Dawen\Bundle\PhpRedisBundle\Tests\Fixtures;
 
+use Dawen\Bundle\PhpRedisBundle\Tests\Kernel\TestKernel;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\HttpKernel;
-
-require_once dirname(__DIR__).'/../../../../../../../app/AppKernel.php';
 
 abstract class AbstractKernelAwareTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +23,8 @@ abstract class AbstractKernelAwareTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->kernel = new \AppKernel('test', true);
+        $this->kernel = TestKernel::getKernel();
+        assert($this->kernel !== null);
         $this->kernel->boot();
 
         $this->container = $this->kernel->getContainer();
