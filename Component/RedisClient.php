@@ -381,18 +381,6 @@ class RedisClient implements RedisClientInterface
     }
 
     /**
-     * @param $key
-     * @param $cursor
-     * @param null $pattern
-     * @param null $count
-     * @return mixed
-     */
-    public function hScan($key, &$cursor, $pattern = null, $count = null)
-    {
-        return $this->redis->hScan($key, $cursor, $pattern, $count);
-    }
-
-    /**
      * Adds a value to the hash stored at key. If this value is already in the hash, FALSE is returned.
      *
      * @param string $key
@@ -2919,6 +2907,107 @@ class RedisClient implements RedisClientInterface
         return $this->redis->strlen($key);
     }
 
+    public function bitpos($key, $bit, $start = null, $end = null)
+    {
+        switch (func_num_args()) {
+            case 2:
+                return $this->redis->bitpos($key, $bit);
+            case 3:
+                return $this->redis->bitpos($key, $bit, $start);
+            case 4:
+                return $this->redis->bitpos($key, $bit, $start, $end);
+            default:
+                throw new \InvalidArgumentException();
+        }
+    }
 
+    public function scan(&$iterator, $pattern = null, $count = null)
+    {
+        if ($count !== null) {
+            return $this->redis->scan($iterator, $pattern, $count);
+        } else {
+            return $this->redis->scan($iterator, $pattern);
+        }
+    }
 
+    public function hScan($key, &$iterator, $pattern = null, $count = null)
+    {
+        if ($count !== null) {
+            return $this->redis->scan($key, $iterator, $pattern, $count);
+        } else {
+            return $this->redis->scan($key, $iterator, $pattern);
+        }
+    }
+
+    public function sScan($key, &$iterator, $pattern = null, $count = null)
+    {
+        if ($count !== null) {
+            return $this->redis->scan($key, $iterator, $pattern, $count);
+        } else {
+            return $this->redis->scan($key, $iterator, $pattern);
+        }
+    }
+
+    public function zScan($key, &$iterator, $pattern = null, $count = null)
+    {
+        if ($count !== null) {
+            return $this->redis->scan($key, $iterator, $pattern, $count);
+        } else {
+            return $this->redis->scan($key, $iterator, $pattern);
+        }
+    }
+
+    public function wait($numSlaves, $timeout)
+    {
+        return $this->redis->wait($numSlaves, $timeout);
+    }
+
+    public function pfAdd($key, array $elements)
+    {
+        return $this->pfAdd($key, $elements);
+    }
+
+    public function pfCount($key)
+    {
+        return $this->pfCount($key);
+    }
+
+    public function pfMerge($destkey, array $sourcekeys)
+    {
+        return $this->pfMerge($destkey, $sourcekeys);
+    }
+
+    public function zRangeByLex($key, $min, $max, $offset = null, $limit = null)
+    {
+        switch (func_num_args()) {
+            case 3:
+                return $this->zRangeByLex($key, $min, $max);
+            case 5:
+                return $this->zRangeByLex($key, $min, $max, $offset, $limit);
+            default:
+                throw new \InvalidArgumentException();
+        }
+    }
+
+    public function zRevRangeByLex($key, $min, $max, $offset = null, $limit = null)
+    {
+        switch (func_num_args()) {
+            case 3:
+                return $this->zRevRangeByLex($key, $min, $max);
+            case 5:
+                return $this->zRevRangeByLex($key, $min, $max, $offset, $limit);
+            default:
+                throw new \InvalidArgumentException();
+        }
+    }
+
+    public function rawCommand($command)
+    {
+        return call_user_func_array(array($this->redis, 'rawCommand'), func_get_args());
+    }
+
+    public function getMode()
+    {
+        return $this->redis->getMode();
+    }
 }
