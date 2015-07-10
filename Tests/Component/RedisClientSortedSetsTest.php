@@ -226,6 +226,60 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZRangeByLex()
+    {
+        $key = 'testKey';
+        $min = 0;
+        $max = 99;
+        $offset = 2;
+        $limit = 1;
+        $return = array('a', 'd', 'e');
+
+        $this->redis->expects($this->once())
+            ->method('zRangeByLex')
+            ->with(
+                $this->equalTo($key),
+                $this->equalTo($min),
+                $this->equalTo($max),
+                $this->equalTo($offset),
+                $this->equalTo($limit)
+            )
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRangeByLex($key, $min, $max, $offset, $limit);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZRevRangeByLex()
+    {
+        if (!method_exists($this->client, 'zRevRangeByLex')) {
+            $this->markTestSkipped('method missing in phpredis 2.2.7');
+        }
+
+        $key = 'testKey';
+        $min = 0;
+        $max = 99;
+        $offset = 2;
+        $limit = 1;
+        $return = array('a', 'd', 'e');
+
+        $this->redis->expects($this->once())
+            ->method('zRevRangeByLex')
+            ->with(
+                $this->equalTo($key),
+                $this->equalTo($min),
+                $this->equalTo($max),
+                $this->equalTo($offset),
+                $this->equalTo($limit)
+            )
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRevRangeByLex($key, $min, $max, $offset, $limit);
+
+        $this->assertSame($return, $result);
+    }
+
     public function testZRank()
     {
         $key = 'testKey';
