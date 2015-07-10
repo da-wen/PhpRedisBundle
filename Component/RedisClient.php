@@ -2933,27 +2933,27 @@ class RedisClient implements RedisClientInterface
     public function hScan($key, &$iterator, $pattern = null, $count = null)
     {
         if ($count !== null) {
-            return $this->redis->scan($key, $iterator, $pattern, $count);
+            return $this->redis->hScan($key, $iterator, $pattern, $count);
         } else {
-            return $this->redis->scan($key, $iterator, $pattern);
+            return $this->redis->hScan($key, $iterator, $pattern);
         }
     }
 
     public function sScan($key, &$iterator, $pattern = null, $count = null)
     {
         if ($count !== null) {
-            return $this->redis->scan($key, $iterator, $pattern, $count);
+            return $this->redis->sScan($key, $iterator, $pattern, $count);
         } else {
-            return $this->redis->scan($key, $iterator, $pattern);
+            return $this->redis->sScan($key, $iterator, $pattern);
         }
     }
 
     public function zScan($key, &$iterator, $pattern = null, $count = null)
     {
         if ($count !== null) {
-            return $this->redis->scan($key, $iterator, $pattern, $count);
+            return $this->redis->zScan($key, $iterator, $pattern, $count);
         } else {
-            return $this->redis->scan($key, $iterator, $pattern);
+            return $this->redis->zScan($key, $iterator, $pattern);
         }
     }
 
