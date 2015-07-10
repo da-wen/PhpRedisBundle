@@ -1353,13 +1353,7 @@ class RedisClient implements RedisClientInterface
      */
     public function sAdd($key, $value1, $value2 = null, $valueN = null)
     {
-        if(null === $valueN && null == $value2) {
-            return $this->redis->sAdd($key, $value1);
-        } elseif(null === $valueN) {
-            return $this->redis->sAdd($key, $value1, $value2);
-        }
-
-        return $this->redis->sAdd($key, $value1, $value2, $valueN);
+        return call_user_func_array(array($this->redis, 'sAdd'), func_get_args());
     }
 
     /**

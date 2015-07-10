@@ -1722,10 +1722,19 @@ class LoggerRedisClient implements RedisClientInterface
     public function sAdd($key, $value1, $value2 = null, $valueN = null)
     {
         $startTime = $this->startMeasure();
-        $result = $this->redis->sAdd($key, $value1, $value2, $valueN);
+        $values = func_get_args();
+        $result = call_user_func_array(array($this->redis, 'sAdd'), $values);
         $duration = $this->endMeasure($startTime);
 
-        $params = array('key' => $key);
+        $params = array();
+
+        for ($i = 0; $i < func_num_args(); ++$i) {
+            if ($i == 0) {
+                $params['key'] = $values[$i];
+            } else {
+                $params['value' . $i] = $values[$i];
+            }
+        }
 
         if($result)
         {
