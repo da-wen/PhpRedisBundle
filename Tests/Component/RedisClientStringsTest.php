@@ -357,4 +357,20 @@ class RedisClientStringsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(142, $result);
     }
 
+    public function testBitpos()
+    {
+        $key = 'testKey';
+
+        $this->redis->expects($this->once())
+            ->method('bitpos')
+            ->with($this->equalTo($key),
+                $this->equalTo(1),
+                $this->equalTo(4),
+                $this->equalTo(-2))
+            ->will($this->returnValue(36));
+
+        $result = $this->client->bitpos($key, 1, 4, -2);
+
+        $this->assertEquals(36, $result);
+    }
 }
