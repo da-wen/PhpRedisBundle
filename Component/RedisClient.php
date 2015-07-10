@@ -2907,6 +2907,36 @@ class RedisClient implements RedisClientInterface
         return $this->redis->strlen($key);
     }
 
+    /**
+     * Return the position of the first bit set to 1 or 0 in a string. The position is returned, thinking of the
+     * string as an array of bits from left to right, where the first byte's most significant bit is at position 0,
+     * the second byte's most significant bit is at position 8, and so forth.
+     * @param   string  $key
+     * @param   int     $bit
+     * @param   int     $start
+     * @param   int     $end
+     * @return  int     The command returns the position of the first bit set to 1 or 0 according to the request.
+     *                  If we look for set bits (the bit argument is 1) and the string is empty or composed of just
+     *                  zero bytes, -1 is returned. If we look for clear bits (the bit argument is 0) and the string
+     *                  only contains bit set to 1, the function returns the first bit not part of the string on the
+     *                  right. So if the string is three bytes set to the value 0xff the command BITPOS key 0 will
+     *                  return 24, since up to bit 23 all the bits are 1. Basically, the function considers the right
+     *                  of the string as padded with zeros if you look for clear bits and specify no range or the
+     *                  start argument only. However, this behavior changes if you are looking for clear bits and
+     *                  specify a range with both start and end. If no clear bit is found in the specified range, the
+     *                  function returns -1 as the user specified a clear range and there are no 0 bits in that range.
+     * @link    http://redis.io/commands/bitpos
+     * @example
+     * <pre>
+     * $redis->set('key', '\xff\xff');
+     * $redis->bitpos('key', 1); // int(0)
+     * $redis->bitpos('key', 1, 1); // int(8)
+     * $redis->bitpos('key', 1, 3); // int(-1)
+     * $redis->bitpos('key', 0); // int(16)
+     * $redis->bitpos('key', 0, 1); // int(16)
+     * $redis->bitpos('key', 0, 1, 5); // int(-1)
+     * </pre>
+     */
     public function bitpos($key, $bit, $start = null, $end = null)
     {
         switch (func_num_args()) {
@@ -2921,6 +2951,23 @@ class RedisClient implements RedisClientInterface
         }
     }
 
+    /**
+     * Scan the keyspace for keys.
+     * @param  int    $iterator Iterator, initialized to NULL.
+     * @param  string $pattern  Pattern to match.
+     * @param  int    $count    Count of keys per iteration (only a suggestion to Redis).
+     * @return array            This function will return an array of keys or FALSE if there are no more keys.
+     * @link   http://redis.io/commands/scan
+     * @example
+     * <pre>
+     * $iterator = null;
+     * while($keys = $redis->scan($iterator)) {
+     *     foreach($keys as $key) {
+     *         echo $key . PHP_EOL;
+     *     }
+     * }
+     * </pre>
+     */
     public function scan(&$iterator, $pattern = null, $count = null)
     {
         if ($count !== null) {
@@ -2930,6 +2977,24 @@ class RedisClient implements RedisClientInterface
         }
     }
 
+    /**
+     * Scan a HASH value for members, with an optional pattern and count.
+     * @param   string    $key
+     * @param   int       $iterator
+     * @param   string    $pattern    Optional pattern to match against.
+     * @param   int       $count      How many keys to return in a go (only a sugestion to Redis).
+     * @return  array     An array of members that match our pattern.
+     * @link    http://redis.io/commands/hscan
+     * @example
+     * <pre>
+     * // $iterator = null;
+     * // while($elements = $redis->hscan('hash', $iterator)) {
+     * //     foreach($elements as $key => $value) {
+     * //         echo $key . ' => ' . $value . PHP_EOL;
+     * //     }
+     * // }
+     * </pre>
+     */
     public function hScan($key, &$iterator, $pattern = null, $count = null)
     {
         if ($count !== null) {
@@ -2939,6 +3004,24 @@ class RedisClient implements RedisClientInterface
         }
     }
 
+    /**
+     * Scan a set for members.
+     * @param   string  $key        The set to search.
+     * @param   int     $iterator   LONG (reference) to the iterator as we go.
+     * @param   null    $pattern    String, optional pattern to match against.
+     * @param   int     $count      How many members to return at a time (Redis might return a different amount).
+     * @return  array   PHPRedis will return an array of keys or FALSE when we're done iterating.
+     * @link    http://redis.io/commands/sscan
+     * @example
+     * <pre>
+     * $iterator = null;
+     * while ($members = $redis->sscan('set', $iterator)) {
+     *     foreach ($members as $member) {
+     *         echo $member . PHP_EOL;
+     *     }
+     * }
+     * </pre>
+     */
     public function sScan($key, &$iterator, $pattern = null, $count = null)
     {
         if ($count !== null) {
@@ -2948,6 +3031,24 @@ class RedisClient implements RedisClientInterface
         }
     }
 
+    /**
+     * Scan a sorted set for members, with optional pattern and count.
+     * @param   string  $key        String, the set to scan.
+     * @param   int     $iterator   Long (reference), initialized to NULL.
+     * @param   string  $pattern    String (optional), the pattern to match.
+     * @param   int     $count      How many keys to return per iteration (Redis might return a different number).
+     * @return  array   PHPRedis will return matching keys from Redis, or FALSE when iteration is complete.
+     * @link    http://redis.io/commands/zscan
+     * @example
+     * <pre>
+     * $iterator = null;
+     * while ($members = $redis-zscan('zset', $iterator)) {
+     *     foreach ($members as $member => $score) {
+     *         echo $member . ' => ' . $score . PHP_EOL;
+     *     }
+     * }
+     * </pre>
+     */
     public function zScan($key, &$iterator, $pattern = null, $count = null)
     {
         if ($count !== null) {
@@ -2957,55 +3058,149 @@ class RedisClient implements RedisClientInterface
         }
     }
 
+    /**
+     * Blocks the current client until all the previous write commands are successfully transferred and
+     * acknowledged by at least the specified number of slaves.
+     * @param   int $numSlaves  Number of slaves that need to acknowledge previous write commands.
+     * @param   int $timeout    Timeout in milliseconds.
+     * @return  int The command returns the number of slaves reached by all the writes performed in the
+     *              context of the current connection.
+     * @link    http://redis.io/commands/wait
+     * @example $redis->wait(2, 1000);
+     */
     public function wait($numSlaves, $timeout)
     {
         return $this->redis->wait($numSlaves, $timeout);
     }
 
+    /**
+     * Adds all the element arguments to the HyperLogLog data structure stored at the key.
+     * @param   string  $key
+     * @param   array   $elements
+     * @return  bool
+     * @link    http://redis.io/commands/pfadd
+     * @example $redis->pfAdd('key', array('elem1', 'elem2'))
+     */
     public function pfAdd($key, array $elements)
     {
-        return $this->pfAdd($key, $elements);
+        return $this->redis->pfAdd($key, $elements);
     }
 
+    /**
+     * When called with a single key, returns the approximated cardinality computed by the HyperLogLog data
+     * structure stored at the specified variable, which is 0 if the variable does not exist.
+     * @param   string|array    $key
+     * @return  int
+     * @link    http://redis.io/commands/pfcount
+     * @example
+     * <pre>
+     * $redis->pfAdd('key1', array('elem1', 'elem2'));
+     * $redis->pfAdd('key2', array('elem3', 'elem2'));
+     * $redis->pfCount('key1'); // int(2)
+     * $redis->pfCount(array('key1', 'key2')); // int(3)
+     */
     public function pfCount($key)
     {
-        return $this->pfCount($key);
+        return $this->redis->pfCount($key);
     }
 
+    /**
+     * Merge multiple HyperLogLog values into an unique value that will approximate the cardinality
+     * of the union of the observed Sets of the source HyperLogLog structures.
+     * @param   string  $destkey
+     * @param   array   $sourcekeys
+     * @return  bool
+     * @link    http://redis.io/commands/pfmerge
+     * @example
+     * <pre>
+     * $redis->pfAdd('key1', array('elem1', 'elem2'));
+     * $redis->pfAdd('key2', array('elem3', 'elem2'));
+     * $redis->pfMerge('key3', array('key1', 'key2'));
+     * $redis->pfCount('key3'); // int(3)
+     */
     public function pfMerge($destkey, array $sourcekeys)
     {
-        return $this->pfMerge($destkey, $sourcekeys);
+        return $this->redis->pfMerge($destkey, $sourcekeys);
     }
 
+    /**
+     * Returns a lexigraphical range of members in a sorted set, assuming the members have the same score. The
+     * min and max values are required to start with '(' (exclusive), '[' (inclusive), or be exactly the values
+     * '-' (negative inf) or '+' (positive inf).  The command must be called with either three *or* five
+     * arguments or will return FALSE.
+     * @param   string  $key    The ZSET you wish to run against.
+     * @param   int     $min    The minimum alphanumeric value you wish to get.
+     * @param   int     $max    The maximum alphanumeric value you wish to get.
+     * @param   int     $offset Optional argument if you wish to start somewhere other than the first element.
+     * @param   int     $limit  Optional argument if you wish to limit the number of elements returned.
+     * @return  array   Array containing the values in the specified range.
+     * @link    http://redis.io/commands/zrangebylex
+     * @example
+     * <pre>
+     * foreach (array('a', 'b', 'c', 'd', 'e', 'f', 'g') as $char) {
+     *     $redis->zAdd('key', $char);
+     * }
+     *
+     * $redis->zRangeByLex('key', '-', '[c'); // array('a', 'b', 'c')
+     * $redis->zRangeByLex('key', '-', '(c'); // array('a', 'b')
+     * $redis->zRangeByLex('key', '-', '[c'); // array('b', 'c')
+     * </pre>
+     */
     public function zRangeByLex($key, $min, $max, $offset = null, $limit = null)
     {
         switch (func_num_args()) {
             case 3:
-                return $this->zRangeByLex($key, $min, $max);
+                return $this->redis->zRangeByLex($key, $min, $max);
             case 5:
-                return $this->zRangeByLex($key, $min, $max, $offset, $limit);
+                return $this->redis->zRangeByLex($key, $min, $max, $offset, $limit);
             default:
                 throw new \InvalidArgumentException();
         }
     }
 
+    /**
+     * @see zRangeByLex()
+     * @param   string  $key
+     * @param   int     $min
+     * @param   int     $max
+     * @param   int     $offset
+     * @param   int     $limit
+     * @return  array
+     * @link    http://redis.io/commands/zrevrangebylex
+     */
     public function zRevRangeByLex($key, $min, $max, $offset = null, $limit = null)
     {
         switch (func_num_args()) {
             case 3:
-                return $this->zRevRangeByLex($key, $min, $max);
+                return $this->redis->zRevRangeByLex($key, $min, $max);
             case 5:
-                return $this->zRevRangeByLex($key, $min, $max, $offset, $limit);
+                return $this->redis->zRevRangeByLex($key, $min, $max, $offset, $limit);
             default:
                 throw new \InvalidArgumentException();
         }
     }
 
+    /**
+     * Send arbitrary things to the redis server.
+     * @param   string      $command    Required command to send to the server.
+     * @param   mixed,...   $arguments  Optional variable amount of arguments to send to the server.
+     * @return  mixed
+     * @example
+     * <pre>
+     * $redis->rawCommand('SET', 'key', 'value'); // bool(true)
+     * $redis->rawCommand('GET", 'key'); // string(5) "value"
+     * </pre>
+     */
     public function rawCommand($command)
     {
         return call_user_func_array(array($this->redis, 'rawCommand'), func_get_args());
     }
 
+    /**
+     * Detect whether we're in ATOMIC/MULTI/PIPELINE mode.
+     * @return  int     Either Redis::ATOMIC, Redis::MULTI or Redis::PIPELINE
+     * @example $redis->getMode();
+     */
     public function getMode()
     {
         return $this->redis->getMode();
