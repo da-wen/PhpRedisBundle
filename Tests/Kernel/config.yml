@@ -1,0 +1,23 @@
+parameters:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    db: 8
+    db2: 9
+
+services:
+  event_dispatcher:
+    class: Symfony\Component\EventDispatcher\EventDispatcher
+
+  controller_resolver:
+    class: Symfony\Component\HttpKernel\Controller\ControllerResolver
+
+  http_kernel:
+    class: Symfony\Component\HttpKernel\DependencyInjection\ContainerAwareHttpKernel
+    arguments:
+      - @event_dispatcher
+      - @service_container
+      - @controller_resolver
+
+  logger:
+    class: Psr\Log\NullLogger
