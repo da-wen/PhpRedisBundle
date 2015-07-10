@@ -307,7 +307,7 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue($success);
 
         $resultEncoding = $this->client->object('encoding', $key);
-        $this->assertEquals('raw', $resultEncoding);
+        $this->assertContains($resultEncoding, array('raw', 'embstr'));
 
         $resultRefcount = $this->client->object('refcount', $key);
         $this->assertEquals(1, $resultRefcount);
