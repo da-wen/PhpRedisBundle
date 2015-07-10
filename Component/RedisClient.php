@@ -2131,13 +2131,7 @@ class RedisClient implements RedisClientInterface
      */
     public function zAdd($key, $score1, $value1, $score2 = null, $value2 = null, $scoreN = null, $valueN = null )
     {
-        if(null === $score2 && null === $value2) {
-            return $this->redis->zAdd($key, $score1, $value1);
-        } elseif(null === $scoreN && null === $valueN) {
-            return $this->redis->zAdd($key, $score1, $value1, $score2, $value2);
-        }
-
-        return $this->redis->zAdd($key, $score1, $value1, $score2, $value2, $scoreN, $valueN);
+        return call_user_func_array(array($this->redis, 'zAdd'), func_get_args());
     }
 
     /**

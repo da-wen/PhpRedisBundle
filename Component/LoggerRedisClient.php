@@ -2154,7 +2154,7 @@ class LoggerRedisClient implements RedisClientInterface
     public function zAdd($key, $score1, $value1, $score2 = null, $value2 = null, $scoreN = null, $valueN = null )
     {
         $startTime = $this->startMeasure();
-        $result = $this->redis->zAdd($key, $score1, $value1, $score2, $value2, $scoreN, $valueN);
+        $result = call_user_func_array(array($this->redis, 'zAdd'), func_get_args());
         $duration = $this->endMeasure($startTime);
 
         $params = array('key' => $key, 'score1' => $score1);
