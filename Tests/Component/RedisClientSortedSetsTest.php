@@ -420,4 +420,25 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZScan()
+    {
+        $key = 'testkey';
+        $cursor = 'cursor';
+        $pattern = 'pattern';
+        $count = 'count';
+
+        $value = array('one' => 1, 'two' => 2);
+
+        $this->redis->expects($this->once())
+            ->method('zScan')
+            ->with($this->equalTo($key),
+                $this->identicalTo($cursor),
+                $this->equalTo($pattern),
+                $this->equalTo($count))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->zScan($key, $cursor, $pattern, $count);
+
+        $this->assertEquals($value, $result);
+    }
 }

@@ -341,4 +341,24 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testScan()
+    {
+        $cursor = 'cursor';
+        $pattern = 'pattern';
+        $count = 'count';
+
+        $value = array('one', 'two');
+
+        $this->redis->expects($this->once())
+            ->method('scan')
+            ->with($this->identicalTo($cursor),
+                $this->equalTo($pattern),
+                $this->equalTo($count))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->scan($cursor, $pattern, $count);
+
+        $this->assertEquals($value, $result);
+    }
 }

@@ -495,4 +495,22 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $valueNewKey = $this->client->get($newKey);
         $this->assertEquals($value, $valueNewKey);
     }
+
+    public function testScan()
+    {
+        $values = array('value1', 'value2', 'value3');
+        $nonValues = array('nonValue');
+
+        $this->client->flushDB();
+
+        foreach (array_merge($values, $nonValues) as $key) {
+            $this->assertTrue($this->client->set($key, 'true'));
+        }
+
+        while ($keys = $this->client->scan($iterator, 'value*')) {
+            foreach ($keys as $key) {
+                $this->assertContains($key, $values);
+            }
+        };
+    }
 }

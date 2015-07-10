@@ -680,4 +680,20 @@ class RedisClientSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertContains($value6, $resultMembers);
     }
 
+    public function testSScan()
+    {
+        $key = 'sscan';
+        $values = array('value1', 'value2', 'value3');
+        $nonValue = 'nonValue';
+
+        $this->client->del($key);
+
+        $this->assertEquals(4, $this->client->sAdd($key, $values[0], $values[1], $values[2], $nonValue));
+
+        while ($members = $this->client->sScan($key, $iterator, 'value*')) {
+            foreach ($members as $member) {
+                $this->assertContains($member, $values);
+            }
+        };
+    }
 }
