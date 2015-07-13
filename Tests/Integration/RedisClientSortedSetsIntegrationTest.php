@@ -790,11 +790,11 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
 
         $this->assertEquals(
             array('d', 'c', 'b', 'a'),
-            $this->client->zRevRangeByLex($key,  '+',  '+')
+            $this->client->zRevRangeByLex($key,  '+',  '-')
         );
         $this->assertEquals(
             array(),
-            $this->client->zRevRangeByLex($key,  '-',  '-')
+            $this->client->zRevRangeByLex($key,  '-',  '+')
         );
         $this->assertEquals(
             array(),
@@ -809,7 +809,7 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
             $this->client->zRevRangeByLex($key, '(d',  '-')
         );
         $this->assertEquals(
-            array('d', 'c', 'd', 'a'),
+            array('d', 'c', 'b', 'a'),
             $this->client->zRevRangeByLex($key, '[d',  '-')
         );
         $this->assertEquals(

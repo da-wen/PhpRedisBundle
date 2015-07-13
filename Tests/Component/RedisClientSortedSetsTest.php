@@ -253,7 +253,7 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
 
     public function testZRevRangeByLex()
     {
-        if (!method_exists($this->client, 'zRevRangeByLex')) {
+        if (!method_exists($this->redis, 'zRevRangeByLex')) {
             $this->markTestSkipped('method missing in phpredis 2.2.7');
         }
 
