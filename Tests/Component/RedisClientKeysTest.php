@@ -361,4 +361,21 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($value, $result);
     }
+
+    public function testPfAdd()
+    {
+        $key = 'key';
+        $values = array('one', 'two');
+        $value = 1;
+
+        $this->redis->expects($this->once())
+            ->method('pfAdd')
+            ->with($this->equalTo($key),
+                $this->equalTo($values))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->pfAdd($key, $values);
+
+        $this->assertEquals($value, $result);
+    }
 }
