@@ -226,6 +226,60 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZRangeByLex()
+    {
+        $key = 'testKey';
+        $min = 0;
+        $max = 99;
+        $offset = 2;
+        $limit = 1;
+        $return = array('a', 'd', 'e');
+
+        $this->redis->expects($this->once())
+            ->method('zRangeByLex')
+            ->with(
+                $this->equalTo($key),
+                $this->equalTo($min),
+                $this->equalTo($max),
+                $this->equalTo($offset),
+                $this->equalTo($limit)
+            )
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRangeByLex($key, $min, $max, $offset, $limit);
+
+        $this->assertSame($return, $result);
+    }
+
+    public function testZRevRangeByLex()
+    {
+        if (!method_exists($this->redis, 'zRevRangeByLex')) {
+            $this->markTestSkipped('method missing in phpredis 2.2.7');
+        }
+
+        $key = 'testKey';
+        $min = 0;
+        $max = 99;
+        $offset = 2;
+        $limit = 1;
+        $return = array('a', 'd', 'e');
+
+        $this->redis->expects($this->once())
+            ->method('zRevRangeByLex')
+            ->with(
+                $this->equalTo($key),
+                $this->equalTo($min),
+                $this->equalTo($max),
+                $this->equalTo($offset),
+                $this->equalTo($limit)
+            )
+            ->will($this->returnValue($return));
+
+        $result = $this->client->zRevRangeByLex($key, $min, $max, $offset, $limit);
+
+        $this->assertSame($return, $result);
+    }
+
     public function testZRank()
     {
         $key = 'testKey';
@@ -420,4 +474,25 @@ class RedisClientSortedSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testZScan()
+    {
+        $key = 'testkey';
+        $cursor = 'cursor';
+        $pattern = 'pattern';
+        $count = 'count';
+
+        $value = array('one' => 1, 'two' => 2);
+
+        $this->redis->expects($this->once())
+            ->method('zScan')
+            ->with($this->equalTo($key),
+                $this->identicalTo($cursor),
+                $this->equalTo($pattern),
+                $this->equalTo($count))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->zScan($key, $cursor, $pattern, $count);
+
+        $this->assertEquals($value, $result);
+    }
 }

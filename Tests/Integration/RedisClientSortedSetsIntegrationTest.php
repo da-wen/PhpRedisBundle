@@ -688,4 +688,157 @@ class RedisClientSortedSetsIntegrationTest extends AbstractKernelAwareTest
         $this->assertContains($value4, $values);
     }
 
+    public function testZScan()
+    {
+        $key = 'zscan';
+        $values = array('value1' => 1, 'value2' => 3);
+        $nonValue = 'nonValue';
+
+        $this->client->del($key);
+
+        $this->assertEquals(3, $this->client->zAdd($key, 1, 'value1', 3, 'value2', 2, $nonValue));
+
+        while ($members = $this->client->zScan($key, $iterator, 'value*')) {
+            foreach ($members as $member => $score) {
+                $this->assertContains($member, array_keys($values));
+                $this->assertContains($score, array_values($values));
+            }
+        };
+    }
+
+    public function testZRangeByLex()
+    {
+        if (!version_compare(phpversion('redis'), '2.2.7', '>')) {
+            $this->markTestSkipped('bugged in phpredis <= 2.2.7');
+        }
+
+        $key = 'range';
+
+        $this->client->del($key);
+
+        $this->assertEquals(4, $this->client->zAdd($key, 1, 'a', 2, 'b', 3, 'c', 4, 'd'));
+
+        $this->assertEquals(
+            array('a', 'b', 'c', 'd'),
+            $this->client->zRangeByLex($key,  '-',  '+')
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRangeByLex($key,  '+',  '-')
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRangeByLex($key,  '-',  '-')
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRangeByLex($key,  '+',  '+')
+        );
+        $this->assertEquals(
+            array('a', 'b', 'c'),
+            $this->client->zRangeByLex($key,  '-', '(d')
+        );
+        $this->assertEquals(
+            array('a', 'b', 'c', 'd'),
+            $this->client->zRangeByLex($key,  '-', '[d')
+        );
+        $this->assertEquals(
+            array('b', 'c', 'd'),
+            $this->client->zRangeByLex($key, '(a',  '+')
+        );
+        $this->assertEquals(
+            array('a', 'b', 'c', 'd'),
+            $this->client->zRangeByLex($key, '[a',  '+')
+        );
+        $this->assertEquals(
+            array('b', 'c'),
+            $this->client->zRangeByLex($key,  '-',  '+',  1, 2)
+        );
+        $this->assertEquals(
+            array('a', 'b', 'c', 'd'),
+            $this->client->zRangeByLex($key,  '-',  '+',  0, 5)
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRangeByLex($key,  '-',  '+',  4, 3)
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRangeByLex($key,  '-',  '+', -2, 4)
+        );
+
+        $this->setExpectedException('InvalidArgumentException');
+
+        $this->client->zRangeByLex($key, '-', '+', 2);
+    }
+
+    public function testZRevRangeByLex()
+    {
+        if (!method_exists($this->client, 'zRevRangeByLex')) {
+            $this->markTestSkipped('method missing in phpredis 2.2.7');
+        }
+
+        if (!version_compare(phpversion('redis'), '2.2.7', '>')) {
+            $this->markTestSkipped('bugged in phpredis <= 2.2.7');
+        }
+
+        $key = 'range';
+
+        $this->client->del($key);
+
+        $this->assertEquals(4, $this->client->zAdd($key, 1, 'a', 2, 'b', 3, 'c', 4, 'd'));
+
+        $this->assertEquals(
+            array('d', 'c', 'b', 'a'),
+            $this->client->zRevRangeByLex($key,  '+',  '-')
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRevRangeByLex($key,  '-',  '+')
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRevRangeByLex($key,  '-',  '-')
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRevRangeByLex($key,  '+',  '+')
+        );
+        $this->assertEquals(
+            array('c', 'b', 'a'),
+            $this->client->zRevRangeByLex($key, '(d',  '-')
+        );
+        $this->assertEquals(
+            array('d', 'c', 'b', 'a'),
+            $this->client->zRevRangeByLex($key, '[d',  '-')
+        );
+        $this->assertEquals(
+            array('d', 'c', 'b'),
+            $this->client->zRevRangeByLex($key,  '+', '(a')
+        );
+        $this->assertEquals(
+            array('d', 'c', 'b', 'a'),
+            $this->client->zRevRangeByLex($key,  '+', '[a')
+        );
+        $this->assertEquals(
+            array('c', 'b'),
+            $this->client->zRevRangeByLex($key,  '+',  '-',  1, 2)
+        );
+        $this->assertEquals(
+            array('d', 'c', 'b', 'a'),
+            $this->client->zRevRangeByLex($key,  '+',  '-',  0, 5)
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRevRangeByLex($key,  '+',  '-',  4, 3)
+        );
+        $this->assertEquals(
+            array(),
+            $this->client->zRevRangeByLex($key,  '+',  '-', -2, 4)
+        );
+
+        $this->setExpectedException('InvalidArgumentException');
+
+        $this->client->zRevRangeByLex($key, '-', '+', 2);
+    }
 }

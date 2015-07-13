@@ -209,6 +209,10 @@ class RedisClientServerTest extends \PHPUnit_Framework_TestCase
 
     public function testResetStat()
     {
+        if (!method_exists($this->redis, 'resetStat')) {
+            $this->markTestSkipped('method resetStat does not exist');
+        }
+
         $return = true;
 
         $this->redis->expects($this->once())

@@ -276,9 +276,6 @@ class RedisClientHashesIntegrationTest extends AbstractKernelAwareTest
         $value = 'string4';
         $incr = 7;
 
-        $resultFirst = $this->client->hIncrBy($key, $hashKey, $value);
-        $this->assertFalse($resultFirst);
-
         $resultSet = $this->client->hSet($key, $hashKey, $value);
         $this->assertEquals(1, $resultSet);
 

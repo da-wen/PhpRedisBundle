@@ -307,7 +307,7 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $this->assertTrue($success);
 
         $resultEncoding = $this->client->object('encoding', $key);
-        $this->assertEquals('raw', $resultEncoding);
+        $this->assertContains($resultEncoding, array('raw', 'embstr'));
 
         $resultRefcount = $this->client->object('refcount', $key);
         $this->assertEquals(1, $resultRefcount);
@@ -494,5 +494,70 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
 
         $valueNewKey = $this->client->get($newKey);
         $this->assertEquals($value, $valueNewKey);
+    }
+
+    public function testScan()
+    {
+        $values = array('value1', 'value2', 'value3');
+        $nonValues = array('nonValue');
+
+        $this->client->flushDB();
+
+        foreach (array_merge($values, $nonValues) as $key) {
+            $this->assertTrue($this->client->set($key, 'true'));
+        }
+
+        while ($keys = $this->client->scan($iterator, 'value*')) {
+            foreach ($keys as $key) {
+                $this->assertContains($key, $values);
+            }
+        };
+    }
+
+    public function testPfAdd()
+    {
+        $key = 'pfkey';
+        $valuesOne = array('one');
+        $valuesTwo = array('one', 'two', 'three');
+
+        $this->client->del($key);
+
+        $this->assertEquals(false, $this->client->pfAdd($key, array()));
+        $this->assertEquals(1, $this->client->pfAdd($key, $valuesOne));
+        $this->assertEquals(0, $this->client->pfAdd($key, $valuesOne));
+        $this->assertEquals(1, $this->client->pfAdd($key, $valuesTwo));
+    }
+
+    public function testPfCount()
+    {
+        $keyOne = 'pfkey1';
+        $keyTwo = 'pfkey2';
+        $valuesOne = array('one', 'two');
+        $valuesTwo = array('two', 'three');
+
+        $this->client->del($keyOne);
+        $this->client->del($keyTwo);
+
+        $this->assertEquals(1, $this->client->pfAdd($keyOne, $valuesOne));
+        $this->assertEquals(1, $this->client->pfAdd($keyTwo, $valuesTwo));
+        $this->assertEquals(2, $this->client->pfCount($keyOne));
+        $this->assertEquals(2, $this->client->pfCount($keyTwo));
+        $this->assertEquals(3, $this->client->pfCount(array($keyOne, $keyTwo)));
+    }
+
+    public function testPfMerge()
+    {
+        $keyNew = 'pfkey1';
+        $keyOld = 'pfkey2';
+        $keyMissing = 'pfkey3';
+
+        $this->client->del($keyNew);
+        $this->client->del($keyOld);
+        $this->client->del($keyMissing);
+
+        $this->assertEquals(false, $this->client->pfMerge($keyNew, array()));
+        $this->assertEquals(true, $this->client->pfMerge($keyOld, array($keyMissing)));
+        $this->assertEquals(true, $this->client->pfMerge($keyNew, array($keyOld, $keyMissing)));
+        $this->assertEquals(true, $this->client->pfMerge($keyOld, array($keyOld, $keyMissing)));
     }
 }

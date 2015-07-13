@@ -105,21 +105,22 @@ class RedisClientServerIntegrationTest extends AbstractKernelAwareTest
     public function testConfigSet()
     {
         $key = 'maxmemory-samples';
-        $newValue = 5;
 
         $resultConfigGet = $this->client->config(RedisClientInterface::CONFIG_OPERATION_GET, $key);
+
+        $newValue = $resultConfigGet[$key] * 2;
 
         $resultSetNew = $this->client->config(RedisClientInterface::CONFIG_OPERATION_SET, $key, $newValue);
         $this->assertTrue($resultSetNew);
 
         $resultConfigAfterSet = $this->client->config(RedisClientInterface::CONFIG_OPERATION_GET, $key);
-        $this->assertEquals(5, $resultConfigAfterSet[$key]);
+        $this->assertEquals($newValue, $resultConfigAfterSet[$key]);
 
         $resultSetOld = $this->client->config(RedisClientInterface::CONFIG_OPERATION_SET, $key, $resultConfigGet[$key]);
         $this->assertTrue($resultSetOld);
 
         $resultConfigLastGet = $this->client->config(RedisClientInterface::CONFIG_OPERATION_GET, $key);
-        $this->assertEquals(3, $resultConfigLastGet[$key]);
+        $this->assertEquals($resultConfigGet[$key], $resultConfigLastGet[$key]);
     }
 
     public function testBgrewriteaof()

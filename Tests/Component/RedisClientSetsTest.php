@@ -364,5 +364,25 @@ class RedisClientSetsTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($return, $result);
     }
 
+    public function testSScan()
+    {
+        $key = 'testkey';
+        $cursor = 'cursor';
+        $pattern = 'pattern';
+        $count = 'count';
 
+        $value = array('one', 'two');
+
+        $this->redis->expects($this->once())
+            ->method('sScan')
+            ->with($this->equalTo($key),
+                $this->identicalTo($cursor),
+                $this->equalTo($pattern),
+                $this->equalTo($count))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->sScan($key, $cursor, $pattern, $count);
+
+        $this->assertEquals($value, $result);
+    }
 }

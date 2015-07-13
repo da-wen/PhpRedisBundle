@@ -406,4 +406,21 @@ class RedisClientStringsIntegrationTest extends AbstractKernelAwareTest
         $result = $this->client->strlen($key);
         $this->assertEquals(strlen($value), $result);
     }
+
+    public function testBitpos()
+    {
+        $key = 'testKey';
+        $value = "\x3f\x1f\xff";
+
+        $this->assertTrue($this->client->set($key, $value));
+
+        $this->assertEquals( 2, $this->client->bitpos($key, 1));
+        $this->assertEquals(11, $this->client->bitpos($key, 1, 1));
+        $this->assertEquals(16, $this->client->bitpos($key, 1, 2, -1));
+        $this->assertEquals(-1, $this->client->bitpos($key, 1, 3,  4));
+        $this->assertEquals( 0, $this->client->bitpos($key, 0));
+        $this->assertEquals( 8, $this->client->bitpos($key, 0, 1, -1));
+        $this->assertEquals(24, $this->client->bitpos($key, 0, 2));
+        $this->assertEquals(-1, $this->client->bitpos($key, 0, 2, 5));
+    }
 }

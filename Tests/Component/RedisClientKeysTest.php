@@ -341,4 +341,73 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testScan()
+    {
+        $cursor = 'cursor';
+        $pattern = 'pattern';
+        $count = 'count';
+
+        $value = array('one', 'two');
+
+        $this->redis->expects($this->once())
+            ->method('scan')
+            ->with($this->identicalTo($cursor),
+                $this->equalTo($pattern),
+                $this->equalTo($count))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->scan($cursor, $pattern, $count);
+
+        $this->assertEquals($value, $result);
+    }
+
+    public function testPfAdd()
+    {
+        $key = 'key';
+        $values = array('one', 'two');
+        $value = 1;
+
+        $this->redis->expects($this->once())
+            ->method('pfAdd')
+            ->with($this->equalTo($key),
+                $this->equalTo($values))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->pfAdd($key, $values);
+
+        $this->assertEquals($value, $result);
+    }
+
+    public function testPfCount()
+    {
+        $key = 'key';
+        $value = 42;
+
+        $this->redis->expects($this->once())
+            ->method('pfCount')
+            ->with($this->equalTo($key))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->pfCount($key);
+
+        $this->assertEquals($value, $result);
+    }
+
+    public function testPfMerge()
+    {
+        $key = 'newkey';
+        $logs = array('oldkey1', 'oldkey2');
+        $value = true;
+
+        $this->redis->expects($this->once())
+            ->method('pfMerge')
+            ->with($this->equalTo($key),
+                $this->equalTo($logs))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->pfMerge($key, $logs);
+
+        $this->assertEquals($value, $result);
+    }
 }
