@@ -544,4 +544,20 @@ class RedisClientKeysIntegrationTest extends AbstractKernelAwareTest
         $this->assertEquals(2, $this->client->pfCount($keyTwo));
         $this->assertEquals(3, $this->client->pfCount(array($keyOne, $keyTwo)));
     }
+
+    public function testPfMerge()
+    {
+        $keyNew = 'pfkey1';
+        $keyOld = 'pfkey2';
+        $keyMissing = 'pfkey3';
+
+        $this->client->del($keyNew);
+        $this->client->del($keyOld);
+        $this->client->del($keyMissing);
+
+        $this->assertEquals(false, $this->client->pfMerge($keyNew, array()));
+        $this->assertEquals(true, $this->client->pfMerge($keyOld, array($keyMissing)));
+        $this->assertEquals(true, $this->client->pfMerge($keyNew, array($keyOld, $keyMissing)));
+        $this->assertEquals(true, $this->client->pfMerge($keyOld, array($keyOld, $keyMissing)));
+    }
 }

@@ -393,4 +393,21 @@ class RedisClientKeysTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($value, $result);
     }
+
+    public function testPfMerge()
+    {
+        $key = 'newkey';
+        $logs = array('oldkey1', 'oldkey2');
+        $value = true;
+
+        $this->redis->expects($this->once())
+            ->method('pfMerge')
+            ->with($this->equalTo($key),
+                $this->equalTo($logs))
+            ->will($this->returnValue($value));
+
+        $result = $this->client->pfMerge($key, $logs);
+
+        $this->assertEquals($value, $result);
+    }
 }
