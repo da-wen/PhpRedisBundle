@@ -2799,9 +2799,13 @@ class RedisClient implements RedisClientInterface
      * @param int $timeout
      * @return bool
      */
-    public function set($key, $value, $timeout = 0)
+    public function set($key, $value, $timeout = null)
     {
-        return $this->redis->set($key, $value, (int)$timeout);
+        if (null !== $timeout) {
+            return $this->redis->set($key, $value, (int) $timeout);
+        }
+        
+        return $this->redis->set($key, $value);
     }
 
     /**
